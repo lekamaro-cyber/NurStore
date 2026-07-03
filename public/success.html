@@ -8,8 +8,21 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23f4b942'/></svg>" />
   <style>
     .status { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; }
-    .status-card { max-width: 480px; }
-    .status-mark { width: 84px; height: 84px; border-radius: 50%; background: rgba(244,185,66,0.14); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 2.4rem; margin: 0 auto 24px; }
+    .status-card { max-width: 520px; }
+    .status-mark { width: 84px; height: 84px; border-radius: 50%; background: rgba(169, 117, 42, 0.14); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 2.4rem; margin: 0 auto 24px; }
+    /* Bloc point relais (affiché uniquement si livraison Mondial Relay) */
+    .relay-block { display: none; margin-top: 34px; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
+    .relay-block h2 { font-size: 1.2rem; margin-bottom: 10px; }
+    .relay-block p { color: var(--muted); font-size: 0.95rem; margin-bottom: 14px; }
+    .relay-block a { color: var(--gold); font-weight: 600; text-decoration: underline; }
+    .relay-block label { display: block; font-weight: 600; font-size: 0.9rem; margin: 14px 0 6px; }
+    .relay-block input, .relay-block textarea {
+      width: 100%; padding: 11px 14px; border: 1px solid var(--line); border-radius: 10px;
+      background: var(--bg-soft); color: var(--text); font-family: var(--font); font-size: 0.95rem;
+    }
+    .relay-block textarea { min-height: 84px; resize: vertical; }
+    .relay-block button { margin-top: 18px; }
+    .relay-sent { display: none; margin-top: 18px; color: var(--gold); font-weight: 600; }
   </style>
 </head>
 <body>
@@ -18,9 +31,62 @@
       <div class="status-mark">✓</div>
       <h1>Merci pour votre commande !</h1>
       <p class="lead" style="margin: 18px auto 30px;">Votre paiement a bien été reçu. Vous allez recevoir un e-mail de confirmation. Nous préparons votre tablette Nur.</p>
-      <a href="/" class="btn btn-primary">Retour à la boutique</a>
+
+      <!-- Choix du point relais — affiché uniquement pour une livraison Mondial Relay -->
+      <div class="relay-block" id="relayBlock">
+        <h2>📍 Dernière étape : votre point relais</h2>
+        <p>
+          Vous avez choisi la livraison <strong>Mondial Relay</strong>.
+          Trouvez le point relais le plus pratique pour vous sur
+          <a href="https://www.mondialrelay.fr/trouver-le-point-relais-le-plus-proche-de-chez-moi/" target="_blank" rel="noopener">le site Mondial Relay</a>,
+          puis indiquez-le ci-dessous.
+        </p>
+        <form name="point-relais" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="relayForm">
+          <input type="hidden" name="form-name" value="point-relais" />
+          <input type="hidden" name="session_id" id="relaySession" />
+          <p style="display:none"><input name="bot-field" /></p>
+          <label for="relayEmail">Votre e-mail (celui de la commande)</label>
+          <input type="email" name="email" id="relayEmail" required />
+          <label for="relayChoice">Point relais choisi (nom + adresse ou n° du relais)</label>
+          <textarea name="relais" id="relayChoice" placeholder="Ex. : Tabac de la Gare — 12 rue des Lilas, 75011 Paris (n° 45210)" required></textarea>
+          <button type="submit" class="btn btn-primary btn-block">Confirmer mon point relais</button>
+        </form>
+        <p class="relay-sent" id="relaySent">✓ Point relais bien reçu, merci ! Votre colis y sera expédié.</p>
+      </div>
+
+      <a href="/" class="btn btn-ghost" style="margin-top: 28px;">Retour à la boutique</a>
     </div>
   </div>
-  <script>localStorage.removeItem("nur_cart");</script>
+
+  <script>
+    localStorage.removeItem("nur_cart");
+
+    // Si la commande est en Mondial Relay, on propose le choix du point relais.
+    const sid = new URLSearchParams(location.search).get("session_id");
+    if (sid) {
+      fetch("/api/session?session_id=" + encodeURIComponent(sid))
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => {
+          if (d && d.shipping && d.shipping.toLowerCase().includes("relay")) {
+            document.getElementById("relaySession").value = sid;
+            if (d.email) document.getElementById("relayEmail").value = d.email;
+            document.getElementById("relayBlock").style.display = "block";
+          }
+        })
+        .catch(() => {});
+    }
+
+    // Envoi du formulaire vers Netlify Forms sans quitter la page.
+    document.getElementById("relayForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const data = new URLSearchParams(new FormData(e.target));
+      fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: data })
+        .then(() => {
+          e.target.style.display = "none";
+          document.getElementById("relaySent").style.display = "block";
+        })
+        .catch(() => alert("Une erreur est survenue, réessayez ou contactez-nous."));
+    });
+  </script>
 </body>
 </html>
