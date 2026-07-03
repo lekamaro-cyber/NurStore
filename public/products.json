@@ -3,8 +3,8 @@
   "products": [
     {
       "id": "nur-tablet",
-      "name": "Tablette Nur",
-      "description": "Écran 10,9\" 2K · 128 Go · 8 Go RAM. Puissante, élégante, pensée pour durer.",
+      "name": "Afficheur Nur — Horaires de prière",
+      "description": "L'afficheur e-ink qui garde les horaires de prière toujours visibles chez vous : heure, prochaine prière, compte à rebours et calendrier hijri. Français & arabe.",
       "price": 29900
     }
   ]
