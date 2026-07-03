@@ -41,11 +41,22 @@ async function init() {
 let selectedQty = 1;
 function renderBuyPanel() {
   const p = CATALOG["nur-tablet"];
+  const housse = CATALOG["nur-housse"];
   if (!p) return;
+  const housseRow = housse ? `
+    <label class="option-row">
+      <input type="checkbox" id="withHousse" checked />
+      <span class="option-text">
+        <strong>Ajouter la housse de protection</strong>
+        <small>${housse.description}</small>
+      </span>
+      <span class="option-price">+ ${euro(housse.price)}</span>
+    </label>` : "";
   $("buyPanel").innerHTML = `
     <h2>${p.name}</h2>
     <div class="buy-price">${euro(p.price)} <small>TTC</small></div>
     <p class="buy-desc">${p.description}</p>
+    ${housseRow}
     <div class="qty">
       <label>Quantité</label>
       <div class="qty-control">
@@ -58,13 +69,17 @@ function renderBuyPanel() {
     <div class="buy-reassure">
       <span>Paiement sécurisé par carte bancaire</span>
       <span>Livraison en France</span>
-      <span>Garantie 2 ans</span>
+      <span>Horaires en français & arabe</span>
     </div>
   `;
   $("qtyMinus").onclick = () => { selectedQty = Math.max(1, selectedQty - 1); $("qtyValue").textContent = selectedQty; };
   $("qtyPlus").onclick = () => { selectedQty = Math.min(10, selectedQty + 1); $("qtyValue").textContent = selectedQty; };
   $("addToCart").onclick = () => {
     cart["nur-tablet"] = (cart["nur-tablet"] || 0) + selectedQty;
+    const wantsHousse = $("withHousse") && $("withHousse").checked;
+    if (wantsHousse && housse) {
+      cart["nur-housse"] = (cart["nur-housse"] || 0) + selectedQty;
+    }
     saveCart(cart); renderCart(); updateCount(); openDrawer();
   };
 }

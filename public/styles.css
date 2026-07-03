@@ -173,6 +173,16 @@ section { padding: 88px 24px; max-width: var(--max); margin: 0 auto; }
 .buy-price { font-size: 2.6rem; font-weight: 800; color: var(--gold); margin: 14px 0; }
 .buy-price small { font-size: 1rem; color: var(--muted); font-weight: 500; }
 .buy-desc { color: var(--muted); margin-bottom: 26px; }
+.option-row {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg-soft); border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px 16px; margin-bottom: 22px; cursor: pointer;
+}
+.option-row input { width: 18px; height: 18px; accent-color: var(--gold); flex-shrink: 0; cursor: pointer; }
+.option-text { display: flex; flex-direction: column; flex: 1; }
+.option-text strong { font-size: 0.95rem; font-weight: 600; }
+.option-text small { color: var(--muted); font-size: 0.82rem; }
+.option-price { color: var(--gold); font-weight: 700; white-space: nowrap; }
 .qty { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
 .qty label { color: var(--muted); font-size: 0.95rem; }
 .qty-control { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }

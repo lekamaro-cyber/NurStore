@@ -8,7 +8,8 @@ import type { Context, Config } from "@netlify/functions";
  * pour l'affichage). 29900 = 299,00 €.
  */
 const CATALOG: Record<string, { name: string; price: number }> = {
-  "nur-tablet": { name: "Afficheur Nur — Horaires de prière", price: 29900 },
+  "nur-tablet": { name: "Afficheur Nur — Horaires de prière", price: 19900 },
+  "nur-housse": { name: "Housse de protection Nur", price: 1000 },
 };
 
 const CURRENCY = "eur";

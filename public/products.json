@@ -5,7 +5,13 @@
       "id": "nur-tablet",
       "name": "Afficheur Nur — Horaires de prière",
       "description": "L'afficheur e-ink qui garde les horaires de prière toujours visibles chez vous : heure, prochaine prière, compte à rebours et calendrier hijri. Français & arabe.",
-      "price": 29900
+      "price": 19900
+    },
+    {
+      "id": "nur-housse",
+      "name": "Housse de protection Nur",
+      "description": "Housse assortie pour protéger votre afficheur Nur et le maintenir debout.",
+      "price": 1000
     }
   ]
 }
