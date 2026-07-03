@@ -30,6 +30,8 @@ img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; }
 section { padding: 88px 24px; max-width: var(--max); margin: 0 auto; }
+/* Décale l'ancre sous le menu fixe lors du défilement vers une section */
+section[id] { scroll-margin-top: 80px; }
 
 /* placeholders visuels */
 [data-placeholder] {
