@@ -88,6 +88,13 @@ section { padding: 88px 24px; max-width: var(--max); margin: 0 auto; }
 .lead { color: var(--muted); font-size: 1.1rem; margin: 22px 0 30px; max-width: 30rem; }
 .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
 .hero-note { margin-top: 22px; color: var(--muted); font-size: 0.85rem; }
+.hero-collab {
+  margin-top: 16px; display: inline-block;
+  color: var(--muted); font-size: 0.85rem;
+  border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px;
+}
+.hero-collab::before { content: "✦ "; color: var(--gold); }
+.hero-collab strong { color: var(--gold); font-weight: 600; }
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
