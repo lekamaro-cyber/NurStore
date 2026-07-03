@@ -72,6 +72,32 @@ export default async (req: Request, context: Context) => {
       locale: "fr",
       line_items,
       shipping_address_collection: { allowed_countries: [...SHIPPING_COUNTRIES] },
+      // Options de livraison proposées au client (montants en centimes).
+      // Pour changer un prix : modifie amount ci-dessous. 500 = 5,00 €.
+      shipping_options: [
+        {
+          shipping_rate_data: {
+            type: "fixed_amount",
+            fixed_amount: { amount: 500, currency: CURRENCY },
+            display_name: "Mondial Relay — Point relais",
+            delivery_estimate: {
+              minimum: { unit: "business_day", value: 2 },
+              maximum: { unit: "business_day", value: 4 },
+            },
+          },
+        },
+        {
+          shipping_rate_data: {
+            type: "fixed_amount",
+            fixed_amount: { amount: 800, currency: CURRENCY },
+            display_name: "Colissimo — Livraison à domicile",
+            delivery_estimate: {
+              minimum: { unit: "business_day", value: 2 },
+              maximum: { unit: "business_day", value: 3 },
+            },
+          },
+        },
+      ],
       success_url: `${origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/cancel.html`,
     });
