@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tablette Nur — La lumière au bout des doigts</title>
+  <meta name="description" content="Découvrez la tablette Nur : puissante, élégante et pensée pour durer. Commandez en ligne, livraison en France." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23f4b942'/></svg>" />
+</head>
+<body>
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <a href="#" class="brand" aria-label="Nur — accueil">
+      <span class="brand-dot"></span>
+      <span class="brand-name">NUR</span>
+    </a>
+    <nav class="nav">
+      <a href="#produit">Le produit</a>
+      <a href="#specs">Caractéristiques</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <button class="cart-btn" id="cartBtn" aria-label="Ouvrir le panier">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6 5 3H2"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="produit">
+    <div class="hero-text">
+      <p class="eyebrow">Nouvelle génération</p>
+      <h1>La tablette <span class="glow">Nur</span>.<br />La lumière au bout des doigts.</h1>
+      <p class="lead">Un écran éclatant, une puissance qui suit le rythme, une autonomie qui tient la journée. Conçue pour travailler, créer et se détendre — sans compromis.</p>
+      <div class="hero-cta">
+        <a href="#commander" class="btn btn-primary">Commander maintenant</a>
+        <a href="#video" class="btn btn-ghost">▶ Voir la vidéo</a>
+      </div>
+      <p class="hero-note">Livraison en France · Paiement sécurisé · Garantie 2 ans</p>
+    </div>
+    <div class="hero-visual">
+      <!-- PLACEHOLDER PHOTO : remplace le fond par ta photo produit -->
+      <div class="product-shot" data-placeholder="Photo produit principale">
+        <div class="shot-glow"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VIDEO ===== -->
+  <section class="video-section" id="video">
+    <div class="section-head">
+      <h2>Nur en mouvement</h2>
+      <p>Une minute pour tout comprendre.</p>
+    </div>
+    <!-- PLACEHOLDER VIDÉO : remplace ce bloc par ton <iframe> YouTube/Vimeo -->
+    <div class="video-frame" data-placeholder="Vidéo promo (1 min) — YouTube / Vimeo ici">
+      <button class="play-btn" aria-label="Lire la vidéo">▶</button>
+    </div>
+  </section>
+
+  <!-- ===== FEATURES ===== -->
+  <section class="features">
+    <article class="feature">
+      <div class="feature-icon">◐</div>
+      <h3>Écran lumineux</h3>
+      <p>Des couleurs justes et une luminosité qui reste lisible même en plein soleil.</p>
+    </article>
+    <article class="feature">
+      <div class="feature-icon">⚡</div>
+      <h3>Puissance fluide</h3>
+      <p>Applications, multitâche, jeux : tout répond instantanément, sans ralentir.</p>
+    </article>
+    <article class="feature">
+      <div class="feature-icon">🔋</div>
+      <h3>Autonomie longue</h3>
+      <p>Une journée entière d'utilisation, et une charge rapide quand il le faut.</p>
+    </article>
+    <article class="feature">
+      <div class="feature-icon">✦</div>
+      <h3>Design épuré</h3>
+      <p>Fine, légère, élégante. Un objet que l'on a plaisir à prendre en main.</p>
+    </article>
+  </section>
+
+  <!-- ===== GALLERY ===== -->
+  <section class="gallery">
+    <div class="gallery-item" data-placeholder="Photo 2"></div>
+    <div class="gallery-item" data-placeholder="Photo 3"></div>
+    <div class="gallery-item" data-placeholder="Photo 4"></div>
+  </section>
+
+  <!-- ===== SPECS ===== -->
+  <section class="specs" id="specs">
+    <div class="section-head">
+      <h2>Caractéristiques</h2>
+      <p>Les chiffres ci-dessous sont provisoires — remplace-les par les vraies specs.</p>
+    </div>
+    <div class="specs-grid">
+      <div class="spec"><span class="spec-label">Écran</span><span class="spec-value">10,9" · 2K</span></div>
+      <div class="spec"><span class="spec-label">Stockage</span><span class="spec-value">128 Go</span></div>
+      <div class="spec"><span class="spec-label">Mémoire</span><span class="spec-value">8 Go RAM</span></div>
+      <div class="spec"><span class="spec-label">Batterie</span><span class="spec-value">8000 mAh</span></div>
+      <div class="spec"><span class="spec-label">Caméra</span><span class="spec-value">13 Mpx</span></div>
+      <div class="spec"><span class="spec-label">Système</span><span class="spec-value">Android 14</span></div>
+    </div>
+  </section>
+
+  <!-- ===== BUY ===== -->
+  <section class="buy" id="commander">
+    <div class="buy-visual" data-placeholder="Photo produit (achat)"></div>
+    <div class="buy-panel" id="buyPanel">
+      <!-- injecté par main.js -->
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="faq" id="faq">
+    <div class="section-head"><h2>Questions fréquentes</h2></div>
+    <details><summary>Quels sont les délais de livraison ?</summary><p>À compléter — délais et transporteur.</p></details>
+    <details><summary>Quelle est la garantie ?</summary><p>À compléter — durée et conditions de garantie.</p></details>
+    <details><summary>Comment se passe le paiement ?</summary><p>Paiement sécurisé par carte bancaire via Stripe. Vos données ne transitent jamais par notre site.</p></details>
+    <details><summary>Puis-je retourner le produit ?</summary><p>À compléter — politique de retour.</p></details>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="footer-brand"><span class="brand-dot"></span> NUR</div>
+    <p>© <span id="year"></span> Nur Store. Tous droits réservés.</p>
+    <nav class="footer-nav">
+      <a href="#">Mentions légales</a>
+      <a href="#">CGV</a>
+      <a href="#">Contact</a>
+    </nav>
+  </footer>
+
+  <!-- ===== CART DRAWER ===== -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Panier">
+    <div class="drawer-head">
+      <h3>Votre panier</h3>
+      <button class="drawer-close" id="drawerClose" aria-label="Fermer">✕</button>
+    </div>
+    <div class="drawer-items" id="drawerItems"></div>
+    <div class="drawer-foot">
+      <div class="drawer-total"><span>Total</span><span id="drawerTotal">0,00 €</span></div>
+      <button class="btn btn-primary btn-block" id="checkoutBtn">Passer au paiement</button>
+      <p class="drawer-msg" id="drawerMsg"></p>
+    </div>
+  </aside>
+
+  <script src="main.js"></script>
+</body>
+</html>

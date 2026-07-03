@@ -1,0 +1,11 @@
+{
+  "name": "nur-store",
+  "version": "1.0.0",
+  "description": "Boutique en ligne de la tablette Nur",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@netlify/functions": "^2.8.2",
+    "stripe": "^17.5.0"
+  }
+}

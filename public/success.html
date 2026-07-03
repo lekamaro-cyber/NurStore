@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Merci pour votre commande — Nur</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23f4b942'/></svg>" />
+  <style>
+    .status { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; }
+    .status-card { max-width: 480px; }
+    .status-mark { width: 84px; height: 84px; border-radius: 50%; background: rgba(244,185,66,0.14); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 2.4rem; margin: 0 auto 24px; }
+  </style>
+</head>
+<body>
+  <div class="status">
+    <div class="status-card">
+      <div class="status-mark">✓</div>
+      <h1>Merci pour votre commande !</h1>
+      <p class="lead" style="margin: 18px auto 30px;">Votre paiement a bien été reçu. Vous allez recevoir un e-mail de confirmation. Nous préparons votre tablette Nur.</p>
+      <a href="/" class="btn btn-primary">Retour à la boutique</a>
+    </div>
+  </div>
+  <script>localStorage.removeItem("nur_cart");</script>
+</body>
+</html>

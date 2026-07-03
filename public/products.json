@@ -1,0 +1,11 @@
+{
+  "currency": "eur",
+  "products": [
+    {
+      "id": "nur-tablet",
+      "name": "Tablette Nur",
+      "description": "Écran 10,9\" 2K · 128 Go · 8 Go RAM. Puissante, élégante, pensée pour durer.",
+      "price": 29900
+    }
+  ]
+}
