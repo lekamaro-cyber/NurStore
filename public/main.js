@@ -100,9 +100,10 @@ function renderCart() {
   } else {
     items.innerHTML = entries.map(([id, qty]) => {
       const p = CATALOG[id];
+      const thumbStyle = p.image ? ` style="background-image:url('${p.image}')"` : "";
       return `
         <div class="cart-line">
-          <div class="cart-line-thumb"></div>
+          <div class="cart-line-thumb"${thumbStyle}></div>
           <div class="cart-line-info">
             <div class="cart-line-name">${p.name}</div>
             <div class="cart-line-price">${euro(p.price)}</div>
