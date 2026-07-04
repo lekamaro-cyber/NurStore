@@ -84,6 +84,34 @@ seulement quand tout est prêt.
 
 ---
 
+## 📧 Recevoir chaque commande par e-mail (complet, envoyé par le site)
+
+À chaque paiement, le site t'envoie un e-mail récapitulatif complet (articles,
+montants, livraison, adresse, téléphone). Si le client a choisi Mondial Relay,
+un second e-mail arrive avec son point relais.
+
+Mise en place (une fois) :
+
+1. **Resend** (service d'envoi d'e-mails, gratuit jusqu'à 3 000/mois) :
+   crée un compte sur https://resend.com avec TON adresse e-mail, puis
+   **API Keys → Create API key** et copie la clé (`re_...`).
+2. **Webhook Stripe** : dashboard Stripe → **Développeurs → Webhooks →
+   Ajouter un endpoint** → URL : `https://nur-store.com/api/stripe-webhook`
+   (ou `https://nur-store.netlify.app/api/stripe-webhook`) → événement :
+   `checkout.session.completed` → crée, puis copie le **secret de signature**
+   (`whsec_...`).
+3. **Variables d'environnement Netlify** (Site configuration → Environment
+   variables) :
+   - `RESEND_API_KEY` = ta clé Resend (`re_...`)
+   - `ORDER_NOTIFY_EMAIL` = l'adresse qui reçoit les commandes (la même que
+     ton compte Resend tant que tu n'as pas vérifié de domaine chez eux)
+   - `STRIPE_WEBHOOK_SECRET` = le secret `whsec_...`
+4. Redéploie le site.
+
+> Note : tant que tu n'as pas ajouté ton propre domaine dans Resend,
+> l'expéditeur est `onboarding@resend.dev` et Resend ne livre qu'à l'adresse
+> du compte Resend — c'est exactement notre usage (notification à toi-même).
+
 ## 🌐 Brancher le domaine nur-store.com (OVH → Netlify)
 
 1. Dans **Netlify** → ton site → **Domain management → Add a domain** → saisis

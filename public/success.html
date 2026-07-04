@@ -41,10 +41,8 @@
           <a href="https://www.mondialrelay.fr/trouver-le-point-relais-le-plus-proche-de-chez-moi/" target="_blank" rel="noopener">le site Mondial Relay</a>,
           puis indiquez-le ci-dessous.
         </p>
-        <form name="point-relais" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="relayForm">
-          <input type="hidden" name="form-name" value="point-relais" />
+        <form id="relayForm">
           <input type="hidden" name="session_id" id="relaySession" />
-          <p style="display:none"><input name="bot-field" /></p>
           <label for="relayEmail">Votre e-mail (celui de la commande)</label>
           <input type="email" name="email" id="relayEmail" required />
           <label for="relayChoice">Point relais choisi (nom + adresse ou n° du relais)</label>
@@ -76,12 +74,21 @@
         .catch(() => {});
     }
 
-    // Envoi du formulaire vers Netlify Forms sans quitter la page.
+    // Envoie le point relais au site, qui le transmet par e-mail au marchand.
     document.getElementById("relayForm").addEventListener("submit", (e) => {
       e.preventDefault();
-      const data = new URLSearchParams(new FormData(e.target));
-      fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: data })
-        .then(() => {
+      const payload = {
+        session_id: document.getElementById("relaySession").value,
+        email: document.getElementById("relayEmail").value,
+        relais: document.getElementById("relayChoice").value,
+      };
+      fetch("/api/relay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+        .then((r) => {
+          if (!r.ok) throw new Error();
           e.target.style.display = "none";
           document.getElementById("relaySent").style.display = "block";
         })

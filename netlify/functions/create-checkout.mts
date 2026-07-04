@@ -71,6 +71,7 @@ export default async (req: Request, context: Context) => {
       mode: "payment",
       locale: "fr",
       line_items,
+      phone_number_collection: { enabled: true },
       shipping_address_collection: { allowed_countries: [...SHIPPING_COUNTRIES] },
       // Options de livraison proposées au client (montants en centimes).
       // Pour changer un prix : modifie amount ci-dessous. 500 = 5,00 €.
