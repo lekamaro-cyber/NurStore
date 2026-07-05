@@ -37,19 +37,26 @@
         <h2>📍 Dernière étape : votre point relais</h2>
         <p>
           Vous avez choisi la livraison <strong>Mondial Relay</strong>.
-          Trouvez le point relais le plus pratique pour vous sur
-          <a href="https://www.mondialrelay.fr/trouver-le-point-relais-le-plus-proche-de-chez-moi/" target="_blank" rel="noopener">le site Mondial Relay</a>,
-          puis indiquez-le ci-dessous.
+          Le plus simple : nous expédions au point relais
+          <strong>le plus proche de votre adresse de livraison</strong>.
         </p>
-        <form id="relayForm">
-          <input type="hidden" name="session_id" id="relaySession" />
-          <label for="relayEmail">Votre e-mail (celui de la commande)</label>
-          <input type="email" name="email" id="relayEmail" required />
-          <label for="relayChoice">Point relais choisi (nom + adresse ou n° du relais)</label>
-          <textarea name="relais" id="relayChoice" placeholder="Ex. : Tabac de la Gare — 12 rue des Lilas, 75011 Paris (n° 45210)" required></textarea>
-          <button type="submit" class="btn btn-primary btn-block">Confirmer mon point relais</button>
+        <input type="hidden" id="relaySession" />
+        <input type="hidden" id="relayEmail" />
+        <button type="button" class="btn btn-primary btn-block" id="relayNearest">✓ Le relais le plus proche de chez moi</button>
+        <p style="text-align:center; margin-top:12px;">
+          <a href="#" id="relayOtherLink" style="font-size:0.9rem;">Je préfère choisir un relais précis</a>
+        </p>
+        <form id="relayForm" style="display:none;">
+          <p>
+            Trouvez votre relais sur
+            <a href="https://www.mondialrelay.fr/trouver-le-point-relais-le-plus-proche-de-chez-moi/" target="_blank" rel="noopener">le site Mondial Relay</a>,
+            puis indiquez-le :
+          </p>
+          <label for="relayChoice">Point relais souhaité (nom + ville, ou n° du relais)</label>
+          <textarea id="relayChoice" placeholder="Ex. : Tabac de la Gare, Paris 11e (n° 45210)" required></textarea>
+          <button type="submit" class="btn btn-primary btn-block">Confirmer ce point relais</button>
         </form>
-        <p class="relay-sent" id="relaySent">✓ Point relais bien reçu, merci ! Votre colis y sera expédié.</p>
+        <p class="relay-sent" id="relaySent">✓ C'est noté ! Votre colis sera expédié vers ce point relais.</p>
       </div>
 
       <a href="/" class="btn btn-ghost" style="margin-top: 28px;">Retour à la boutique</a>
@@ -74,25 +81,52 @@
         .catch(() => {});
     }
 
-    // Envoie le point relais au site, qui le transmet par e-mail au marchand.
-    document.getElementById("relayForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const payload = {
-        session_id: document.getElementById("relaySession").value,
-        email: document.getElementById("relayEmail").value,
-        relais: document.getElementById("relayChoice").value,
-      };
+    // Envoie le choix du relais au site, qui le transmet par e-mail au marchand.
+    function sendRelay(relais, onDone) {
       fetch("/api/relay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          session_id: document.getElementById("relaySession").value,
+          email: document.getElementById("relayEmail").value,
+          relais,
+        }),
       })
         .then((r) => {
           if (!r.ok) throw new Error();
-          e.target.style.display = "none";
+          onDone();
           document.getElementById("relaySent").style.display = "block";
         })
         .catch(() => alert("Une erreur est survenue, réessayez ou contactez-nous."));
+    }
+
+    const nearestBtn = document.getElementById("relayNearest");
+    const otherLink = document.getElementById("relayOtherLink");
+    const relayForm = document.getElementById("relayForm");
+
+    // Un seul geste : le relais le plus proche de l'adresse de livraison.
+    nearestBtn.addEventListener("click", () => {
+      nearestBtn.disabled = true;
+      sendRelay("Le point relais le plus proche de l'adresse de livraison", () => {
+        nearestBtn.style.display = "none";
+        otherLink.parentElement.style.display = "none";
+        relayForm.style.display = "none";
+      });
+    });
+
+    // Option avancée : choisir un relais précis.
+    otherLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      relayForm.style.display = "block";
+      otherLink.parentElement.style.display = "none";
+    });
+
+    relayForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      sendRelay(document.getElementById("relayChoice").value, () => {
+        relayForm.style.display = "none";
+        nearestBtn.style.display = "none";
+      });
     });
   </script>
 </body>
