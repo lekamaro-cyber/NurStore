@@ -8,7 +8,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23f4b942'/></svg>" />
   <style>
     .status { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; }
-    .status-card { max-width: 520px; }
+    .status-card { max-width: 640px; width: 100%; }
     .status-mark { width: 84px; height: 84px; border-radius: 50%; background: rgba(169, 117, 42, 0.14); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 2.4rem; margin: 0 auto 24px; }
     /* Bloc point relais (affiché uniquement si livraison Mondial Relay) */
     .relay-block { display: none; margin-top: 34px; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
@@ -16,13 +16,21 @@
     .relay-block p { color: var(--muted); font-size: 0.95rem; margin-bottom: 14px; }
     .relay-block a { color: var(--gold); font-weight: 600; text-decoration: underline; }
     .relay-block label { display: block; font-weight: 600; font-size: 0.9rem; margin: 14px 0 6px; }
-    .relay-block input, .relay-block textarea {
+    .relay-block textarea {
       width: 100%; padding: 11px 14px; border: 1px solid var(--line); border-radius: 10px;
       background: var(--bg-soft); color: var(--text); font-family: var(--font); font-size: 0.95rem;
+      min-height: 84px; resize: vertical;
     }
-    .relay-block textarea { min-height: 84px; resize: vertical; }
-    .relay-block button { margin-top: 18px; }
+    /* Widget carte Mondial Relay */
+    #relayWidget { margin: 14px 0; border-radius: 12px; overflow: hidden; background: #fff; }
+    #relayWidget:empty { display: none; }
+    .relay-chosen {
+      display: none; margin-top: 14px; padding: 14px 16px;
+      background: var(--bg-soft); border: 1px solid var(--gold); border-radius: 12px;
+    }
+    .relay-chosen strong { display: block; margin-bottom: 4px; }
     .relay-sent { display: none; margin-top: 18px; color: var(--gold); font-weight: 600; }
+    .relay-loading { color: var(--muted); font-size: 0.9rem; }
   </style>
 </head>
 <body>
@@ -34,18 +42,25 @@
 
       <!-- Choix du point relais — affiché uniquement pour une livraison Mondial Relay -->
       <div class="relay-block" id="relayBlock">
-        <h2>📍 Dernière étape : votre point relais</h2>
-        <p>
-          Vous avez choisi la livraison <strong>Mondial Relay</strong>.
-          Le plus simple : nous expédions au point relais
-          <strong>le plus proche de votre adresse de livraison</strong>.
-        </p>
+        <h2>📍 Dernière étape : choisissez votre point relais</h2>
+        <p id="relayIntro">Touchez le point relais où vous souhaitez retirer votre colis.</p>
+        <p class="relay-loading" id="relayLoading">Chargement de la carte des points relais…</p>
+
         <input type="hidden" id="relaySession" />
         <input type="hidden" id="relayEmail" />
-        <button type="button" class="btn btn-primary btn-block" id="relayNearest">✓ Le relais le plus proche de chez moi</button>
-        <p style="text-align:center; margin-top:12px;">
-          <a href="#" id="relayOtherLink" style="font-size:0.9rem;">Je préfère choisir un relais précis</a>
-        </p>
+        <input type="hidden" id="relayTarget" />
+
+        <!-- Carte + liste officielle Mondial Relay -->
+        <div id="relayWidget"></div>
+
+        <!-- Relais sélectionné -->
+        <div class="relay-chosen" id="relayChosen">
+          <strong>Votre choix :</strong>
+          <span id="relayChosenText"></span>
+          <button type="button" class="btn btn-primary btn-block" id="relayConfirm" style="margin-top: 14px;">Confirmer ce point relais</button>
+        </div>
+
+        <!-- Plan B : saisie manuelle si la carte ne charge pas -->
         <form id="relayForm" style="display:none;">
           <p>
             Trouvez votre relais sur
@@ -54,8 +69,12 @@
           </p>
           <label for="relayChoice">Point relais souhaité (nom + ville, ou n° du relais)</label>
           <textarea id="relayChoice" placeholder="Ex. : Tabac de la Gare, Paris 11e (n° 45210)" required></textarea>
-          <button type="submit" class="btn btn-primary btn-block">Confirmer ce point relais</button>
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top: 14px;">Confirmer ce point relais</button>
         </form>
+
+        <p style="text-align:center; margin-top: 14px;">
+          <a href="#" id="relaySkip" style="font-size: 0.9rem;">Plus tard — expédiez au relais le plus proche de chez moi</a>
+        </p>
         <p class="relay-sent" id="relaySent">✓ C'est noté ! Votre colis sera expédié vers ce point relais.</p>
       </div>
 
@@ -66,67 +85,116 @@
   <script>
     localStorage.removeItem("nur_cart");
 
-    // Si la commande est en Mondial Relay, on propose le choix du point relais.
-    const sid = new URLSearchParams(location.search).get("session_id");
-    if (sid) {
-      fetch("/api/session?session_id=" + encodeURIComponent(sid))
-        .then((r) => (r.ok ? r.json() : null))
-        .then((d) => {
-          if (d && d.shipping && d.shipping.toLowerCase().includes("relay")) {
-            document.getElementById("relaySession").value = sid;
-            if (d.email) document.getElementById("relayEmail").value = d.email;
-            document.getElementById("relayBlock").style.display = "block";
-          }
-        })
-        .catch(() => {});
-    }
+    var $id = function (i) { return document.getElementById(i); };
+    var selectedRelay = "";
 
-    // Envoie le choix du relais au site, qui le transmet par e-mail au marchand.
-    function sendRelay(relais, onDone) {
+    // Code enseigne Mondial Relay du widget.
+    // BDTEST13 = code de test officiel (liste des VRAIS relais).
+    // À remplacer par ton code enseigne quand ton compte Mondial Relay pro est ouvert.
+    var MR_BRAND = "BDTEST13";
+
+    function sendRelay(relais, after) {
       fetch("/api/relay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          session_id: document.getElementById("relaySession").value,
-          email: document.getElementById("relayEmail").value,
-          relais,
+          session_id: $id("relaySession").value,
+          email: $id("relayEmail").value,
+          relais: relais,
         }),
       })
-        .then((r) => {
+        .then(function (r) {
           if (!r.ok) throw new Error();
-          onDone();
-          document.getElementById("relaySent").style.display = "block";
+          after();
+          $id("relaySent").style.display = "block";
         })
-        .catch(() => alert("Une erreur est survenue, réessayez ou contactez-nous."));
+        .catch(function () { alert("Une erreur est survenue, réessayez ou contactez-nous."); });
     }
 
-    const nearestBtn = document.getElementById("relayNearest");
-    const otherLink = document.getElementById("relayOtherLink");
-    const relayForm = document.getElementById("relayForm");
+    function hideChoosers() {
+      $id("relayWidget").style.display = "none";
+      $id("relayChosen").style.display = "none";
+      $id("relayForm").style.display = "none";
+      $id("relayIntro").style.display = "none";
+      $id("relaySkip").parentElement.style.display = "none";
+    }
 
-    // Un seul geste : le relais le plus proche de l'adresse de livraison.
-    nearestBtn.addEventListener("click", () => {
-      nearestBtn.disabled = true;
-      sendRelay("Le point relais le plus proche de l'adresse de livraison", () => {
-        nearestBtn.style.display = "none";
-        otherLink.parentElement.style.display = "none";
-        relayForm.style.display = "none";
+    function loadScript(src) {
+      return new Promise(function (res, rej) {
+        var s = document.createElement("script");
+        s.src = src; s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
       });
+    }
+    function loadCss(href) {
+      var l = document.createElement("link");
+      l.rel = "stylesheet"; l.href = href;
+      document.head.appendChild(l);
+    }
+
+    // Charge le widget officiel Mondial Relay (jQuery + Leaflet + plugin).
+    function initWidget(postcode, country) {
+      loadCss("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
+      loadScript("https://code.jquery.com/jquery-3.7.1.min.js")
+        .then(function () { return loadScript("https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"); })
+        .then(function () { return loadScript("https://widget.mondialrelay.com/parcelshop-picker/jquery.plugin.mondialrelay.parcelshoppicker.min.js"); })
+        .then(function () {
+          $id("relayLoading").style.display = "none";
+          window.jQuery("#relayWidget").MR_ParcelShopPicker({
+            Target: "#relayTarget",
+            Brand: MR_BRAND,
+            Country: country || "FR",
+            PostCode: postcode || "",
+            ColLivMod: "24R",
+            NbResults: "7",
+            Responsive: true,
+            ShowResultsOnMap: true,
+            OnParcelShopSelected: function (d) {
+              selectedRelay =
+                (d.Nom || "") + " — " + (d.Adresse1 || "") + ", " +
+                (d.CP || "") + " " + (d.Ville || "") + " (n° " + (d.ID || "") + ")";
+              $id("relayChosenText").textContent = selectedRelay;
+              $id("relayChosen").style.display = "block";
+              $id("relayChosen").scrollIntoView({ behavior: "smooth", block: "nearest" });
+            },
+          });
+        })
+        .catch(function () {
+          // La carte n'a pas chargé : bascule sur la saisie manuelle.
+          $id("relayLoading").style.display = "none";
+          $id("relayForm").style.display = "block";
+        });
+    }
+
+    // Détecte une commande Mondial Relay et lance le widget.
+    var sid = new URLSearchParams(location.search).get("session_id");
+    if (sid) {
+      fetch("/api/session?session_id=" + encodeURIComponent(sid))
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) {
+          if (d && d.shipping && d.shipping.toLowerCase().indexOf("relay") !== -1) {
+            $id("relaySession").value = sid;
+            if (d.email) $id("relayEmail").value = d.email;
+            $id("relayBlock").style.display = "block";
+            initWidget(d.postal_code, d.country);
+          }
+        })
+        .catch(function () {});
+    }
+
+    $id("relayConfirm").addEventListener("click", function () {
+      if (!selectedRelay) return;
+      sendRelay(selectedRelay, hideChoosers);
     });
 
-    // Option avancée : choisir un relais précis.
-    otherLink.addEventListener("click", (e) => {
+    $id("relayForm").addEventListener("submit", function (e) {
       e.preventDefault();
-      relayForm.style.display = "block";
-      otherLink.parentElement.style.display = "none";
+      sendRelay($id("relayChoice").value, hideChoosers);
     });
 
-    relayForm.addEventListener("submit", (e) => {
+    $id("relaySkip").addEventListener("click", function (e) {
       e.preventDefault();
-      sendRelay(document.getElementById("relayChoice").value, () => {
-        relayForm.style.display = "none";
-        nearestBtn.style.display = "none";
-      });
+      sendRelay("Le point relais le plus proche de l'adresse de livraison", hideChoosers);
     });
   </script>
 </body>

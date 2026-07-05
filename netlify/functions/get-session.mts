@@ -24,9 +24,17 @@ export default async (req: Request) => {
     });
     const rate = session.shipping_cost?.shipping_rate;
     const shipping = typeof rate === "object" && rate ? rate.display_name : null;
+    // Adresse de livraison (l'exposition varie selon la version d'API Stripe).
+    const shippingDetails: any =
+      (session as any).collected_information?.shipping_details ??
+      (session as any).shipping_details ??
+      null;
+    const addr = shippingDetails?.address ?? session.customer_details?.address ?? null;
     return Response.json({
       shipping,
       email: session.customer_details?.email ?? null,
+      postal_code: addr?.postal_code ?? null,
+      country: addr?.country ?? "FR",
     });
   } catch (err) {
     console.error("get-session error", err);
