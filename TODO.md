@@ -15,6 +15,24 @@
 - [ ] **Code enseigne Mondial Relay** : quand compte MR pro ouvert, remplacer
       `MR_BRAND = "BDTEST13"` dans `public/success.html` par le vrai code enseigne.
 
+## 🎬 Phase 1bis (avant ouverture des ventes) — Contenu explicatif
+
+> Décision : créer du contenu (unboxing, explications) avant de passer Stripe en live.
+
+Idées de vidéos (Shorts YouTube + Reels Instagram, formats verts 30-60 s) :
+- [ ] **Unboxing** : ce qu'il y a dans la boîte (tablette, housse, câble…).
+- [ ] **Premier démarrage** : le wizard en 6 étapes (langue → ville → méthode → muezzin) — montre que c'est simple, ~2 min.
+- [ ] **L'adhan retentit** : l'alerte plein écran + les 9 muezzins au choix.
+- [ ] **Lire le Coran** : navigation, traduction, tafsir, audio verset par verset.
+- [ ] **Le mode veille** : les horaires restent affichés même en veille (argument e-ink fort).
+- [ ] **Pourquoi e-ink ?** : comparaison avec un téléphone (yeux, distraction, batterie).
+- [ ] **Mode Ramadan** : Imsak/Iftar + compte à rebours.
+- [ ] FAQ filmées : « faut-il un abonnement ? », « ça marche dans ma ville ? »
+
+Côté site quand les vidéos existent :
+- [ ] Ajouter une section « Découvrir NUR » (galerie de vidéos) sous la vidéo principale.
+- [ ] Intégrer la vidéo 30 s.
+
 ## 🌍 Phase 2 — La société UAE prend le relais (international)
 
 > Décision actée : une fois les 40 unités vendues par l'auto-entreprise française,
