@@ -229,8 +229,9 @@ section[id] { scroll-margin-top: 80px; }
   max-width: var(--max); margin: 0 auto; color: var(--muted); font-size: 0.9rem;
 }
 .footer-brand { display: flex; align-items: center; gap: 8px; font-weight: 800; letter-spacing: 0.15em; color: var(--text); }
-.footer-nav { display: flex; gap: 22px; }
+.footer-nav { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
 .footer-nav a:hover { color: var(--gold); }
+.footer-social { display: inline-flex; align-items: center; gap: 6px; }
 
 /* ===== CART DRAWER ===== */
 .drawer-overlay {
