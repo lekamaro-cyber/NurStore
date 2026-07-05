@@ -5,8 +5,9 @@
 - [ ] **Stripe live** : activer le compte (IBAN, infos AE) → remplacer `STRIPE_SECRET_KEY`
       (`sk_test_` → `sk_live_`) dans Netlify + recréer le webhook **en mode live**
       (nouvelle valeur `STRIPE_WEBHOOK_SECRET`) → commande réelle de validation.
-- [ ] **Jour du lancement** : passer `PRELAUNCH = false` dans `public/main.js`
-      et supprimer le bandeau `.prelaunch-banner` dans `public/index.html`.
+- [ ] **Jour du lancement** : supprimer le bandeau `.prelaunch-banner` dans
+      `public/index.html`. (Le checkout reste actif pendant la pré-ouverture :
+      mode test Stripe = seules les cartes de test fonctionnent.)
 - [ ] **Médiateur consommation** : adhésion en cours — dès validation, publier le nom
       et les coordonnées dans `public/cgv.html` (section 8, remplacer la phrase provisoire).
 - [ ] **INPI** : ajouter l'activité de vente de marchandises à l'auto-entreprise
