@@ -1,5 +1,9 @@
 /* ===== NUR STORE — logique panier & checkout ===== */
 
+// PRÉ-LANCEMENT : passe à false pour ouvrir les commandes (et retire le
+// bandeau .prelaunch-banner dans index.html).
+const PRELAUNCH = true;
+
 const CART_KEY = "nur_cart";
 let CATALOG = {}; // { id: {id, name, price, description} }
 
@@ -143,6 +147,10 @@ $("checkoutBtn").onclick = async () => {
   const msg = $("drawerMsg");
   const items = Object.entries(cart).map(([id, quantity]) => ({ id, quantity }));
   if (!items.length) return;
+  if (PRELAUNCH) {
+    msg.textContent = "Les commandes ouvrent très bientôt — suivez-nous sur Instagram pour être prévenu !";
+    return;
+  }
   btn.disabled = true;
   msg.textContent = "Redirection vers le paiement…";
   try {

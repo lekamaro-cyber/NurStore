@@ -47,6 +47,17 @@ section[id] { scroll-margin-top: 80px; }
   color: #93825f; font-size: 0.85rem; text-align: center; padding: 12px;
 }
 
+/* ===== BANDEAU PRÉ-LANCEMENT (à retirer à l'ouverture) ===== */
+.prelaunch-banner {
+  background: var(--gold);
+  color: #fff;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 9px 16px;
+}
+.prelaunch-banner a { color: #fff; text-decoration: underline; }
+
 /* ===== HEADER ===== */
 .site-header {
   position: sticky; top: 0; z-index: 50;
