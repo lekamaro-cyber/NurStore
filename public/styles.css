@@ -57,6 +57,8 @@ section[id] { scroll-margin-top: 80px; }
   border-bottom: 1px solid var(--line);
 }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: 0.15em; }
+.brand-logo { height: 44px; width: auto; display: block; }
+.brand-logo-lg { height: 56px; }
 .brand-dot {
   width: 14px; height: 14px; border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, var(--gold-soft), var(--gold));
