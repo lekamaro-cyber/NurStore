@@ -211,6 +211,7 @@ section[id] { scroll-margin-top: 80px; }
   padding: 14px 16px; margin-bottom: 22px; cursor: pointer;
 }
 .option-row input { width: 18px; height: 18px; accent-color: var(--gold); flex-shrink: 0; cursor: pointer; }
+.option-thumb { width: 46px; height: 46px; border-radius: 8px; object-fit: cover; object-position: 50% 78%; flex-shrink: 0; border: 1px solid var(--line); }
 .option-text { display: flex; flex-direction: column; flex: 1; }
 .option-text strong { font-size: 0.95rem; font-weight: 600; }
 .option-text small { color: var(--muted); font-size: 0.82rem; }

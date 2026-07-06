@@ -69,6 +69,7 @@ function renderBuyPanel() {
   const housseRow = housse ? `
     <label class="option-row">
       <input type="checkbox" id="withHousse" checked />
+      ${housse.image ? `<img class="option-thumb" src="${housse.image}" alt="Housse de protection NUR" />` : ""}
       <span class="option-text">
         <strong>Ajouter la housse de protection</strong>
         <small>${housse.description}</small>

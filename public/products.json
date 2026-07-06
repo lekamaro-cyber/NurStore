@@ -10,9 +10,10 @@
     },
     {
       "id": "nur-housse",
-      "name": "Housse de protection Nur",
-      "description": "Housse assortie pour protéger votre afficheur Nur et le maintenir debout.",
-      "price": 1000
+      "name": "Housse de protection NUR",
+      "description": "Housse origami : protège la tablette et se plie en support pour la poser debout.",
+      "price": 1000,
+      "image": "assets/housse-1.webp"
     }
   ]
 }
