@@ -11,8 +11,9 @@ import { getStore } from "@netlify/blobs";
 
 export const STOCK_TOTAL = Number(Netlify.env.get("STOCK_TOTAL") ?? "38");
 
+// Clé standard (sk_live_) ou restreinte (rk_live_) : les deux comptent comme "live".
 const counterKey = () =>
-  (Netlify.env.get("STRIPE_SECRET_KEY") ?? "").startsWith("sk_live")
+  /^(sk|rk)_live/.test(Netlify.env.get("STRIPE_SECRET_KEY") ?? "")
     ? "sold_live"
     : "sold_test";
 
