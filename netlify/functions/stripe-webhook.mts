@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import type { Config } from "@netlify/functions";
+import { STOCK_TOTAL, addSold } from "../lib/stock.mts";
 
 /**
  * Webhook Stripe : à chaque paiement réussi (checkout.session.completed),
@@ -88,6 +89,21 @@ export default async (req: Request) => {
     .map((li) => `  • ${li.quantity} × ${li.description} — ${euro(li.amount_total)}`)
     .join("\n");
 
+  // Met à jour le compteur de stock (tablettes uniquement).
+  const tabletQty = lineItems.data
+    .filter((li) => (li.description || "").includes("Tablette NUR"))
+    .reduce((n, li) => n + (li.quantity ?? 0), 0);
+  let stockLine = "";
+  if (tabletQty > 0) {
+    try {
+      const sold = await addSold(tabletQty);
+      stockLine = `STOCK : ${Math.max(0, STOCK_TOTAL - sold)} tablette(s) restante(s) sur ${STOCK_TOTAL}`;
+    } catch (err) {
+      console.error("Mise à jour du stock impossible", err);
+      stockLine = "STOCK : mise à jour impossible, vérifier manuellement.";
+    }
+  }
+
   const text = [
     `NOUVELLE COMMANDE NUR 🎉`,
     ``,
@@ -108,6 +124,8 @@ export default async (req: Request) => {
     isRelay
       ? `⚠️ POINT RELAIS : le client choisit son relais sur la page de confirmation — un second e-mail arrivera avec son choix. S'il ne vient pas, relancez le client.`
       : `Livraison à domicile : l'adresse ci-dessus suffit pour l'étiquette.`,
+    ``,
+    stockLine,
     ``,
     `Référence Stripe : ${session.id}`,
     `Détail : https://dashboard.stripe.com/payments/${session.payment_intent}`,

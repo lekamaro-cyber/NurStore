@@ -8,6 +8,11 @@
 - [ ] **Jour du lancement** : supprimer le bandeau `.prelaunch-banner` dans
       `public/index.html`. (Le checkout reste actif pendant la pré-ouverture :
       mode test Stripe = seules les cartes de test fonctionnent.)
+- [x] **Stock limité (38)** : compteur Netlify Blobs alimenté par le webhook,
+      checkout bloqué à épuisement, site en « Rupture de stock » automatique,
+      badge « Plus que X » sous 10 restantes. Total ajustable via la variable
+      d'environnement `STOCK_TOTAL` (défaut 38). Les compteurs test et live
+      sont séparés : les commandes de test n'entament pas le stock réel.
 - [ ] **Médiateur consommation** : adhésion en cours — dès validation, publier le nom
       et les coordonnées dans `public/cgv.html` (section 8, remplacer la phrase provisoire).
 - [ ] **INPI** : ajouter l'activité de vente de marchandises à l'auto-entreprise

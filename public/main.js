@@ -2,6 +2,7 @@
 
 const CART_KEY = "nur_cart";
 let CATALOG = {}; // { id: {id, name, price, description} }
+let STOCK = { remaining: Infinity }; // état du stock (rempli par /api/stock)
 
 const euro = (cents) =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
@@ -31,6 +32,12 @@ async function init() {
   } catch (e) {
     console.error("Catalogue introuvable", e);
   }
+  // État du stock (si l'appel échoue, on n'empêche pas l'affichage :
+  // le contrôle strict est fait côté serveur au moment du paiement).
+  try {
+    const res = await fetch("/api/stock");
+    if (res.ok) STOCK = await res.json();
+  } catch (e) { /* silencieux */ }
   renderBuyPanel();
   renderCart();
   updateCount();
@@ -43,6 +50,22 @@ function renderBuyPanel() {
   const p = CATALOG["nur-tablet"];
   const housse = CATALOG["nur-housse"];
   if (!p) return;
+  // Rupture de stock : panneau dédié, pas d'achat possible.
+  if (STOCK.remaining <= 0) {
+    $("buyPanel").innerHTML = `
+      <h2>${p.name}</h2>
+      <div class="buy-price">${euro(p.price)} <small>TTC</small></div>
+      <p class="buy-desc">${p.description}</p>
+      <div class="soldout">😔 Rupture de stock — la première série est épuisée.</div>
+      <p class="soldout-note">Suivez-nous sur
+        <a href="https://instagram.com/nur_tab_official" target="_blank" rel="noopener">Instagram</a>
+        pour être prévenu du réassort.</p>
+    `;
+    return;
+  }
+  const stockBadge = (STOCK.remaining <= 10)
+    ? `<div class="stock-badge">🔥 Plus que ${STOCK.remaining} exemplaire${STOCK.remaining > 1 ? "s" : ""} disponible${STOCK.remaining > 1 ? "s" : ""}</div>`
+    : "";
   const housseRow = housse ? `
     <label class="option-row">
       <input type="checkbox" id="withHousse" checked />
@@ -55,6 +78,7 @@ function renderBuyPanel() {
   $("buyPanel").innerHTML = `
     <h2>${p.name}</h2>
     <div class="buy-price">${euro(p.price)} <small>TTC</small></div>
+    ${stockBadge}
     <p class="buy-desc">${p.description}</p>
     ${housseRow}
     <div class="qty">

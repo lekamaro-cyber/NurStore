@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import type { Context, Config } from "@netlify/functions";
+import { STOCK_TOTAL, getSold } from "../lib/stock.mts";
 
 /**
  * Catalogue AUTORITATIF — les prix sont fixés ICI, côté serveur, en centimes (EUR).
@@ -61,6 +62,32 @@ export default async (req: Request, context: Context) => {
         product_data: { name: product.name },
       },
     });
+  }
+
+  // Contrôle du stock de tablettes (première série limitée).
+  const tabletQty = items
+    .filter((i) => i.id === "nur-tablet")
+    .reduce((n, i) => n + Math.max(1, Math.min(10, Math.floor(Number(i.quantity) || 1))), 0);
+  if (tabletQty > 0) {
+    try {
+      const sold = await getSold();
+      const remaining = STOCK_TOTAL - sold;
+      if (remaining <= 0) {
+        return Response.json(
+          { error: "Rupture de stock — la première série est épuisée. Suivez-nous sur Instagram pour le réassort !" },
+          { status: 409 }
+        );
+      }
+      if (tabletQty > remaining) {
+        return Response.json(
+          { error: `Il ne reste que ${remaining} exemplaire${remaining > 1 ? "s" : ""} disponible${remaining > 1 ? "s" : ""}.` },
+          { status: 409 }
+        );
+      }
+    } catch (err) {
+      console.error("Lecture du stock impossible", err);
+      // On laisse passer plutôt que de bloquer la vente sur une erreur technique.
+    }
   }
 
   const stripe = new Stripe(secret);
