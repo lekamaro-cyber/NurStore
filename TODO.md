@@ -2,12 +2,13 @@
 
 ## 📍 Phase 1 (en cours) — Écouler les 40 tablettes via l'auto-entreprise (France)
 
-- [ ] **Stripe live** : activer le compte (IBAN, infos AE) → remplacer `STRIPE_SECRET_KEY`
-      (`sk_test_` → `sk_live_`) dans Netlify + recréer le webhook **en mode live**
-      (nouvelle valeur `STRIPE_WEBHOOK_SECRET`) → commande réelle de validation.
-- [ ] **Jour du lancement** : supprimer le bandeau `.prelaunch-banner` dans
-      `public/index.html`. (Le checkout reste actif pendant la pré-ouverture :
-      mode test Stripe = seules les cartes de test fonctionnent.)
+- [x] **Stripe live** ✅ (clé restreinte rk_live + webhook live, commande de
+      validation 1 € passée — penser à la REMBOURSER dans Stripe → Paiements).
+- [x] **Emails** ✅ : domaine nur-store.com vérifié chez Resend, confirmation
+      client envoyée depuis commandes@nur-store.com (RESEND_FROM).
+- [x] **Bandeau pré-lancement retiré** ✅ — BOUTIQUE OUVERTE.
+- [ ] Supprimer (ou garder) la page cachée `/commande-test.html` quand les
+      tests sont finis — elle déclenche de vrais paiements de 1 €.
 - [x] **Stock limité (38)** : compteur Netlify Blobs alimenté par le webhook,
       checkout bloqué à épuisement, site en « Rupture de stock » automatique,
       badge « Plus que X » sous 10 restantes. Total ajustable via la variable
