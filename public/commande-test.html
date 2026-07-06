@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commande de validation — interne</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .test-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .test-card { max-width: 440px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; text-align: center; }
+    .test-card h1 { font-size: 1.3rem; margin-bottom: 12px; }
+    .test-card p { color: var(--muted); font-size: 0.95rem; margin-bottom: 10px; }
+    .test-msg { margin-top: 14px; color: var(--gold); font-weight: 600; min-height: 1.2em; }
+  </style>
+</head>
+<body>
+  <div class="test-wrap">
+    <div class="test-card">
+      <h1>🔧 Commande de validation (interne)</h1>
+      <p>Page cachée réservée aux tests : elle déclenche un vrai paiement de <strong>1 €</strong>
+      (+ frais de port choisis sur la page Stripe) pour valider toute la chaîne :
+      paiement live, livraison, point relais, e-mails de commande.</p>
+      <p>Rembourse ensuite le paiement depuis Stripe → Paiements.</p>
+      <button class="btn btn-primary btn-block" id="payBtn" style="margin-top: 14px;">Payer 1 € (validation)</button>
+      <p class="test-msg" id="msg"></p>
+    </div>
+  </div>
+  <script>
+    document.getElementById("payBtn").addEventListener("click", () => {
+      const btn = document.getElementById("payBtn");
+      const msg = document.getElementById("msg");
+      btn.disabled = true;
+      msg.textContent = "Redirection vers le paiement…";
+      fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: [{ id: "nur-test", quantity: 1 }] }),
+      })
+        .then((r) => r.json().then((d) => ({ ok: r.ok, d })))
+        .then(({ ok, d }) => {
+          if (ok && d.url) { window.location.href = d.url; }
+          else { msg.textContent = d.error || "Erreur."; btn.disabled = false; }
+        })
+        .catch(() => { msg.textContent = "Erreur réseau."; btn.disabled = false; });
+    });
+  </script>
+</body>
+</html>

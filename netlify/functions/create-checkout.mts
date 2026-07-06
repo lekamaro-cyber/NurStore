@@ -11,6 +11,9 @@ import { STOCK_TOTAL, getSold } from "../lib/stock.mts";
 const CATALOG: Record<string, { name: string; price: number }> = {
   "nur-tablet": { name: "Tablette NUR — Coran, prière & hadith", price: 19900 },
   "nur-housse": { name: "Housse de protection Nur", price: 1000 },
+  // Produit de validation interne (1 €) — absent du site, accessible via
+  // la page cachée /commande-test.html. N'entame pas le stock.
+  "nur-test": { name: "Commande de validation NUR (interne)", price: 100 },
 };
 
 const CURRENCY = "eur";
