@@ -16,19 +16,22 @@ import { STOCK_TOTAL, addSold } from "../lib/stock.mts";
 const euro = (cents: number | null | undefined) =>
   ((cents ?? 0) / 100).toFixed(2).replace(".", ",") + " €";
 
-async function sendEmail(subject: string, text: string): Promise<boolean> {
+async function sendEmail(to: string, subject: string, text: string): Promise<boolean> {
   const key = Netlify.env.get("RESEND_API_KEY");
-  const to = Netlify.env.get("ORDER_NOTIFY_EMAIL");
   if (!key || !to) {
-    console.error("RESEND_API_KEY ou ORDER_NOTIFY_EMAIL manquant");
+    console.error("RESEND_API_KEY ou destinataire manquant");
     return false;
   }
+  // RESEND_FROM (ex. "NUR Store <commandes@nur-store.com>") exige un domaine
+  // vérifié chez Resend. Sans lui, expéditeur par défaut (envois au marchand only).
+  const from = Netlify.env.get("RESEND_FROM") || "NUR Store <onboarding@resend.dev>";
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: "NUR Store <onboarding@resend.dev>",
+      from,
       to: [to],
+      reply_to: "contact@nur-store.com",
       subject,
       text,
     }),
@@ -131,7 +134,35 @@ export default async (req: Request) => {
     `Détail : https://dashboard.stripe.com/payments/${session.payment_intent}`,
   ].join("\n");
 
-  await sendEmail(`🛒 Commande NUR — ${euro(session.amount_total)} — ${c?.name ?? c?.email ?? ""}`, text);
+  const merchantEmail = Netlify.env.get("ORDER_NOTIFY_EMAIL") ?? "";
+  await sendEmail(merchantEmail, `🛒 Commande NUR — ${euro(session.amount_total)} — ${c?.name ?? c?.email ?? ""}`, text);
+
+  // Confirmation au client — uniquement si RESEND_FROM est configuré
+  // (domaine vérifié chez Resend), sinon Resend refuserait l'envoi.
+  if (Netlify.env.get("RESEND_FROM") && c?.email) {
+    const firstName = (s?.name ?? c?.name ?? "").split(" ")[0];
+    const clientText = [
+      `${firstName ? firstName + ", m" : "M"}erci pour votre commande ! 🌙`,
+      ``,
+      `Nous préparons votre colis avec soin — expédition sous 48 h ouvrées.`,
+      `Vous recevrez le numéro de suivi dès l'envoi.`,
+      ``,
+      `VOTRE COMMANDE`,
+      items,
+      `  Livraison : ${shippingName} — ${euro(session.shipping_cost?.amount_total)}`,
+      `  Total payé : ${euro(session.amount_total)}`,
+      ``,
+      isRelay
+        ? `📍 Livraison en point relais : si ce n'est pas déjà fait, indiquez votre relais sur la page de confirmation, ou répondez simplement à cet e-mail.`
+        : `📦 Livraison à domicile à l'adresse indiquée lors du paiement.`,
+      ``,
+      `Une question ? Répondez à cet e-mail ou écrivez-nous : contact@nur-store.com`,
+      ``,
+      `Qu'Allah vous récompense pour votre confiance.`,
+      `L'équipe NUR — nur-store.com`,
+    ].join("\n");
+    await sendEmail(c.email, `Votre commande NUR est confirmée ✓`, clientText);
+  }
 
   return Response.json({ received: true });
 };
