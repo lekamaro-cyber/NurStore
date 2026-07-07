@@ -39,7 +39,7 @@ Idées de vidéos (Shorts YouTube + Reels Instagram, formats verts 30-60 s) :
 - [ ] FAQ filmées : « faut-il un abonnement ? », « ça marche dans ma ville ? »
 
 Côté site quand les vidéos existent :
-- [ ] Ajouter une section « Découvrir NUR » (galerie de vidéos) sous la vidéo principale.
+- [x] Page « Découvrir NUR » créée (/decouvrir.html) : présentation + 3 emplacements (unboxing, premier démarrage, Coran). Ajouter les IDs YouTube au fur et à mesure.
 - [ ] Intégrer la vidéo 30 s.
 
 ## 🌍 Phase 2 — La société UAE prend le relais (international)

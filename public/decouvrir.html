@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Découvrir NUR — vidéos, unboxing et prise en main</title>
+  <meta name="description" content="Découvrez la tablette NUR en vidéo : unboxing, premier démarrage, lecture du Coran, adhan. Toutes les démonstrations pour bien choisir et bien démarrer." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23f4b942'/></svg>" />
+  <style>
+    .discover { max-width: var(--max); margin: 0 auto; padding: 48px 24px 80px; }
+    .discover-head { text-align: center; max-width: 640px; margin: 0 auto 48px; }
+    .discover-head h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); margin-bottom: 12px; }
+    .discover-head p { color: var(--muted); }
+    .vid-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+    .vid {
+      background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 24px; display: flex; flex-direction: column;
+    }
+    .vid h2 { font-size: 1.15rem; margin-bottom: 6px; }
+    .vid > p { color: var(--muted); font-size: 0.93rem; margin-bottom: 16px; }
+    .vid .video-frame { margin-top: auto; }
+    /* Emplacement "bientôt disponible" */
+    .vid-soon {
+      aspect-ratio: 16 / 9; border-radius: 12px;
+      background: repeating-linear-gradient(45deg, #e2d5b6 0 12px, #dccca8 12px 24px);
+      border: 1px dashed #c3ac7f;
+      display: flex; align-items: center; justify-content: center;
+      color: #93825f; font-weight: 600;
+    }
+    .support-block {
+      margin-top: 56px; text-align: center;
+      background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 36px 24px;
+    }
+    .support-block h2 { font-size: 1.3rem; margin-bottom: 8px; }
+    .support-block p { color: var(--muted); margin-bottom: 18px; }
+    .support-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    @media (max-width: 760px) { .vid-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="brand" aria-label="Nur — accueil">
+      <img src="assets/logo.svg" alt="NUR" class="brand-logo" width="1133" height="944" />
+    </a>
+    <nav class="nav">
+      <a href="/">Boutique</a>
+      <a href="/#faq">FAQ</a>
+    </nav>
+    <a href="/#commander" class="btn btn-primary" style="padding: 10px 20px;">Commander</a>
+  </header>
+
+  <main class="discover">
+    <div class="discover-head">
+      <h1>Découvrir NUR</h1>
+      <p>La tablette en action : unboxing, premier démarrage et démonstrations.
+      De quoi vous faire une idée précise avant de commander — et bien démarrer après.</p>
+    </div>
+
+    <div class="vid-grid">
+      <!-- Pour activer une vidéo : remplacer le bloc .vid-soon par
+           <div class="video-frame video-vertical"> (format Short) ou
+           <div class="video-frame"> (format paysage) avec l'iframe YouTube. -->
+
+      <article class="vid">
+        <h2>🌙 NUR en une minute</h2>
+        <p>La présentation générale : ce que fait la tablette, pour qui, et pourquoi l'e-ink.</p>
+        <div class="video-frame video-vertical">
+          <iframe
+            src="https://www.youtube.com/embed/He47tR2li9M"
+            title="NUR — présentation en une minute"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+      </article>
+
+      <article class="vid">
+        <h2>📦 Unboxing</h2>
+        <p>Ce que vous recevez : la tablette, la housse origami, le câble — et la première impression.</p>
+        <div class="vid-soon">🎬 Bientôt disponible</div>
+      </article>
+
+      <article class="vid">
+        <h2>⚙️ Premier démarrage</h2>
+        <p>La configuration en 6 étapes : langue, ville, méthode de calcul, muezzin. Prêt en 2 minutes.</p>
+        <div class="vid-soon">🎬 Bientôt disponible</div>
+      </article>
+
+      <article class="vid">
+        <h2>📖 Lire et écouter le Coran</h2>
+        <p>Navigation dans les sourates, traduction, tafsir et récitation verset par verset.</p>
+        <div class="vid-soon">🎬 Bientôt disponible</div>
+      </article>
+    </div>
+
+    <div class="support-block">
+      <h2>Une question ? Besoin d'aide ?</h2>
+      <p>Consultez la FAQ, ou écrivez-nous — nous répondons rapidement.</p>
+      <div class="support-actions">
+        <a href="/#faq" class="btn btn-ghost">Voir la FAQ</a>
+        <a href="mailto:contact@nur-store.com" class="btn btn-primary">Nous écrire</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand"><img src="assets/logo.svg" alt="NUR" class="brand-logo" width="1133" height="944" /></div>
+    <p>© 2026 Nur Store. Tous droits réservés.</p>
+    <nav class="footer-nav">
+      <a href="/">Boutique</a>
+      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="cgv.html">CGV</a>
+    </nav>
+  </footer>
+</body>
+</html>
