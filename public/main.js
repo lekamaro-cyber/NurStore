@@ -106,6 +106,7 @@ function renderBuyPanel() {
       cart["nur-housse"] = (cart["nur-housse"] || 0) + selectedQty;
     }
     saveCart(cart); renderCart(); updateCount(); openDrawer();
+    if (window.nurStat) window.nurStat("ev", "panier:ajout");
   };
 }
 
@@ -168,6 +169,7 @@ $("checkoutBtn").onclick = async () => {
   const msg = $("drawerMsg");
   const items = Object.entries(cart).map(([id, quantity]) => ({ id, quantity }));
   if (!items.length) return;
+  if (window.nurStat) window.nurStat("ev", "panier:paiement");
   btn.disabled = true;
   msg.textContent = "Redirection vers le paiement…";
   try {

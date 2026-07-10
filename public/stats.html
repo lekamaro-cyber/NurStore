@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stats — Nur Store (interne)</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .stats { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+    .stats h1 { font-size: 1.6rem; margin-bottom: 20px; }
+    .stats h2 { font-size: 1.1rem; margin: 30px 0 10px; }
+    .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+    .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+    .kpi b { display: block; font-size: 1.6rem; }
+    .kpi span { color: var(--muted); font-size: 0.82rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); }
+    td:last-child, th:last-child { text-align: right; }
+    .bar { background: var(--gold); height: 8px; border-radius: 4px; display: inline-block; vertical-align: middle; }
+    #login { max-width: 380px; margin: 80px auto; text-align: center; }
+    #login input { width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg-soft); color: var(--text); margin-bottom: 12px; }
+    .muted { color: var(--muted); font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <div id="login">
+    <h1>🔐 Stats Nur Store</h1>
+    <input type="password" id="keyInput" placeholder="Clé d'accès (STATS_KEY)" />
+    <button class="btn btn-primary btn-block" id="loginBtn">Voir les stats</button>
+    <p class="muted" id="loginMsg"></p>
+  </div>
+
+  <main class="stats" id="dash" style="display:none;">
+    <h1>📊 Stats des 14 derniers jours</h1>
+    <div class="kpis" id="kpis"></div>
+    <h2>Visites par jour</h2>
+    <table id="daysTable"></table>
+    <h2>Jusqu'où les visiteurs descendent (page d'accueil)</h2>
+    <table id="funnelTable"></table>
+    <h2>Temps passé</h2>
+    <table id="timeTable"></table>
+    <h2>Pages vues</h2>
+    <table id="pagesTable"></table>
+    <p class="muted" style="margin-top:24px;">Mesure sans cookies : les robots sont exclus. « Pages vues », pas visiteurs uniques.</p>
+  </main>
+
+  <script>
+    var $ = function (id) { return document.getElementById(id); };
+
+    function load(key) {
+      fetch("/api/stats?key=" + encodeURIComponent(key) + "&days=14")
+        .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
+        .then(function (data) {
+          localStorage.setItem("nur_stats_key", key);
+          $("login").style.display = "none";
+          $("dash").style.display = "block";
+          render(data);
+        })
+        .catch(function () { $("loginMsg").textContent = "Clé invalide ou service indisponible."; });
+    }
+
+    function sum(objs, bucket) {
+      var out = {};
+      Object.keys(objs).forEach(function (day) {
+        var b = (objs[day] || {})[bucket] || {};
+        Object.keys(b).forEach(function (k) { out[k] = (out[k] || 0) + b[k]; });
+      });
+      return out;
+    }
+    function total(o) { return Object.values(o).reduce(function (a, b) { return a + b; }, 0); }
+    function rows(el, entries, max) {
+      el.innerHTML = entries.map(function (e) {
+        var w = max ? Math.round((e[1] / max) * 160) : 0;
+        return "<tr><td>" + e[0] + "</td><td><span class='bar' style='width:" + w + "px'></span> " + e[1] + "</td></tr>";
+      }).join("");
+    }
+
+    function render(data) {
+      var pages = sum(data, "pages");
+      var events = sum(data, "events");
+      var pv = total(pages);
+
+      $("kpis").innerHTML =
+        "<div class='kpi'><b>" + pv + "</b><span>pages vues (14 j)</span></div>" +
+        "<div class='kpi'><b>" + (events["panier:ajout"] || 0) + "</b><span>ajouts au panier</span></div>" +
+        "<div class='kpi'><b>" + (events["panier:paiement"] || 0) + "</b><span>clics « payer »</span></div>" +
+        "<div class='kpi'><b>" + (events["vu:achat"] || 0) + "</b><span>ont vu le bloc achat</span></div>";
+
+      var days = Object.keys(data).sort().reverse();
+      var maxDay = Math.max.apply(null, days.map(function (d) { return total((data[d] || {}).pages || {}); }).concat([1]));
+      rows($("daysTable"), days.map(function (d) { return [d, total((data[d] || {}).pages || {})]; }), maxDay);
+
+      var funnelKeys = [["vu:video", "Vidéo"], ["vu:tuiles", "Tuiles (arguments)"], ["vu:achat", "Bloc achat"], ["vu:faq", "FAQ"]];
+      var fMax = Math.max.apply(null, funnelKeys.map(function (k) { return events[k[0]] || 0; }).concat([1]));
+      rows($("funnelTable"), funnelKeys.map(function (k) { return [k[1], events[k[0]] || 0]; }), fMax);
+
+      var tKeys = ["moins de 10s", "10-30s", "30-60s", "1-3min", "3min et plus"];
+      var tMax = Math.max.apply(null, tKeys.map(function (k) { return events["temps:" + k] || 0; }).concat([1]));
+      rows($("timeTable"), tKeys.map(function (k) { return [k, events["temps:" + k] || 0]; }), tMax);
+
+      var pEntries = Object.keys(pages).map(function (k) { return [k, pages[k]]; }).sort(function (a, b) { return b[1] - a[1]; });
+      rows($("pagesTable"), pEntries, pEntries.length ? pEntries[0][1] : 1);
+    }
+
+    $("loginBtn").addEventListener("click", function () { load($("keyInput").value.trim()); });
+    $("keyInput").addEventListener("keydown", function (e) { if (e.key === "Enter") load($("keyInput").value.trim()); });
+    var saved = localStorage.getItem("nur_stats_key");
+    if (saved) load(saved);
+  </script>
+</body>
+</html>
