@@ -50,12 +50,23 @@ export default async (req: Request, context: Context) => {
     return Response.json({ error: "Panier vide." }, { status: 400 });
   }
 
+  // Nombre de tablettes demandées (sert au code promo et au contrôle du stock).
+  const tabletQty = items
+    .filter((i) => i.id === "nur-tablet")
+    .reduce((n, i) => n + Math.max(1, Math.min(10, Math.floor(Number(i.quantity) || 1))), 0);
+
   // Code promo de lancement (défini via la variable d'environnement PROMO_CODE) :
-  // housse offerte + livraison offerte.
+  // housse offerte + livraison offerte — UNIQUEMENT avec une tablette au panier.
   const promoInput = String(body.promo ?? "").trim().toUpperCase();
   const promoCode = (Netlify.env.get("PROMO_CODE") ?? "").trim().toUpperCase();
-  const promoValid = promoCode !== "" && promoInput === promoCode;
-  if (promoInput && !promoValid) {
+  const promoValid = promoCode !== "" && promoInput === promoCode && tabletQty > 0;
+  if (promoInput && promoCode !== "" && promoInput === promoCode && tabletQty === 0) {
+    return Response.json(
+      { error: "Le code promo s'applique uniquement avec une tablette NUR dans le panier." },
+      { status: 400 }
+    );
+  }
+  if (promoInput && promoInput !== promoCode) {
     return Response.json({ error: "Code promo invalide." }, { status: 400 });
   }
 
@@ -78,9 +89,6 @@ export default async (req: Request, context: Context) => {
   }
 
   // Contrôle du stock de tablettes (première série limitée).
-  const tabletQty = items
-    .filter((i) => i.id === "nur-tablet")
-    .reduce((n, i) => n + Math.max(1, Math.min(10, Math.floor(Number(i.quantity) || 1))), 0);
   if (tabletQty > 0) {
     try {
       const sold = await getSold();
