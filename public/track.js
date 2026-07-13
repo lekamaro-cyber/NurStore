@@ -1,6 +1,8 @@
 /* Mesure d'audience maison — sans cookies, sans données personnelles. */
 (function () {
   if (navigator.webdriver) return; // ignore les navigateurs automatisés
+  // Auto-exclusion du propriétaire : posée automatiquement par stats.html.
+  try { if (localStorage.getItem("nur_no_track")) return; } catch (e) {}
 
   function send(t, n) {
     try {

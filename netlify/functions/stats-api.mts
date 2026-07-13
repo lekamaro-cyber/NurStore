@@ -14,6 +14,17 @@ export default async (req: Request) => {
   const days = Math.min(60, Math.max(1, Number(url.searchParams.get("days")) || 14));
 
   const store = getStore("nur-stats");
+
+  // Remise à zéro complète des compteurs (bouton du tableau de bord).
+  if (url.searchParams.get("reset") === "1") {
+    let deleted = 0;
+    const { blobs } = await store.list({ prefix: "day-" });
+    for (const blob of blobs) {
+      await store.delete(blob.key);
+      deleted++;
+    }
+    return Response.json({ ok: true, deleted });
+  }
   const out: Record<string, unknown> = {};
   const now = Date.now();
   for (let i = 0; i < days; i++) {

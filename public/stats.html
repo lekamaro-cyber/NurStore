@@ -42,7 +42,10 @@
     <table id="timeTable"></table>
     <h2>Pages vues</h2>
     <table id="pagesTable"></table>
-    <p class="muted" style="margin-top:24px;">Mesure sans cookies : les robots sont exclus. « Pages vues », pas visiteurs uniques.</p>
+    <p class="muted" style="margin-top:24px;">Mesure sans cookies : les robots sont exclus. « Pages vues », pas visiteurs uniques.
+    Ce navigateur n'est plus compté dans les stats (ouvrez cette page une fois sur chacun de vos appareils).</p>
+    <p style="margin-top:16px;"><button class="btn btn-ghost" id="resetBtn">🗑️ Réinitialiser toutes les stats</button>
+    <span class="muted" id="resetMsg"></span></p>
   </main>
 
   <script>
@@ -53,6 +56,7 @@
         .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
         .then(function (data) {
           localStorage.setItem("nur_stats_key", key);
+          localStorage.setItem("nur_no_track", "1"); // ce navigateur ne sera plus compté
           $("login").style.display = "none";
           $("dash").style.display = "block";
           render(data);
@@ -102,6 +106,18 @@
       var pEntries = Object.keys(pages).map(function (k) { return [k, pages[k]]; }).sort(function (a, b) { return b[1] - a[1]; });
       rows($("pagesTable"), pEntries, pEntries.length ? pEntries[0][1] : 1);
     }
+
+    $("resetBtn").addEventListener("click", function () {
+      if (!confirm("Remettre TOUS les compteurs à zéro ? (irréversible)")) return;
+      var key = localStorage.getItem("nur_stats_key") || "";
+      fetch("/api/stats?key=" + encodeURIComponent(key) + "&reset=1")
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          $("resetMsg").textContent = d.ok ? "✓ Stats remises à zéro (" + d.deleted + " jours effacés)." : "Erreur.";
+          render({});
+        })
+        .catch(function () { $("resetMsg").textContent = "Erreur."; });
+    });
 
     $("loginBtn").addEventListener("click", function () { load($("keyInput").value.trim()); });
     $("keyInput").addEventListener("keydown", function (e) { if (e.key === "Enter") load($("keyInput").value.trim()); });
