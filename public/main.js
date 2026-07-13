@@ -173,10 +173,12 @@ $("checkoutBtn").onclick = async () => {
   btn.disabled = true;
   msg.textContent = "Redirection vers le paiement…";
   try {
+    const promo = ($("promoInput") ? $("promoInput").value : "").trim();
+    if (promo && window.nurStat) window.nurStat("ev", "panier:code");
     const res = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items }),
+      body: JSON.stringify({ items, promo }),
     });
     const data = await res.json();
     if (res.ok && data.url) {

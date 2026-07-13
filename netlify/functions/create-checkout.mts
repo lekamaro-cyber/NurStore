@@ -38,7 +38,7 @@ export default async (req: Request, context: Context) => {
     );
   }
 
-  let body: { items?: { id: string; quantity: number }[] };
+  let body: { items?: { id: string; quantity: number }[]; promo?: string };
   try {
     body = await req.json();
   } catch {
@@ -50,6 +50,15 @@ export default async (req: Request, context: Context) => {
     return Response.json({ error: "Panier vide." }, { status: 400 });
   }
 
+  // Code promo de lancement (défini via la variable d'environnement PROMO_CODE) :
+  // housse offerte + livraison offerte.
+  const promoInput = String(body.promo ?? "").trim().toUpperCase();
+  const promoCode = (Netlify.env.get("PROMO_CODE") ?? "").trim().toUpperCase();
+  const promoValid = promoCode !== "" && promoInput === promoCode;
+  if (promoInput && !promoValid) {
+    return Response.json({ error: "Code promo invalide." }, { status: 400 });
+  }
+
   const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
   for (const item of items) {
     const product = CATALOG[item.id];
@@ -57,12 +66,13 @@ export default async (req: Request, context: Context) => {
       return Response.json({ error: `Produit inconnu : ${item.id}` }, { status: 400 });
     }
     const qty = Math.max(1, Math.min(10, Math.floor(Number(item.quantity) || 1)));
+    const housseOfferte = promoValid && item.id === "nur-housse";
     line_items.push({
       quantity: qty,
       price_data: {
         currency: CURRENCY,
-        unit_amount: product.price,
-        product_data: { name: product.name },
+        unit_amount: housseOfferte ? 0 : product.price,
+        product_data: { name: housseOfferte ? `${product.name} (offerte)` : product.name },
       },
     });
   }
@@ -105,12 +115,13 @@ export default async (req: Request, context: Context) => {
       shipping_address_collection: { allowed_countries: [...SHIPPING_COUNTRIES] },
       // Options de livraison proposées au client (montants en centimes).
       // Pour changer un prix : modifie amount ci-dessous. 500 = 5,00 €.
+      // Avec le code promo de lancement, la livraison est offerte.
       shipping_options: [
         {
           shipping_rate_data: {
             type: "fixed_amount",
-            fixed_amount: { amount: 500, currency: CURRENCY },
-            display_name: "Mondial Relay — Point relais",
+            fixed_amount: { amount: promoValid ? 0 : 500, currency: CURRENCY },
+            display_name: promoValid ? "Mondial Relay — Point relais (offert)" : "Mondial Relay — Point relais",
             delivery_estimate: {
               minimum: { unit: "business_day", value: 2 },
               maximum: { unit: "business_day", value: 4 },
@@ -120,8 +131,8 @@ export default async (req: Request, context: Context) => {
         {
           shipping_rate_data: {
             type: "fixed_amount",
-            fixed_amount: { amount: 800, currency: CURRENCY },
-            display_name: "Colissimo — Livraison à domicile",
+            fixed_amount: { amount: promoValid ? 0 : 800, currency: CURRENCY },
+            display_name: promoValid ? "Colissimo — Livraison à domicile (offerte)" : "Colissimo — Livraison à domicile",
             delivery_estimate: {
               minimum: { unit: "business_day", value: 2 },
               maximum: { unit: "business_day", value: 3 },
@@ -129,6 +140,7 @@ export default async (req: Request, context: Context) => {
           },
         },
       ],
+      metadata: { promo: promoValid ? promoCode : "" },
       success_url: `${origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/cancel.html`,
     });

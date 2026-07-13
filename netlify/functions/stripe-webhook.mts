@@ -114,6 +114,7 @@ export default async (req: Request) => {
     items,
     ``,
     `Livraison : ${shippingName} — ${euro(session.shipping_cost?.amount_total)}`,
+    session.metadata?.promo ? `CODE PROMO : ${session.metadata.promo} (housse + livraison offertes)` : ``,
     `TOTAL PAYÉ : ${euro(session.amount_total)}`,
     ``,
     `CLIENT`,

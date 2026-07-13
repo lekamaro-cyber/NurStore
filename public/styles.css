@@ -286,6 +286,13 @@ section[id] { scroll-margin-top: 80px; }
 .cart-line-remove { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 0.82rem; text-decoration: underline; }
 .drawer-foot { padding: 22px; border-top: 1px solid var(--line); }
 .drawer-total { display: flex; justify-content: space-between; font-size: 1.15rem; font-weight: 700; margin-bottom: 16px; }
+.drawer-promo {
+  width: 100%; padding: 11px 14px; margin-bottom: 12px;
+  border: 1px dashed var(--gold); border-radius: 10px;
+  background: var(--bg-soft); color: var(--text);
+  font-family: var(--font); font-size: 0.95rem; text-transform: uppercase;
+}
+.drawer-promo::placeholder { text-transform: none; color: var(--muted); }
 .drawer-shipping { font-size: 0.8rem; color: var(--muted); margin-bottom: 14px; text-align: center; }
 .drawer-msg { margin-top: 12px; font-size: 0.85rem; text-align: center; color: var(--gold); min-height: 1.2em; }
 
