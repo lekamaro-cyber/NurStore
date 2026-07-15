@@ -38,6 +38,15 @@ async function init() {
     const res = await fetch("/api/stock");
     if (res.ok) STOCK = await res.json();
   } catch (e) { /* silencieux */ }
+  // Offre de lancement publique : bandeau + champ code pré-rempli.
+  if (STOCK.promo) {
+    document.body.insertAdjacentHTML(
+      "afterbegin",
+      `<a href="#commander" class="promo-banner">🎁 Offre de lancement : housse + livraison <strong>offertes</strong> avec le code <strong>${STOCK.promo}</strong></a>`
+    );
+    const promoInput = $("promoInput");
+    if (promoInput && !promoInput.value) promoInput.value = STOCK.promo;
+  }
   renderBuyPanel();
   renderCart();
   updateCount();
@@ -66,6 +75,9 @@ function renderBuyPanel() {
   const stockBadge = (STOCK.remaining <= 10)
     ? `<div class="stock-badge">🔥 Plus que ${STOCK.remaining} exemplaire${STOCK.remaining > 1 ? "s" : ""} disponible${STOCK.remaining > 1 ? "s" : ""}</div>`
     : "";
+  const promoTag = STOCK.promo
+    ? `<div class="promo-tag">🎁 Offre de lancement — avec le code <strong>${STOCK.promo}</strong> : housse <strong>offerte</strong> et livraison <strong>offerte</strong> (le code est déjà pré-rempli dans votre panier)</div>`
+    : "";
   const housseRow = housse ? `
     <label class="option-row">
       <input type="checkbox" id="withHousse" checked />
@@ -80,6 +92,7 @@ function renderBuyPanel() {
     <h2>${p.name}</h2>
     <div class="buy-price">${euro(p.price)} <small>TTC</small></div>
     ${stockBadge}
+    ${promoTag}
     <p class="buy-desc">${p.description}</p>
     ${housseRow}
     <div class="qty">
