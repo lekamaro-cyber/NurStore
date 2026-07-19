@@ -277,6 +277,34 @@ section[id] { scroll-margin-top: 80px; }
 .footer-nav a:hover { color: var(--gold); }
 .footer-social { display: inline-flex; align-items: center; gap: 6px; }
 
+/* ===== HISTOIRE ===== */
+.story { text-align: center; max-width: 720px; position: relative; }
+.story-ar {
+  font-size: 110px; line-height: 1; color: rgba(169, 117, 42, 0.22);
+  font-family: Georgia, 'Times New Roman', serif; margin-bottom: -20px;
+  user-select: none;
+}
+.story h2 { font-size: clamp(1.8rem, 3.5vw, 2.4rem); margin-bottom: 22px; }
+.story p { color: var(--muted); font-size: 1.05rem; margin-bottom: 16px; }
+.story p strong { color: var(--text); }
+.story-sign { color: var(--gold) !important; font-weight: 600; margin-top: 8px; }
+
+/* ===== BARRE D'ACHAT COLLANTE (mobile) ===== */
+.buy-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 54;
+  display: none; align-items: center; justify-content: space-between; gap: 12px;
+  background: var(--card); border-top: 1px solid var(--gold);
+  padding: 10px 16px; box-shadow: 0 -4px 18px rgba(50, 40, 24, 0.12);
+}
+.buy-bar-price { line-height: 1.2; }
+.buy-bar-price strong { font-size: 1.25rem; color: var(--gold); }
+.buy-bar-price span { display: block; font-size: 0.72rem; color: var(--muted); }
+.buy-bar .btn { padding: 11px 26px; }
+@media (max-width: 900px) {
+  .buy-bar.show { display: flex; }
+  body.has-buybar .wa-fab { bottom: 86px; }
+}
+
 /* ===== BOUTON WHATSAPP FLOTTANT ===== */
 .wa-fab {
   position: fixed; bottom: 22px; left: 22px; z-index: 55;

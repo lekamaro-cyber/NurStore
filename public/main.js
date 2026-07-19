@@ -206,4 +206,26 @@ $("checkoutBtn").onclick = async () => {
   }
 };
 
+/* ---- barre d'achat collante (mobile) ---- */
+(function () {
+  const bar = $("buyBar");
+  const buySection = document.getElementById("commander");
+  if (!bar || !buySection) return;
+  let buyVisible = false;
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver((entries) => {
+      buyVisible = entries[0].isIntersecting;
+      update();
+    }, { threshold: 0.15 }).observe(buySection);
+  }
+  function update() {
+    const scrolled = window.scrollY > 450;
+    const show = scrolled && !buyVisible;
+    bar.classList.toggle("show", show);
+    document.body.classList.toggle("has-buybar", show);
+  }
+  window.addEventListener("scroll", update, { passive: true });
+  update();
+})();
+
 init();
