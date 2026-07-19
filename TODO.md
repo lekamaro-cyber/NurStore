@@ -18,7 +18,7 @@
       et les coordonnées dans `public/cgv.html` (section 8, remplacer la phrase provisoire).
 - [ ] **INPI** : ajouter l'activité de vente de marchandises à l'auto-entreprise
       (guichet unique, gratuit) — fiscalement plus avantageux (abattement 71 %).
-- [ ] **Vidéo 30 s** : à intégrer quand le lien YouTube est prêt (où : à décider).
+- [x] **Vidéo 30 s** intégrée en vidéo principale de l'accueil (meilleure performance : 2000 vues en 3 jours).
 - [ ] **Boxtal/Sendcloud** : ouvrir un compte quand les commandes s'enchaînent
       (tarifs négociés + étiquettes centralisées).
 - [ ] **Code enseigne Mondial Relay** : quand compte MR pro ouvert, remplacer
