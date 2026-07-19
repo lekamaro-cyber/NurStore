@@ -253,6 +253,16 @@ section[id] { scroll-margin-top: 80px; }
 .soldout-note { color: var(--muted); font-size: 0.9rem; }
 .soldout-note a { color: var(--gold); font-weight: 600; text-decoration: underline; }
 .buy-reassure { display: flex; flex-direction: column; gap: 8px; margin-top: 22px; color: var(--muted); font-size: 0.9rem; }
+.buy-reassure strong { color: var(--text); }
+.buy-anchor {
+  margin-top: 16px; padding: 12px 14px; border-radius: 10px;
+  background: var(--bg-soft); border: 1px solid var(--line);
+  color: var(--muted); font-size: 0.88rem;
+}
+.wa-inline {
+  display: block; margin-top: 14px; text-align: center;
+  color: #1da851; font-weight: 600; font-size: 0.92rem; text-decoration: underline;
+}
 .buy-reassure span::before { content: "✓ "; color: var(--gold); font-weight: 700; }
 
 /* ===== FAQ ===== */

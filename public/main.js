@@ -105,10 +105,12 @@ function renderBuyPanel() {
     </div>
     <button class="btn btn-primary btn-block" id="addToCart">Ajouter au panier</button>
     <div class="buy-reassure">
-      <span>Paiement sécurisé par carte bancaire</span>
-      <span>Livraison en France</span>
-      <span>Horaires en français & arabe</span>
+      <span><strong>Satisfait ou remboursé 14 jours</strong> — retournez-la, remboursement intégral</span>
+      <span>Paiement sécurisé (Stripe · Visa · Mastercard) — vos données bancaires ne passent jamais par notre site</span>
+      <span>Expédié de France sous 48 h, envoi suivi et assuré</span>
     </div>
+    <p class="buy-anchor">📚 À elle seule, la bibliothèque qu'elle contient (mushaf, tafsir, recueils de hadith) vaut plus de 100 € en livres papier.</p>
+    <a class="wa-inline" href="#" target="_blank" rel="noopener">💬 Une question avant de commander ? Écrivez-nous sur WhatsApp — réponse rapide</a>
   `;
   $("qtyMinus").onclick = () => { selectedQty = Math.max(1, selectedQty - 1); $("qtyValue").textContent = selectedQty; };
   $("qtyPlus").onclick = () => { selectedQty = Math.min(10, selectedQty + 1); $("qtyValue").textContent = selectedQty; };

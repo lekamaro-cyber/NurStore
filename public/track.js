@@ -1,16 +1,18 @@
 /* Lien WhatsApp assemblé au chargement — le numéro n'apparaît pas dans le
    HTML afin d'échapper aux robots collecteurs de numéros. */
 (function () {
-  try {
-    var fab = document.querySelector(".wa-fab");
-    if (fab) {
+  function setWaLinks() {
+    try {
+      var links = document.querySelectorAll(".wa-fab, .wa-inline");
       var num = ["3", "3", "6", "5", "2", "6", "7", "0", "4", "5", "7"].join("");
-      fab.setAttribute(
-        "href",
-        "https://wa.me/" + num + "?text=" + encodeURIComponent("Salam, j'ai une question sur la tablette NUR")
-      );
-    }
-  } catch (e) { /* silencieux */ }
+      var url = "https://wa.me/" + num + "?text=" + encodeURIComponent("Salam, j'ai une question sur la tablette NUR");
+      for (var i = 0; i < links.length; i++) links[i].setAttribute("href", url);
+    } catch (e) { /* silencieux */ }
+  }
+  setWaLinks();
+  // Le bloc d'achat est injecté après coup : on repasse une fois la page chargée.
+  window.addEventListener("load", setWaLinks);
+  setTimeout(setWaLinks, 1500);
 })();
 
 /* Mesure d'audience maison — sans cookies, sans données personnelles. */
