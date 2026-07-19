@@ -19,13 +19,12 @@
 - [ ] **INPI** : ajouter l'activité de vente de marchandises à l'auto-entreprise
       (guichet unique, gratuit) — fiscalement plus avantageux (abattement 71 %).
 - [x] **Vidéo 30 s** intégrée en vidéo principale de l'accueil (meilleure performance : 2000 vues en 3 jours).
-- [ ] **Boxtal/Sendcloud** : ouvrir un compte quand les commandes s'enchaînent
-      (tarifs négociés + étiquettes centralisées).
-- [ ] **PRIORITAIRE — Code enseigne Mondial Relay** : le widget carte (BDTEST13)
-      affichait un bandeau rouge « version de test » visible par les clients
-      (signalé par le 1er client, 19/07). Widget RETIRÉ de success.html —
-      parcours simple « relais le plus proche » rétabli. Ne remettre la carte
-      qu'avec un vrai code enseigne (compte Mondial Relay pro / Boxtal).
+- [x] **Sendcloud** ✅ : compte ouvert, Mondial Relay + Colissimo activés,
+      étiquettes via le dashboard, e-mails de suivi aux couleurs NUR.
+- [x] **Carte des points relais en production** ✅ : Sendcloud Service Point
+      Picker intégré sur success.html (clé publique, carte pré-centrée sur le
+      code postal client). Remplace le widget MR BDTEST13 qui affichait un
+      bandeau « version de test » (signalé par le 1er client, 19/07).
 
 ## 🎬 Phase 1bis (avant ouverture des ventes) — Contenu explicatif
 

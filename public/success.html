@@ -21,6 +21,11 @@
       min-height: 84px; resize: vertical;
     }
     .relay-sent { display: none; margin-top: 18px; color: var(--gold); font-weight: 600; }
+    .relay-chosen {
+      display: none; margin-top: 14px; padding: 14px 16px;
+      background: var(--bg-soft); border: 1px solid var(--gold); border-radius: 12px;
+      font-size: 0.95rem;
+    }
   </style>
 </head>
 <body>
@@ -41,9 +46,14 @@
         </p>
         <input type="hidden" id="relaySession" />
         <input type="hidden" id="relayEmail" />
-        <button type="button" class="btn btn-primary btn-block" id="relayNearest">✓ Le relais le plus proche de chez moi</button>
+        <button type="button" class="btn btn-primary btn-block" id="relayMap">🗺️ Choisir mon point relais sur la carte</button>
+        <div class="relay-chosen" id="relayChosen">
+          <strong>Votre choix :</strong> <span id="relayChosenText"></span>
+          <button type="button" class="btn btn-primary btn-block" id="relayConfirm" style="margin-top:12px;">Confirmer ce point relais</button>
+        </div>
+        <button type="button" class="btn btn-ghost btn-block" id="relayNearest" style="margin-top:10px;">Ou : expédiez au relais le plus proche de chez moi</button>
         <p style="text-align:center; margin-top:12px;">
-          <a href="#" id="relayOtherLink" style="font-size:0.9rem;">Je préfère choisir un relais précis</a>
+          <a href="#" id="relayOtherLink" style="font-size:0.9rem;">Indiquer un relais manuellement</a>
         </p>
         <form id="relayForm" style="display:none;">
           <p>
@@ -86,18 +96,22 @@
     }
 
     function hideChoosers() {
+      $id("relayMap").style.display = "none";
+      $id("relayChosen").style.display = "none";
       $id("relayNearest").style.display = "none";
       $id("relayOtherLink").parentElement.style.display = "none";
       $id("relayForm").style.display = "none";
     }
 
     // Détecte une commande Mondial Relay.
+    var sessionData = null;
     var sid = new URLSearchParams(location.search).get("session_id");
     if (sid) {
       fetch("/api/session?session_id=" + encodeURIComponent(sid))
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (d) {
           if (d && d.shipping && d.shipping.toLowerCase().indexOf("relay") !== -1) {
+            sessionData = d;
             $id("relaySession").value = sid;
             if (d.email) $id("relayEmail").value = d.email;
             $id("relayBlock").style.display = "block";
@@ -105,6 +119,54 @@
         })
         .catch(function () {});
     }
+
+    /* ---- Carte des points relais (Sendcloud Service Point Picker) ---- */
+    var SPP_KEY = "fdeb05c6-3bf1-4c12-8eba-d1ca967abc76"; // clé publique Sendcloud
+    var selectedRelay = "";
+
+    function loadScript(src) {
+      return new Promise(function (res, rej) {
+        var s = document.createElement("script");
+        s.src = src; s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
+      });
+    }
+
+    $id("relayMap").addEventListener("click", function () {
+      var btn = $id("relayMap");
+      btn.disabled = true;
+      loadScript("https://embed.sendcloud.sc/spp/1.0.0/api.min.js")
+        .then(function () {
+          btn.disabled = false;
+          window.sendcloud.servicePoints.open(
+            {
+              apiKey: SPP_KEY,
+              country: ((sessionData && sessionData.country) || "FR").toLowerCase(),
+              postalCode: (sessionData && sessionData.postal_code) || "",
+              language: "fr-fr",
+              carriers: ["mondial_relay"],
+            },
+            function (sp) {
+              selectedRelay =
+                (sp.name || "") + " — " + (sp.street || "") + " " + (sp.house_number || "") + ", " +
+                (sp.postal_code || "") + " " + (sp.city || "") + " (Mondial Relay n° " + (sp.code || sp.id || "") + ")";
+              $id("relayChosenText").textContent = selectedRelay;
+              $id("relayChosen").style.display = "block";
+            },
+            function () { /* fermé sans choisir : rien à faire */ }
+          );
+        })
+        .catch(function () {
+          // Carte indisponible (bloqueur, réseau) : bascule sur la saisie manuelle.
+          btn.style.display = "none";
+          $id("relayForm").style.display = "block";
+        });
+    });
+
+    $id("relayConfirm").addEventListener("click", function () {
+      if (!selectedRelay) return;
+      sendRelay(selectedRelay, hideChoosers);
+    });
 
     $id("relayNearest").addEventListener("click", function () {
       $id("relayNearest").disabled = true;
