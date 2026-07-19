@@ -21,8 +21,11 @@
 - [x] **Vidéo 30 s** intégrée en vidéo principale de l'accueil (meilleure performance : 2000 vues en 3 jours).
 - [ ] **Boxtal/Sendcloud** : ouvrir un compte quand les commandes s'enchaînent
       (tarifs négociés + étiquettes centralisées).
-- [ ] **Code enseigne Mondial Relay** : quand compte MR pro ouvert, remplacer
-      `MR_BRAND = "BDTEST13"` dans `public/success.html` par le vrai code enseigne.
+- [ ] **PRIORITAIRE — Code enseigne Mondial Relay** : le widget carte (BDTEST13)
+      affichait un bandeau rouge « version de test » visible par les clients
+      (signalé par le 1er client, 19/07). Widget RETIRÉ de success.html —
+      parcours simple « relais le plus proche » rétabli. Ne remettre la carte
+      qu'avec un vrai code enseigne (compte Mondial Relay pro / Boxtal).
 
 ## 🎬 Phase 1bis (avant ouverture des ventes) — Contenu explicatif
 
