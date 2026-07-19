@@ -109,6 +109,13 @@ function renderBuyPanel() {
       <span>Paiement sécurisé (Stripe · Visa · Mastercard) — vos données bancaires ne passent jamais par notre site</span>
       <span>Expédié de France sous 48 h, envoi suivi et assuré</span>
     </div>
+    <div class="pay-logos">
+      <span class="pay-label">Paiement 100&nbsp;% sécurisé :</span>
+      <span class="pay-badge pay-visa">VISA</span>
+      <span class="pay-badge pay-mc"><i></i><i></i></span>
+      <span class="pay-badge pay-cb">CB</span>
+      <span class="pay-badge pay-stripe">Stripe</span>
+    </div>
     <p class="buy-anchor">📚 À elle seule, la bibliothèque qu'elle contient (mushaf, tafsir, recueils de hadith) vaut plus de 100 € en livres papier.</p>
     <a class="wa-inline" href="#" target="_blank" rel="noopener">💬 Une question avant de commander ? Écrivez-nous sur WhatsApp — réponse rapide</a>
   `;

@@ -158,6 +158,37 @@ section[id] { scroll-margin-top: 80px; }
   pointer-events: none;
 }
 
+/* ===== BANDE DE RÉASSURANCE ===== */
+.trust-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+  padding-top: 0; padding-bottom: 40px;
+}
+.trust-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  padding: 14px 16px;
+}
+.trust-item > span { font-size: 1.5rem; }
+.trust-item strong { display: block; font-size: 0.92rem; }
+.trust-item small { color: var(--muted); font-size: 0.78rem; }
+@media (max-width: 900px) { .trust-strip { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .trust-strip { grid-template-columns: 1fr 1fr; gap: 10px; } .trust-item { padding: 10px 12px; } }
+
+/* ===== LOGOS DE PAIEMENT ===== */
+.pay-logos { display: flex; align-items: center; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.pay-logos .pay-label { color: var(--muted); font-size: 0.8rem; margin-right: 4px; }
+.pay-badge {
+  background: #fff; border: 1px solid var(--line); border-radius: 6px;
+  padding: 4px 10px; font-weight: 800; font-size: 0.78rem; line-height: 1.4;
+}
+.pay-visa { color: #1a1f71; font-style: italic; letter-spacing: 1px; }
+.pay-cb { color: #0f4c81; }
+.pay-stripe { color: #635bff; }
+.pay-mc { display: inline-flex; align-items: center; padding: 6px 10px; }
+.pay-mc i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+.pay-mc i:first-child { background: #eb001b; }
+.pay-mc i:last-child { background: #f79e1b; margin-left: -6px; opacity: 0.9; }
+
 /* ===== SECTION HEAD ===== */
 .section-head { text-align: center; margin-bottom: 48px; }
 .section-head h2 { font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 800; }
