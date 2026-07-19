@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import type { Config } from "@netlify/functions";
 import { STOCK_TOTAL, addSold } from "../lib/stock.mts";
+import { announceParcel, sendcloudConfigured } from "../lib/sendcloud.mts";
 
 /**
  * Webhook Stripe : à chaque paiement réussi (checkout.session.completed),
@@ -107,6 +108,29 @@ export default async (req: Request) => {
     }
   }
 
+  // Annonce la commande dans Sendcloud (adresse pré-remplie, étiquette en 2 clics).
+  let sendcloudLine = "";
+  if (sendcloudConfigured()) {
+    const addr = s?.address ?? c?.address;
+    const announced = addr
+      ? await announceParcel({
+          sessionId: session.id,
+          name: s?.name ?? c?.name ?? "",
+          email: c?.email ?? "",
+          phone: c?.phone ?? "",
+          line1: addr.line1 ?? "",
+          line2: addr.line2 ?? "",
+          city: addr.city ?? "",
+          postalCode: addr.postal_code ?? "",
+          country: addr.country ?? "FR",
+          orderValueCents: session.amount_total ?? 0,
+        })
+      : false;
+    sendcloudLine = announced
+      ? `SENDCLOUD : commande importée ✓ — Expédition → Commandes, adresse déjà remplie.`
+      : `SENDCLOUD : import impossible — créer l'envoi à la main depuis cet e-mail.`;
+  }
+
   const text = [
     `NOUVELLE COMMANDE NUR 🎉`,
     ``,
@@ -130,6 +154,7 @@ export default async (req: Request) => {
       : `Livraison à domicile : l'adresse ci-dessus suffit pour l'étiquette.`,
     ``,
     stockLine,
+    sendcloudLine,
     ``,
     `Référence Stripe : ${session.id}`,
     `Détail : https://dashboard.stripe.com/payments/${session.payment_intent}`,

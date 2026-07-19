@@ -25,6 +25,13 @@
       Picker intégré sur success.html (clé publique, carte pré-centrée sur le
       code postal client). Remplace le widget MR BDTEST13 qui affichait un
       bandeau « version de test » (signalé par le 1er client, 19/07).
+      Validé en réel le 19/07 (carte propre, sans bandeau).
+- [ ] **Import auto des commandes dans Sendcloud** : code en place (webhook →
+      annonce du colis, carte → relais rattaché automatiquement). Pour
+      l'activer : ajouter `SENDCLOUD_PUBLIC_KEY` et `SENDCLOUD_SECRET_KEY`
+      dans Netlify (Site configuration → Environment variables) puis
+      **Trigger deploy**. Optionnel : `SENDCLOUD_WEIGHT` (poids par défaut
+      du colis en kg, défaut « 1.000 »).
 
 ## 🎬 Phase 1bis (avant ouverture des ventes) — Contenu explicatif
 
