@@ -139,7 +139,7 @@ export default async (req: Request, context: Context) => {
         {
           shipping_rate_data: {
             type: "fixed_amount",
-            fixed_amount: { amount: promoValid ? 0 : 800, currency: CURRENCY },
+            fixed_amount: { amount: promoValid ? 0 : 1000, currency: CURRENCY },
             display_name: promoValid ? "Colissimo — Livraison à domicile (offerte)" : "Colissimo — Livraison à domicile",
             delivery_estimate: {
               minimum: { unit: "business_day", value: 2 },
