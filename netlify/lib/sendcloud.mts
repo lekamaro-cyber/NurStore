@@ -133,6 +133,12 @@ export async function announceOrder(info: OrderInfo): Promise<AnnounceResult> {
             value: Number(Netlify.env.get("SENDCLOUD_WEIGHT") || "0.6"),
             unit: "kg",
           },
+          dimensions: {
+            length: Number(Netlify.env.get("SENDCLOUD_LENGTH") || "26"),
+            width: Number(Netlify.env.get("SENDCLOUD_WIDTH") || "22"),
+            height: Number(Netlify.env.get("SENDCLOUD_HEIGHT") || "5"),
+            unit: "cm",
+          },
         },
       },
     };
