@@ -130,7 +130,7 @@ export async function announceOrder(info: OrderInfo): Promise<AnnounceResult> {
         is_local_pickup: false,
         measurement: {
           weight: {
-            value: Number(Netlify.env.get("SENDCLOUD_WEIGHT") || "1"),
+            value: Number(Netlify.env.get("SENDCLOUD_WEIGHT") || "0.6"),
             unit: "kg",
           },
         },
