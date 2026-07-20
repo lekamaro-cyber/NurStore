@@ -81,6 +81,8 @@ export type OrderInfo = {
   country: string; // ISO-2, ex. "FR"
   orderValueCents: number;
   items: OrderItem[];
+  /** Méthode de livraison choisie au paiement (ex. "Mondial Relay — point relais"). */
+  shippingMethod?: string;
 };
 
 export type AnnounceResult = { ok: boolean; error?: string };
@@ -128,6 +130,11 @@ export async function announceOrder(info: OrderInfo): Promise<AnnounceResult> {
       },
       shipping_details: {
         is_local_pickup: false,
+        // Indique à Sendcloud la méthode choisie au paiement, pour que la
+        // suggestion de transporteur soit la bonne (sinon il devine).
+        ...(info.shippingMethod
+          ? { delivery_indicator: info.shippingMethod.slice(0, 100) }
+          : {}),
         measurement: {
           // L'Orders API v3 n'accepte que le poids ici (les dimensions ont été
           // refusées : "Extra inputs are not permitted"). Elles se règlent au

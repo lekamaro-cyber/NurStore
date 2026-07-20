@@ -124,6 +124,7 @@ export default async (req: Request) => {
           postalCode: addr.postal_code ?? "",
           country: addr.country ?? "FR",
           orderValueCents: session.amount_total ?? 0,
+          shippingMethod: shippingName,
           items: lineItems.data.map((li) => ({
             name: li.description ?? "Article",
             quantity: li.quantity ?? 1,
