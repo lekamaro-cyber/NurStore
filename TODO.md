@@ -26,14 +26,15 @@
       code postal client). Remplace le widget MR BDTEST13 qui affichait un
       bandeau « version de test » (signalé par le 1er client, 19/07).
       Validé en réel le 19/07 (carte propre, sans bandeau).
-- [ ] **Import auto des commandes dans Sendcloud** : via l'Orders API v3
-      (la création de colis v2 est coupée sur les comptes récents — erreur
-      constatée le 20/07). Clés `SENDCLOUD_PUBLIC_KEY` / `SENDCLOUD_SECRET_KEY`
-      déjà dans Netlify ✅. L'id d'intégration est découvert automatiquement
-      (surcharge possible : `SENDCLOUD_INTEGRATION_ID`, visible dans l'URL du
-      panneau, Réglages → Intégrations → Modifier). En cas d'échec, l'e-mail
-      de commande contient la raison exacte (« Détail : … »). À valider par
-      une commande de test 1 €.
+- [x] **Import auto des commandes dans Sendcloud** ✅ (validé le 20/07 par
+      commande de test) : Orders API v3 (la création de colis v2 est coupée
+      sur les comptes récents). Chaque commande payée apparaît dans
+      Expédition → Commandes avec adresse, articles, valeur et poids
+      (0,6 kg — ajustable via `SENDCLOUD_WEIGHT`) ; Sendcloud propose la
+      méthode d'expédition automatiquement. En cas d'échec, l'e-mail de
+      commande contient la raison exacte (« Détail : … »). Dimensions non
+      supportées par l'API : définir un format de colis 26×22×5 cm par
+      défaut dans les réglages Sendcloud.
 
 ## 🎬 Phase 1bis (avant ouverture des ventes) — Contenu explicatif
 
