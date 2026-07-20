@@ -129,15 +129,13 @@ export async function announceOrder(info: OrderInfo): Promise<AnnounceResult> {
       shipping_details: {
         is_local_pickup: false,
         measurement: {
+          // L'Orders API v3 n'accepte que le poids ici (les dimensions ont été
+          // refusées : "Extra inputs are not permitted"). Elles se règlent au
+          // moment de l'étiquette, ou via un format de colis par défaut dans
+          // Sendcloud (Réglages).
           weight: {
             value: Number(Netlify.env.get("SENDCLOUD_WEIGHT") || "0.6"),
             unit: "kg",
-          },
-          dimensions: {
-            length: Number(Netlify.env.get("SENDCLOUD_LENGTH") || "26"),
-            width: Number(Netlify.env.get("SENDCLOUD_WIDTH") || "22"),
-            height: Number(Netlify.env.get("SENDCLOUD_HEIGHT") || "5"),
-            unit: "cm",
           },
         },
       },
