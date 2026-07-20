@@ -157,6 +157,13 @@ export async function announceOrder(info: OrderInfo): Promise<AnnounceResult> {
       console.error("Sendcloud order import error", res.status, detail);
       return { ok: false, error: `HTTP ${res.status} — ${detail}` };
     }
+    // Mémorise l'id Sendcloud de la commande pour pouvoir la modifier ensuite
+    // (rattachement du point relais choisi par le client).
+    try {
+      const data = await res.json();
+      const scId = data?.data?.[0]?.id;
+      if (scId) await orderStore().set(info.sessionId, String(scId));
+    } catch {}
     return { ok: true };
   } catch (err) {
     console.error("Sendcloud order import failed", err);
