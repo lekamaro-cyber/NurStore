@@ -170,3 +170,39 @@ export async function announceOrder(info: OrderInfo): Promise<AnnounceResult> {
     return { ok: false, error: String(err).slice(0, 300) };
   }
 }
+
+/**
+ * Rattache le point relais choisi par le client (id Sendcloud, fourni par la
+ * carte) à la commande importée, via PATCH /api/v3/orders/{id}.
+ */
+export async function attachServicePoint(
+  sessionId: string,
+  servicePointId: number
+): Promise<AnnounceResult> {
+  const auth = authHeader();
+  if (!auth) return { ok: false, error: "clés non configurées" };
+  try {
+    const scId = await orderStore().get(sessionId);
+    if (!scId) return { ok: false, error: "commande non importée dans Sendcloud" };
+    const res = await fetch(`${PANEL}/api/v3/orders/${scId}`, {
+      method: "PATCH",
+      headers: { Authorization: auth, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: String(scId),
+        order_id: sessionId.slice(-64),
+        shipping_details: {
+          service_point_details: { id: String(servicePointId) },
+        },
+      }),
+    });
+    if (!res.ok) {
+      const detail = (await res.text()).slice(0, 800);
+      console.error("Sendcloud service point error", res.status, detail);
+      return { ok: false, error: `HTTP ${res.status} — ${detail}` };
+    }
+    return { ok: true };
+  } catch (err) {
+    console.error("Sendcloud service point failed", err);
+    return { ok: false, error: String(err).slice(0, 300) };
+  }
+}

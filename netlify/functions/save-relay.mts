@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import type { Config } from "@netlify/functions";
-import { sendcloudConfigured } from "../lib/sendcloud.mts";
+import { attachServicePoint, sendcloudConfigured } from "../lib/sendcloud.mts";
 
 /**
  * Reçoit le point relais choisi par le client (page de confirmation)
@@ -61,13 +61,19 @@ export default async (req: Request) => {
   }
 
   // Le choix sur la carte fournit l'id Sendcloud du point relais :
-  // on le met dans l'e-mail pour le retrouver vite au moment de l'étiquette.
+  // on le rattache à la commande importée (PATCH), et on le note dans l'e-mail.
   let sendcloudNote = "";
   const spId = Number(body.service_point_id);
+  const orderRef = `NUR-${sessionId.slice(-6).toUpperCase()}`;
   if (sendcloudConfigured()) {
-    sendcloudNote = spId > 0
-      ? `SENDCLOUD : commande NUR-${sessionId.slice(-6).toUpperCase()} — sélectionner ce relais (id Sendcloud ${spId}) au moment de l'étiquette.`
-      : `SENDCLOUD : commande NUR-${sessionId.slice(-6).toUpperCase()} — sélectionner ce relais au moment de l'étiquette.`;
+    if (spId > 0) {
+      const attached = await attachServicePoint(sessionId, spId);
+      sendcloudNote = attached.ok
+        ? `SENDCLOUD : relais rattaché à la commande ${orderRef} ✓ (id Sendcloud ${spId}).`
+        : `SENDCLOUD : commande ${orderRef} — sélectionner ce relais (id Sendcloud ${spId}) au moment de l'étiquette.\n  Détail : ${attached.error ?? "inconnu"}`;
+    } else {
+      sendcloudNote = `SENDCLOUD : commande ${orderRef} — sélectionner ce relais au moment de l'étiquette.`;
+    }
   }
 
   const ok = await sendEmail(
