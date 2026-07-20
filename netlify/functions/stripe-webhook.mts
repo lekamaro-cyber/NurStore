@@ -125,10 +125,10 @@ export default async (req: Request) => {
           country: addr.country ?? "FR",
           orderValueCents: session.amount_total ?? 0,
         })
-      : false;
-    sendcloudLine = announced
+      : { ok: false, error: "adresse de livraison absente" };
+    sendcloudLine = announced.ok
       ? `SENDCLOUD : commande importée ✓ — Expédition → Commandes, adresse déjà remplie.`
-      : `SENDCLOUD : import impossible — créer l'envoi à la main depuis cet e-mail.`;
+      : `SENDCLOUD : import impossible — créer l'envoi à la main depuis cet e-mail.\n  Détail : ${announced.error ?? "inconnu"}`;
   }
 
   const text = [

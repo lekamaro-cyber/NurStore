@@ -48,10 +48,12 @@ export type ParcelInfo = {
   orderValueCents: number;
 };
 
+export type AnnounceResult = { ok: boolean; error?: string };
+
 /** Annonce la commande dans Sendcloud (sans acheter l'étiquette). */
-export async function announceParcel(info: ParcelInfo): Promise<boolean> {
+export async function announceParcel(info: ParcelInfo): Promise<AnnounceResult> {
   const auth = authHeader();
-  if (!auth) return false;
+  if (!auth) return { ok: false, error: "clés non configurées" };
   try {
     const { street, houseNumber } = splitStreet(info.line1);
     const res = await fetch(API, {
@@ -77,18 +79,19 @@ export async function announceParcel(info: ParcelInfo): Promise<boolean> {
       }),
     });
     if (!res.ok) {
-      console.error("Sendcloud announce error", res.status, await res.text());
-      return false;
+      const detail = (await res.text()).slice(0, 300);
+      console.error("Sendcloud announce error", res.status, detail);
+      return { ok: false, error: `HTTP ${res.status} — ${detail}` };
     }
     const data = await res.json();
     const parcelId = data?.parcel?.id;
     if (parcelId) {
       await parcelStore().set(info.sessionId, String(parcelId));
     }
-    return true;
+    return { ok: true };
   } catch (err) {
     console.error("Sendcloud announce failed", err);
-    return false;
+    return { ok: false, error: String(err).slice(0, 300) };
   }
 }
 
