@@ -190,9 +190,7 @@ export async function attachServicePoint(
       body: JSON.stringify({
         id: String(scId),
         order_id: sessionId.slice(-64),
-        shipping_details: {
-          service_point_details: { id: String(servicePointId) },
-        },
+        service_point_details: { id: String(servicePointId) },
       }),
     });
     if (!res.ok) {
