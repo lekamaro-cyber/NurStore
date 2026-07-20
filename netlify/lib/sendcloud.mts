@@ -109,7 +109,6 @@ export async function announceOrder(info: OrderInfo): Promise<AnnounceResult> {
           name: it.name.slice(0, 100),
           quantity: it.quantity,
           total_price: price(it.totalCents),
-          unit_price: price(Math.round(it.totalCents / Math.max(1, it.quantity))),
         })),
       },
       payment_details: {
@@ -126,6 +125,15 @@ export async function announceOrder(info: OrderInfo): Promise<AnnounceResult> {
         country_code: info.country || "FR",
         email: info.email.slice(0, 100),
         phone_number: (info.phone || "").slice(0, 20),
+      },
+      shipping_details: {
+        is_local_pickup: false,
+        measurement: {
+          weight: {
+            value: Number(Netlify.env.get("SENDCLOUD_WEIGHT") || "1"),
+            unit: "kg",
+          },
+        },
       },
     };
     const res = await fetch(`${PANEL}/api/v3/orders`, {
