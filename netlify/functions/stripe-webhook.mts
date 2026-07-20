@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 import type { Config } from "@netlify/functions";
 import { STOCK_TOTAL, addSold } from "../lib/stock.mts";
-import { announceParcel, sendcloudConfigured } from "../lib/sendcloud.mts";
+import { announceOrder, sendcloudConfigured } from "../lib/sendcloud.mts";
 
 /**
  * Webhook Stripe : à chaque paiement réussi (checkout.session.completed),
@@ -113,7 +113,7 @@ export default async (req: Request) => {
   if (sendcloudConfigured()) {
     const addr = s?.address ?? c?.address;
     const announced = addr
-      ? await announceParcel({
+      ? await announceOrder({
           sessionId: session.id,
           name: s?.name ?? c?.name ?? "",
           email: c?.email ?? "",
@@ -124,6 +124,11 @@ export default async (req: Request) => {
           postalCode: addr.postal_code ?? "",
           country: addr.country ?? "FR",
           orderValueCents: session.amount_total ?? 0,
+          items: lineItems.data.map((li) => ({
+            name: li.description ?? "Article",
+            quantity: li.quantity ?? 1,
+            totalCents: li.amount_total ?? 0,
+          })),
         })
       : { ok: false, error: "adresse de livraison absente" };
     sendcloudLine = announced.ok
