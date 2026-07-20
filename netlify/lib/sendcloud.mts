@@ -99,11 +99,18 @@ export async function announceOrder(info: OrderInfo): Promise<AnnounceResult> {
     if (!intId) return { ok: false, error: "intégration API introuvable (renseigner SENDCLOUD_INTEGRATION_ID)" };
     const { houseNumber } = splitStreet(info.line1);
     const order = {
-      order_id: info.sessionId,
+      order_id: info.sessionId.slice(-64), // 64 caractères max côté Sendcloud
       order_number: "NUR-" + info.sessionId.slice(-6).toUpperCase(),
       order_details: {
         integration: { id: intId },
+        status: { code: "fulfilled", message: "Fulfilled" },
         order_created_at: new Date().toISOString(),
+        order_items: info.items.map((it) => ({
+          name: it.name.slice(0, 100),
+          quantity: it.quantity,
+          total_price: price(it.totalCents),
+          unit_price: price(Math.round(it.totalCents / Math.max(1, it.quantity))),
+        })),
       },
       payment_details: {
         total_price: price(info.orderValueCents),
@@ -120,12 +127,6 @@ export async function announceOrder(info: OrderInfo): Promise<AnnounceResult> {
         email: info.email.slice(0, 100),
         phone_number: (info.phone || "").slice(0, 20),
       },
-      order_items: info.items.map((it) => ({
-        name: it.name.slice(0, 100),
-        quantity: it.quantity,
-        total_price: price(it.totalCents),
-        unit_price: price(Math.round(it.totalCents / Math.max(1, it.quantity))),
-      })),
     };
     const res = await fetch(`${PANEL}/api/v3/orders`, {
       method: "POST",
@@ -133,7 +134,7 @@ export async function announceOrder(info: OrderInfo): Promise<AnnounceResult> {
       body: JSON.stringify([order]),
     });
     if (!res.ok) {
-      const detail = (await res.text()).slice(0, 400);
+      const detail = (await res.text()).slice(0, 1500);
       console.error("Sendcloud order import error", res.status, detail);
       return { ok: false, error: `HTTP ${res.status} — ${detail}` };
     }
