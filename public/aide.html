@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aide NUR — régler le son, le Wi-Fi, le Coran hors connexion</title>
+  <meta name="description" content="Toutes les réponses pour utiliser votre tablette NUR : se connecter au Wi-Fi, régler le volume de l'adhan et des récitations, écouter le Coran sans connexion, reprendre sa lecture, apprendre par cœur." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23f4b942'/></svg>" />
+  <style>
+    .aide { max-width: var(--max); margin: 0 auto; padding: 48px 24px 80px; }
+    .aide-head { text-align: center; max-width: 660px; margin: 0 auto 40px; }
+    .aide-head h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); margin-bottom: 12px; }
+    .aide-head p { color: var(--muted); }
+
+    .sommaire {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+      margin-bottom: 56px;
+    }
+    .sommaire a {
+      background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+      padding: 14px 16px; text-decoration: none; color: var(--text);
+      font-weight: 600; font-size: 0.95rem; line-height: 1.3;
+    }
+    .sommaire a:hover { border-color: var(--gold); }
+
+    .aide-sec { margin-bottom: 64px; scroll-margin-top: 24px; }
+    .aide-sec > h2 {
+      font-size: 1.45rem; margin-bottom: 10px;
+      padding-bottom: 10px; border-bottom: 1px solid var(--line);
+    }
+    .aide-sec p { color: var(--muted); margin-bottom: 14px; max-width: 70ch; }
+    .aide-sec p strong { color: var(--text); }
+
+    .etapes { counter-reset: etape; list-style: none; margin: 0 0 20px; padding: 0; }
+    .etapes li {
+      counter-increment: etape; position: relative;
+      padding-left: 44px; margin-bottom: 12px; color: var(--muted); max-width: 70ch;
+    }
+    .etapes li::before {
+      content: counter(etape); position: absolute; left: 0; top: -2px;
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--gold); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.9rem;
+    }
+
+    .shots { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-top: 20px; }
+    .shots.une { grid-template-columns: 1fr; max-width: 760px; }
+    figure.shot { margin: 0; }
+    figure.shot img {
+      width: 100%; height: auto; display: block;
+      border: 1px solid var(--line); border-radius: 12px; background: #fff;
+    }
+    figure.shot figcaption {
+      color: var(--muted); font-size: 0.88rem; margin-top: 8px; line-height: 1.45;
+    }
+
+    .repere {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--gold); color: #fff; font-weight: 700; font-size: 0.78rem;
+      vertical-align: -4px; margin: 0 2px;
+    }
+
+    .astuce {
+      background: var(--bg-soft); border-left: 3px solid var(--gold);
+      border-radius: 0 10px 10px 0; padding: 14px 18px; margin: 18px 0 0;
+      color: var(--muted); font-size: 0.93rem; max-width: 70ch;
+    }
+    .astuce strong { color: var(--text); }
+
+    .aide-video { max-width: 560px; margin-top: 22px; }
+
+    .support-block {
+      margin-top: 40px; text-align: center;
+      background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 36px 24px;
+    }
+    .support-block h2 { font-size: 1.3rem; margin-bottom: 8px; }
+    .support-block p { color: var(--muted); margin-bottom: 18px; }
+    .support-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    @media (max-width: 900px) { .sommaire { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 760px) { .shots { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="brand" aria-label="Nur — accueil">
+      <img src="assets/logo.svg" alt="NUR" class="brand-logo" width="1133" height="944" />
+    </a>
+    <nav class="nav">
+      <a href="/">Boutique</a>
+      <a href="decouvrir.html">Découvrir</a>
+      <a href="/#faq">FAQ</a>
+    </nav>
+    <a href="/#commander" class="btn btn-primary" style="padding: 10px 20px;">Commander</a>
+  </header>
+
+  <main class="aide">
+    <div class="aide-head">
+      <h1>Aide</h1>
+      <p>Les réponses aux questions qui reviennent, en images, prises sur une vraie tablette.
+      Les repères dorés indiquent où appuyer.</p>
+    </div>
+
+    <nav class="sommaire">
+      <a href="#demarrage">1. Premier démarrage</a>
+      <a href="#wifi">2. Se connecter au Wi-Fi</a>
+      <a href="#son">3. Régler le son</a>
+      <a href="#hors-connexion">4. Le Coran sans connexion</a>
+      <a href="#lecture">5. Reprendre sa lecture</a>
+      <a href="#apprendre">6. Apprendre par cœur</a>
+      <a href="#horaires">7. Horaires de prière</a>
+      <a href="#adhan">8. L'adhan</a>
+      <a href="#mise-a-jour">9. Mettre à jour</a>
+      <a href="#reglages">10. Les autres réglages</a>
+    </nav>
+
+    <section class="aide-sec" id="demarrage">
+      <h2>1. Premier démarrage</h2>
+      <p>À la toute première mise sous tension, la tablette vous guide pas à pas :
+      <strong>le choix de la langue</strong>, la connexion, puis l'assistant de NUR pour votre
+      ville, la méthode de calcul et le mou'adhin. La vidéo ci-dessous reprend le parcours
+      complet, côté système comme côté application.</p>
+      <div class="aide-video">
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/q_kz3mjcRvg"
+            title="NUR — guide de premier allumage et configurations" loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+      </div>
+      <p class="astuce">La langue choisie au tout début s'applique à <strong>toute la
+      tablette</strong>. NUR dispose en plus de son propre réglage de langue, si vous souhaitez
+      que l'application diffère du système.</p>
+    </section>
+
+    <section class="aide-sec" id="wifi">
+      <h2>2. Se connecter au Wi-Fi</h2>
+      <p>Le Wi-Fi ne se règle pas dans NUR mais dans la barre du système, qui est
+      <strong>cachée en haut de l'écran</strong>. C'est le geste que personne ne devine.</p>
+      <ol class="etapes">
+        <li>Posez le doigt tout en haut de l'écran et faites-le glisser vers le bas.</li>
+        <li><strong>Appuyez longuement</strong> sur la tuile Wi-Fi pour ouvrir la liste des réseaux.</li>
+        <li>Choisissez votre réseau et saisissez son mot de passe.</li>
+      </ol>
+      <div class="shots">
+        <figure class="shot">
+          <img src="assets/aide/barre-haut-geste.webp" alt="Faire glisser le haut de l'écran vers le bas" loading="lazy" />
+          <figcaption>Le glissement part du tout haut de l'écran, au-dessus de l'horloge.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/aide/wifi-tuile.webp" alt="La tuile Wi-Fi dans le panneau système" loading="lazy" />
+          <figcaption><span class="repere">1</span> la tuile Wi-Fi. Son libellé est le nom du réseau — masqué ici.</figcaption>
+        </figure>
+      </div>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="assets/aide/wifi-liste.webp" alt="Liste des réseaux Wi-Fi disponibles" loading="lazy" />
+          <figcaption><span class="repere">1</span> appuyez sur la ligne de votre réseau. Les noms sont masqués sur cette image.</figcaption>
+        </figure>
+      </div>
+      <p class="astuce"><strong>Appui long, pas appui court.</strong> Un appui bref sur la tuile
+      ne fait que couper ou rallumer le Wi-Fi : c'est l'appui prolongé qui ouvre la liste des
+      réseaux.</p>
+      <p class="astuce">Un détail déroutant : la tuile Wi-Fi n'affiche pas le mot « Wi-Fi »
+      mais <em>le nom du réseau</em> auquel vous êtes connectée.</p>
+      <p class="astuce">Le <strong>partage de connexion depuis votre téléphone</strong> fonctionne :
+      activez-le sur le téléphone, puis choisissez-le ici comme un réseau Wi-Fi ordinaire.</p>
+    </section>
+
+    <section class="aide-sec" id="son">
+      <h2>3. Régler le son</h2>
+      <p>Point important : <strong>l'adhan et les récitations du Coran ont deux volumes
+      séparés</strong>. Monter l'un ne touche pas l'autre — c'est la raison la plus fréquente
+      d'un son qui paraît faible alors qu'on croyait l'avoir monté.</p>
+      <p>Le plus sûr est de régler depuis NUR, où les deux sont côte à côte :
+      <strong>Réglages</strong>, puis la carte Volume.</p>
+      <div class="shots">
+        <figure class="shot">
+          <img src="assets/aide/volume.webp" alt="Réglages NUR : volume de l'adhan et volume des récitations" loading="lazy" />
+          <figcaption><span class="repere">1</span> volume de l'adhan — <span class="repere">2</span> volume des récitations du Coran.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/aide/son-tuile.webp" alt="La tuile Son dans le panneau système" loading="lazy" />
+          <figcaption>Le volume général se règle aussi depuis la barre du haut, tuile <span class="repere">1</span>.</figcaption>
+        </figure>
+      </div>
+      <p class="astuce"><strong>Le chiffre affiché vous dit où vous en êtes.</strong>
+      « 7 / 7 » ou « 15 / 15 » signifie que vous êtes déjà au maximum : l'application n'atténue
+      rien, donc au-delà c'est le haut-parleur de la tablette qui plafonne, et il est inutile de
+      chercher un autre réglage ailleurs.</p>
+    </section>
+
+    <section class="aide-sec" id="hors-connexion">
+      <h2>4. Écouter le Coran sans connexion</h2>
+      <p>Les récitations se téléchargent au fur et à mesure de l'écoute.
+      <strong>Tout verset déjà écouté reste sur la tablette</strong> et fonctionne ensuite sans
+      connexion : seul ce que vous n'avez jamais écouté manque à l'appel.</p>
+      <p>Pour prendre les devants, deux possibilités. Dans le lecteur, le bouton
+      <strong>Options</strong> télécharge la sourate en cours. Et dans les
+      <strong>Réglages</strong>, un bouton télécharge le Coran entier.</p>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="assets/aide/telecharger-tout.webp" alt="Réglages : télécharger toutes les sourates" loading="lazy" />
+          <figcaption>Le bouton indique au passage ce qui se trouve déjà sur la tablette.</figcaption>
+        </figure>
+      </div>
+      <p class="astuce">Le téléchargement complet demande du temps et une bonne connexion Wi-Fi.
+      Vous pouvez <strong>l'interrompre et le relancer</strong> : il reprend là où il s'était
+      arrêté, et il continue même si vous quittez l'application ou posez la tablette.</p>
+    </section>
+
+    <section class="aide-sec" id="lecture">
+      <h2>5. Reprendre sa lecture</h2>
+      <p>NUR retient tout seul l'endroit où vous vous êtes arrêtée. Cette position s'appelle
+      <strong>Dernière lecture</strong> et se met à jour chaque fois que vous quittez le lecteur —
+      vous n'avez rien à poser ni à mettre à jour vous-même.</p>
+      <ol class="etapes">
+        <li>Ouvrez <strong>Lire le Coran</strong>.</li>
+        <li>Choisissez l'onglet <strong>Marque-pages</strong>.</li>
+        <li>La première ligne est votre position : appuyez dessus pour y retourner.</li>
+      </ol>
+      <div class="shots">
+        <figure class="shot">
+          <img src="assets/aide/marque-pages-onglet.webp" alt="Index du Coran : onglet Marque-pages" loading="lazy" />
+          <figcaption>L'onglet Marque-pages, à droite de Sourates et Juz.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/aide/derniere-lecture.webp" alt="Ligne Dernière lecture en haut de la liste" loading="lazy" />
+          <figcaption><span class="repere">1</span> « Dernière lecture » : la sourate et le verset exacts où vous vous êtes arrêtée.</figcaption>
+        </figure>
+      </div>
+      <p>Les repères que vous posez vous-même, avec l'icône 🔖 du lecteur, apparaissent en dessous,
+      du plus récent au plus ancien. <strong>Un appui long sur l'un d'eux permet de le
+      supprimer.</strong></p>
+      <p>Si vous préférez retomber directement sur votre lecture en ouvrant le Coran, un réglage
+      s'en charge.</p>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="assets/aide/reprise-lecture-reglage.webp" alt="Réglage : ouvrir le Coran à la dernière lecture" loading="lazy" />
+          <figcaption>Appuyez sur le bouton pour activer ou désactiver.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="aide-sec" id="apprendre">
+      <h2>6. Apprendre par cœur</h2>
+      <p>Le lecteur dispose d'un <strong>mode apprentissage</strong> qui répète automatiquement
+      chaque verset — 2, 3 ou 5 fois — avant de passer au suivant, et vous laisse le temps de le
+      redire.</p>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="assets/aide/mode-apprentissage.webp" alt="Mode apprentissage dans le lecteur du Coran" loading="lazy" />
+          <figcaption><span class="repere">1</span> activer le mode apprentissage — <span class="repere">2</span> choisir le nombre de répétitions.</figcaption>
+        </figure>
+      </div>
+      <div class="aide-video">
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/25f1xUEOpIc"
+            title="NUR — le Coran et le mode apprentissage" loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="aide-sec" id="horaires">
+      <h2>7. Horaires de prière</h2>
+      <p>Les horaires dépendent de deux choses : <strong>votre ville</strong> et la
+      <strong>méthode de calcul</strong>. La méthode recommandée pour votre pays est proposée en
+      haut de la liste — en France, la Mosquée de Paris.</p>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="assets/aide/ville-methode.webp" alt="Réglages : ville et méthode de calcul" loading="lazy" />
+          <figcaption><span class="repere">1</span> chercher votre ville — <span class="repere">2</span> la méthode de calcul.</figcaption>
+        </figure>
+      </div>
+      <p class="astuce">N'oubliez pas <strong>Enregistrer</strong>, en bas de l'écran des réglages,
+      après avoir changé de ville.</p>
+    </section>
+
+    <section class="aide-sec" id="adhan">
+      <h2>8. L'adhan</h2>
+      <p>Vous choisissez le mou'adhin parmi plusieurs récitations, et vous pouvez l'écouter
+      immédiatement pour vérifier le réglage et le volume.</p>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="assets/aide/mouadhin.webp" alt="Réglages : choix du mou'adhin et test de l'adhan" loading="lazy" />
+          <figcaption><span class="repere">1</span> choisir le mou'adhin — <span class="repere">2</span> l'écouter tout de suite.</figcaption>
+        </figure>
+      </div>
+      <p>Prière par prière, vous pouvez choisir l'adhan complet, un simple signal sonore, ou le
+      silence : les petites icônes à droite de chaque horaire, sur l'écran principal, font défiler
+      ces trois modes.</p>
+      <p class="astuce">Quand l'adhan sonne, un écran s'affiche avec un bouton
+      <strong>Arrêter l'adhan</strong>. La notification en haut de l'écran propose le même
+      bouton.</p>
+    </section>
+
+    <section class="aide-sec" id="mise-a-jour">
+      <h2>9. Mettre à jour la tablette</h2>
+      <p>NUR vérifie les mises à jour tout seul une fois par jour et vous propose de les installer.
+      Vous pouvez aussi vérifier à la demande depuis les réglages.</p>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="assets/aide/mise-a-jour.webp" alt="Réglages : vérifier les mises à jour" loading="lazy" />
+          <figcaption>Une connexion Wi-Fi est nécessaire pour la vérification et le téléchargement.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="aide-sec" id="reglages">
+      <h2>10. Les autres réglages</h2>
+      <p>Tout le reste se trouve au même endroit, dans les <strong>Réglages</strong> de NUR.</p>
+      <div class="shots">
+        <figure class="shot">
+          <img src="assets/aide/langue-theme.webp" alt="Réglages : langue et thème" loading="lazy" />
+          <figcaption><span class="repere">1</span> la langue de l'application, parmi onze —
+          <span class="repere">2</span> le thème, à laisser sur E-ink.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/aide/outils-kiosque.webp" alt="Réglages : Qibla, fond d'écran et mode kiosque" loading="lazy" />
+          <figcaption><span class="repere">1</span> la boussole Qibla —
+          <span class="repere">2</span> le fond d'écran de veille —
+          <span class="repere">3</span> le mode kiosque.</figcaption>
+        </figure>
+      </div>
+      <p class="astuce"><strong>Le mode kiosque</strong> fait de NUR l'écran d'accueil de la
+      tablette : le bouton Accueil ramène toujours aux horaires de prière. C'est le réglage
+      d'usine. Le désactiver rend l'accueil Android habituel.</p>
+      <p class="astuce">Les <strong>réglages avancés</strong>, sous la méthode de calcul,
+      permettent d'ajuster les angles, de décaler une prière de quelques minutes ou de choisir
+      l'école pour le Asr. À ne toucher que si votre mosquée suit un calcul particulier.</p>
+    </section>
+
+    <div class="support-block">
+      <h2>Vous ne trouvez pas votre réponse ?</h2>
+      <p>Écrivez-nous, nous répondons rapidement. Les vidéos de prise en main sont également
+      disponibles sur la page Découvrir.</p>
+      <div class="support-actions">
+        <a href="decouvrir.html" class="btn btn-ghost">Voir les vidéos</a>
+        <a href="mailto:contact@nur-store.com" class="btn btn-primary">Nous écrire</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand"><img src="assets/logo.svg" alt="NUR" class="brand-logo" width="1133" height="944" /></div>
+    <p>© 2026 Nur Store. Tous droits réservés.</p>
+    <nav class="footer-nav">
+      <a href="/">Boutique</a>
+      <a href="aide.html"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 1 1 3.4 2.5c-.7.3-1 .9-1 1.6v.3"/><circle cx="11.9" cy="17" r=".9" fill="currentColor" stroke="none"/></svg>Aide</a>
+      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="cgv.html">CGV</a>
+    </nav>
+  </footer>
+  <script src="track.js" defer></script>
+</body>
+</html>
