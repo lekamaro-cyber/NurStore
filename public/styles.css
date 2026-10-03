@@ -406,3 +406,15 @@ section[id] { scroll-margin-top: 80px; }
   section { padding: 60px 18px; }
   .features, .gallery, .specs-grid { grid-template-columns: 1fr; }
 }
+
+
+/* Icône du lien Aide — hérite de la couleur et de la taille du texte voisin */
+.nav-ico {
+  width: 1.05em;
+  height: 1.05em;
+  vertical-align: -0.17em;
+  margin-right: 6px;
+  opacity: .85;
+}
+.nav a:hover .nav-ico,
+.footer-nav a:hover .nav-ico { opacity: 1; }
