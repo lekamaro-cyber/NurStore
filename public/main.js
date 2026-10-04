@@ -7,6 +7,25 @@ let STOCK = { remaining: Infinity }; // état du stock (rempli par /api/stock)
 const euro = (cents) =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
 
+/**
+ * Mensualité affichée pour le paiement en 3 fois (Alma).
+ *
+ * Alma calcule lui-même la répartition exacte : 199 € ne se divise pas en
+ * trois parts égales au centime. On arrondit donc vers le BAS pour la
+ * mensualité — jamais annoncer plus cher que la réalité — et on affiche à
+ * côté le total exact, qui est le chiffre qui engage. L'écart d'un centime
+ * sur la première échéance est alors sans portée.
+ *
+ * Renvoie null sous le minimum d'Alma (120 €) : afficher une facilité de
+ * paiement que le client ne verra pas au moment de payer serait pire que
+ * de ne rien afficher.
+ */
+const ALMA_MIN_CENTS = 12000;
+const splitAlma = (totalCents, n = 3) =>
+  totalCents >= ALMA_MIN_CENTS
+    ? { each: euro(Math.floor(totalCents / n)), total: euro(totalCents), n }
+    : null;
+
 /* ---- état du panier ---- */
 const loadCart = () => {
   try { return JSON.parse(localStorage.getItem(CART_KEY)) || {}; }
@@ -88,9 +107,15 @@ function renderBuyPanel() {
       </span>
       <span class="option-price">+ ${euro(housse.price)}</span>
     </label>` : "";
+  const split = splitAlma(p.price);
+  const splitRow = split
+    ? `<div class="buy-split">ou <strong>${split.n} × ${split.each}</strong> sans frais —
+         soit ${split.total} au total, sans intérêts ni frais de retard</div>`
+    : "";
   $("buyPanel").innerHTML = `
     <h2>${p.name}</h2>
     <div class="buy-price">${euro(p.price)} <small>TTC</small></div>
+    ${splitRow}
     ${stockBadge}
     ${promoTag}
     <p class="buy-desc">${p.description}</p>
@@ -169,6 +194,15 @@ function renderCart() {
     items.querySelectorAll("[data-rm]").forEach((b) => b.onclick = () => { delete cart[b.dataset.rm]; saveCart(cart); renderCart(); updateCount(); });
   }
   $("drawerTotal").textContent = euro(cartTotal());
+  // Le 3× suit le sous-total : il disparaît si le panier repasse sous 120 €.
+  const dsplit = entries.length ? splitAlma(cartTotal()) : null;
+  const dnode = $("drawerSplit");
+  if (dnode) {
+    dnode.innerHTML = dsplit
+      ? `ou <strong>${dsplit.n} × ${dsplit.each}</strong> sans frais, à choisir au paiement`
+      : "";
+    dnode.hidden = !dsplit;
+  }
   $("checkoutBtn").disabled = entries.length === 0;
 }
 

@@ -253,6 +253,14 @@ section[id] { scroll-margin-top: 80px; }
 .buy-panel h2 { font-size: 1.7rem; }
 .buy-price { font-size: 2.6rem; font-weight: 800; color: var(--gold); margin: 14px 0; }
 .buy-price small { font-size: 1rem; color: var(--muted); font-weight: 500; }
+/* Mention du paiement en 3 fois. Volontairement discrète : elle rassure sans
+   concurrencer le prix, qui reste le seul chiffre en or de la fiche. */
+.buy-split {
+  margin: -6px 0 18px; padding: 10px 14px;
+  background: var(--bg-soft); border: 1px solid var(--line); border-radius: 10px;
+  color: var(--muted); font-size: 0.95rem; line-height: 1.5;
+}
+.buy-split strong { color: var(--text); }
 .buy-desc { color: var(--muted); margin-bottom: 26px; }
 .option-row {
   display: flex; align-items: center; gap: 12px;
@@ -384,6 +392,10 @@ section[id] { scroll-margin-top: 80px; }
 .cart-line-remove { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 0.82rem; text-decoration: underline; }
 .drawer-foot { padding: 22px; border-top: 1px solid var(--line); }
 .drawer-total { display: flex; justify-content: space-between; font-size: 1.15rem; font-weight: 700; margin-bottom: 16px; }
+.drawer-split {
+  margin: -8px 0 14px; color: var(--muted); font-size: 0.92rem; line-height: 1.5;
+}
+.drawer-split strong { color: var(--text); }
 .drawer-promo {
   width: 100%; padding: 11px 14px; margin-bottom: 12px;
   border: 1px dashed var(--gold); border-radius: 10px;

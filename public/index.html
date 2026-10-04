@@ -196,6 +196,7 @@
     <details><summary>Livraison : délais et transporteurs ?</summary><p>Expédition depuis la France sous 48 h. Deux options au moment du paiement : <strong>Mondial Relay en point relais (5 €)</strong> ou <strong>Colissimo à domicile (10 €)</strong>. Si vous choisissez Mondial Relay, vous indiquez votre point relais juste après le paiement, sur la page de confirmation. Chaque envoi est suivi et assuré.</p></details>
     <details><summary>En quelles langues est disponible la tablette ?</summary><p>L'interface existe en 11 langues : français, anglais, arabe, ourdou, bengali, espagnol, russe, chinois, turc, indonésien et suédois.</p></details>
     <details><summary>Comment se passe le paiement ?</summary><p>Paiement sécurisé par carte bancaire via Stripe. Vos données bancaires ne transitent jamais par notre site.</p></details>
+    <details><summary>Peut-on payer en plusieurs fois ?</summary><p>Oui, en <strong>3 fois sans frais</strong> : il suffit de choisir <strong>Alma</strong> au moment de payer. Le total reste exactement le même qu'en une fois — <strong>aucun intérêt, aucun frais de dossier, et aucune pénalité de retard</strong>. La tablette est expédiée dès la commande, sans attendre les versements suivants. Disponible à partir de 120 € d'achat, avec une carte bancaire valide.</p></details>
   </section>
 
   <!-- ===== FOOTER ===== -->
@@ -221,7 +222,7 @@
 
   <!-- Barre d'achat collante (mobile) -->
   <div class="buy-bar" id="buyBar">
-    <div class="buy-bar-price"><strong>199 €</strong> <span>tout compris avec le code</span></div>
+    <div class="buy-bar-price"><strong>199 €</strong> <span>ou 3 × 66,33 € sans frais</span></div>
     <a href="#commander" class="btn btn-primary">Commander</a>
   </div>
 
@@ -240,6 +241,7 @@
     <div class="drawer-items" id="drawerItems"></div>
     <div class="drawer-foot">
       <div class="drawer-total"><span>Sous-total</span><span id="drawerTotal">0,00 €</span></div>
+      <p class="drawer-split" id="drawerSplit" hidden></p>
       <input type="text" id="promoInput" class="drawer-promo" placeholder="Code promo (facultatif)" autocomplete="off" autocapitalize="characters" />
       <p class="drawer-shipping">Frais de port choisis à l'étape du paiement (Mondial Relay 5 € · Colissimo 10 €).</p>
       <button class="btn btn-primary btn-block" id="checkoutBtn">Passer au paiement</button>
