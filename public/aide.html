@@ -31,6 +31,10 @@
     }
     .aide-sec p { color: var(--muted); margin-bottom: 14px; max-width: 70ch; }
     .aide-sec p strong { color: var(--text); }
+    .aide-liste { color: var(--muted); max-width: 70ch; margin: 0 0 18px; padding-left: 22px; }
+    .aide-liste li { margin-bottom: 9px; line-height: 1.6; }
+    .aide-liste li::marker { color: var(--gold); }
+    .aide-liste strong { color: var(--text); }
 
     .etapes { counter-reset: etape; list-style: none; margin: 0 0 20px; padding: 0; }
     .etapes li {
@@ -112,10 +116,11 @@
       <a href="#hors-connexion">4. Le Coran sans connexion</a>
       <a href="#lecture">5. Reprendre sa lecture</a>
       <a href="#apprendre">6. Apprendre par cœur</a>
-      <a href="#horaires">7. Horaires de prière</a>
-      <a href="#adhan">8. L'adhan</a>
-      <a href="#mise-a-jour">9. Mettre à jour</a>
-      <a href="#reglages">10. Les autres réglages</a>
+      <a href="#affichage">7. Le confort de lecture</a>
+      <a href="#horaires">8. Horaires de prière</a>
+      <a href="#adhan">9. L'adhan</a>
+      <a href="#mise-a-jour">10. Mettre à jour</a>
+      <a href="#reglages">11. Les autres réglages</a>
     </nav>
 
     <section class="aide-sec" id="demarrage">
@@ -267,8 +272,46 @@
       </div>
     </section>
 
+    <section class="aide-sec" id="affichage">
+      <h2>7. Le confort de lecture</h2>
+      <p>Un écran e-ink ne s'allume pas : il se redessine. Selon la façon dont il s'y prend,
+      le défilement passe brièvement par du noir — ce que l'on perçoit comme un
+      <strong>clignotement</strong> — ou glisse sans rien montrer.</p>
+      <p><strong>Votre tablette est réglée sur « rapide ».</strong> C'est le mode le plus
+      confortable pour lire : pas de clignotement, le texte défile d'un trait. Vous n'avez rien
+      à faire — si vous avez installé la dernière mise à jour, c'est déjà en place.</p>
+      <p>Pour le vérifier ou en changer, tirez la <strong>barre du haut</strong> vers le bas :</p>
+      <div class="shots">
+        <figure class="shot">
+          <img src="assets/aide/refresh-tuile.webp" alt="La tuile Refresh Settings dans la barre du haut" loading="lazy" />
+          <figcaption>La tuile <span class="repere">1</span> ouvre le réglage. Son nom reste en
+          anglais, « Refresh Settings » : la tablette ne le traduit pas.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/aide/refresh-modes.webp" alt="Les quatre modes de rafraîchissement, rapide sélectionné" loading="lazy" />
+          <figcaption>Quatre modes. <span class="repere">1</span> « rapide » est celui que nous
+          recommandons.</figcaption>
+        </figure>
+      </div>
+      <p>Ce que font les quatre :</p>
+      <ul class="aide-liste">
+        <li><strong>royale</strong> — l'image la plus nette, mais un clignotement à chaque
+        changement de page. Agréable pour regarder, fatigant pour lire longtemps.</li>
+        <li><strong>Par défaut</strong> — le réglage d'origine de la tablette, à mi-chemin.
+        C'est lui qui provoquait les clignotements que vous avez pu remarquer.</li>
+        <li><strong>rapide</strong> — celui que nous installons. Pas de clignotement, au prix
+        d'une légère trace du texte précédent, que la lecture fait oublier.</li>
+        <li><strong>Vitesse maximale</strong> — <strong>à éviter.</strong> L'écran va plus vite
+        encore, mais il laisse des <strong>rémanences</strong> : les fantômes des pages
+        précédentes s'accumulent et finissent par gêner la lecture.</li>
+      </ul>
+      <p class="astuce">Ce réglage appartient à la tablette, pas à NUR : il s'applique à tout
+      ce qui s'affiche. Si vous en changez, NUR respecte votre choix et ne le remet pas sur
+      « rapide » au démarrage suivant.</p>
+    </section>
+
     <section class="aide-sec" id="horaires">
-      <h2>7. Horaires de prière</h2>
+      <h2>8. Horaires de prière</h2>
       <p>Les horaires dépendent de deux choses : <strong>votre ville</strong> et la
       <strong>méthode de calcul</strong>. La méthode recommandée pour votre pays est proposée en
       haut de la liste — en France, la Mosquée de Paris.</p>
@@ -283,7 +326,7 @@
     </section>
 
     <section class="aide-sec" id="adhan">
-      <h2>8. L'adhan</h2>
+      <h2>9. L'adhan</h2>
       <p>Vous choisissez le mou'adhin parmi plusieurs récitations, et vous pouvez l'écouter
       immédiatement pour vérifier le réglage et le volume.</p>
       <div class="shots une">
@@ -301,7 +344,7 @@
     </section>
 
     <section class="aide-sec" id="mise-a-jour">
-      <h2>9. Mettre à jour la tablette</h2>
+      <h2>10. Mettre à jour la tablette</h2>
       <p>NUR vérifie les mises à jour tout seul une fois par jour et vous propose de les installer.
       Vous pouvez aussi vérifier à la demande depuis les réglages.</p>
       <div class="shots une">
@@ -313,7 +356,7 @@
     </section>
 
     <section class="aide-sec" id="reglages">
-      <h2>10. Les autres réglages</h2>
+      <h2>11. Les autres réglages</h2>
       <p>Tout le reste se trouve au même endroit, dans les <strong>Réglages</strong> de NUR.</p>
       <div class="shots">
         <figure class="shot">
