@@ -86,7 +86,7 @@ async function init() {
   const pi = $("promoInput");
   if (pi) pi.addEventListener("input", renderCart);
   document
-    .querySelectorAll('input[name="ppShip"]')
+    .querySelectorAll('input[name="ship"]')
     .forEach((r) => r.addEventListener("change", renderCart));
   renderBuyPanel();
   renderCart();
@@ -206,8 +206,9 @@ const chargerSdkPaypal = () => {
   return sdkPaypal;
 };
 
-const modeLivraisonChoisi = () =>
-  (document.querySelector('input[name="ppShip"]:checked') || {}).value || "relay";
+const modeLivraison = () =>
+  (document.querySelector('input[name="ship"]:checked') || {}).value || "relay";
+const portCents = () => LIVRAISON_CENTS[modeLivraison()] ?? 0;
 
 let boutonsPaypalRendus = false;
 
@@ -221,8 +222,7 @@ async function monterBoutonsPaypal() {
   // automatiquement, le bouton n'apparaîtrait donc jamais. Les deux offres
   // restent exclusives — payer en 4 fois se fait au prix plein —, et c'est dit
   // en une ligne sous le séparateur plutôt que par une mécanique de retrait.
-  const dansLesBornes =
-    splitPay(cartTotal() + (LIVRAISON_CENTS[modeLivraisonChoisi()] ?? 0)) !== null;
+  const dansLesBornes = splitPay(cartTotal() + portCents()) !== null;
   bloc.hidden = !(PAYPAL.actif && dansLesBornes);
   if (bloc.hidden) return;
 
@@ -246,7 +246,7 @@ async function monterBoutonsPaypal() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             items: Object.entries(cart).map(([id, quantity]) => ({ id, quantity })),
-            livraison: modeLivraisonChoisi(),
+            livraison: modeLivraison(),
           }),
         });
         const d = await r.json();
@@ -267,7 +267,7 @@ async function monterBoutonsPaypal() {
         }
         // Panier vidé seulement après encaissement confirmé.
         cart = {}; saveCart(cart); updateCount();
-        const relais = modeLivraisonChoisi() === "relay" ? "&relay=1" : "";
+        const relais = modeLivraison() === "relay" ? "&relay=1" : "";
         location.href = "success.html?ref=" + encodeURIComponent(d.reference) + relais;
       },
       onError: (err) => {
@@ -312,18 +312,25 @@ function renderCart() {
     items.querySelectorAll("[data-inc]").forEach((b) => b.onclick = () => changeQty(b.dataset.inc, 1));
     items.querySelectorAll("[data-rm]").forEach((b) => b.onclick = () => { delete cart[b.dataset.rm]; saveCart(cart); renderCart(); updateCount(); });
   }
-  $("drawerTotal").textContent = euro(cartTotal());
-  // Le fractionné suit le sous-total, et disparaît dès qu'un code promo est
-  // saisi : les deux ne sont pas cumulables, autant ne pas le promettre.
-  // Livraison comprise : c'est le montant que PayPal débitera vraiment. Annoncer
-  // la mensualité sur le seul sous-total la sous-estimerait, et le client
-  // découvrirait l'écart sur la page de paiement.
-  const totalAvecPort = cartTotal() + (LIVRAISON_CENTS[modeLivraisonChoisi()] ?? 0);
-  const dsplit = entries.length ? splitPay(totalAvecPort) : null;
+  const sousTotal = cartTotal();
+  const port = entries.length ? portCents() : 0;
+  const total = sousTotal + port;
+  $("drawerSubtotal").textContent = euro(sousTotal);
+  $("drawerShip").textContent = euro(port);
+  $("drawerTotal").textContent = euro(total);
+  $("shipChoice").hidden = entries.length === 0;
+
+  // Le code promo offre housse et livraison, mais seul le serveur peut le
+  // valider : le tiroir affiche les prix pleins et annonce l'ajustement.
+  const promo = ($("promoInput")?.value || "").trim();
+  if ($("promoNote")) $("promoNote").hidden = !promo;
+
+  // La mensualité porte sur le total réellement débité, livraison comprise.
+  const dsplit = entries.length ? splitPay(total) : null;
   const dnode = $("drawerSplit");
   if (dnode) {
     dnode.innerHTML = dsplit
-      ? `ou <strong>${dsplit.n} × ${dsplit.each}</strong> sans frais avec PayPal, livraison comprise`
+      ? `ou <strong>${dsplit.n} × ${dsplit.each}</strong> sans frais`
       : "";
     dnode.hidden = !dsplit;
   }
@@ -359,7 +366,7 @@ $("checkoutBtn").onclick = async () => {
     const res = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items, promo }),
+      body: JSON.stringify({ items, promo, livraison: modeLivraison() }),
     });
     const data = await res.json();
     if (res.ok && data.url) {

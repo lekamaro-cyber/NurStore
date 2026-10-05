@@ -241,24 +241,26 @@
     </div>
     <div class="drawer-items" id="drawerItems"></div>
     <div class="drawer-foot">
-      <div class="drawer-total"><span>Sous-total</span><span id="drawerTotal">0,00 €</span></div>
-      <p class="drawer-split" id="drawerSplit" hidden></p>
+      <fieldset class="drawer-ship" id="shipChoice">
+        <legend>Livraison</legend>
+        <label><input type="radio" name="ship" value="relay" checked /> Mondial Relay — point relais <b>5 €</b></label>
+        <label><input type="radio" name="ship" value="home" /> Colissimo — à domicile <b>10 €</b></label>
+      </fieldset>
+      <div class="drawer-line"><span>Sous-total</span><span id="drawerSubtotal">0,00 €</span></div>
+      <div class="drawer-line"><span>Livraison</span><span id="drawerShip">0,00 €</span></div>
+      <div class="drawer-total"><span>Total</span><span id="drawerTotal">0,00 €</span></div>
       <input type="text" id="promoInput" class="drawer-promo" placeholder="Code promo (facultatif)" autocomplete="off" autocapitalize="characters" />
-      <p class="drawer-shipping">Frais de port choisis à l'étape du paiement (Mondial Relay 5 € · Colissimo 10 €).</p>
-      <button class="btn btn-primary btn-block" id="checkoutBtn">Passer au paiement</button>
+      <p class="drawer-note" id="promoNote" hidden>L'offre de lancement — housse et livraison offertes — sera appliquée au paiement.</p>
+      <p class="drawer-split" id="drawerSplit" hidden></p>
+      <button class="btn btn-primary btn-block" id="checkoutBtn">Payer en une fois</button>
       <p class="drawer-msg" id="drawerMsg"></p>
 
       <!-- Paiement en plusieurs fois. Masqué tant que /api/paypal/status ne le
            déclare pas actif : en bac à sable, un bouton visible ferait croire
            à un paiement qui n'en est pas un. -->
       <div class="drawer-paypal" id="paypalBlock" hidden>
-        <div class="drawer-sep"><span>ou payez en 4 fois sans frais</span></div>
+        <div class="drawer-sep"><span>ou en 4 fois sans frais</span></div>
         <p class="drawer-note">Non cumulable avec le code promo : en payant en 4 fois, l'offre de lancement ne s'applique pas.</p>
-        <fieldset class="drawer-ship">
-          <legend>Livraison</legend>
-          <label><input type="radio" name="ppShip" value="relay" checked /> Mondial Relay — point relais <b>5 €</b></label>
-          <label><input type="radio" name="ppShip" value="home" /> Colissimo — à domicile <b>10 €</b></label>
-        </fieldset>
         <div id="paypalButtons"></div>
         <p class="drawer-msg" id="paypalMsg"></p>
       </div>

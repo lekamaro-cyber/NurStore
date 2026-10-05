@@ -391,7 +391,16 @@ section[id] { scroll-margin-top: 80px; }
 .cart-line-qty button { background: var(--card); border: 1px solid var(--line); color: var(--text); width: 26px; height: 26px; border-radius: 6px; cursor: pointer; }
 .cart-line-remove { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 0.82rem; text-decoration: underline; }
 .drawer-foot { padding: 22px; border-top: 1px solid var(--line); }
-.drawer-total { display: flex; justify-content: space-between; font-size: 1.15rem; font-weight: 700; margin-bottom: 16px; }
+.drawer-line {
+  display: flex; justify-content: space-between;
+  color: var(--muted); font-size: 0.95rem; margin-bottom: 6px;
+}
+.drawer-total {
+  display: flex; justify-content: space-between;
+  font-size: 1.15rem; font-weight: 700;
+  padding-top: 10px; margin-bottom: 14px;
+  border-top: 1px solid var(--line);
+}
 .drawer-split {
   margin: -8px 0 14px; color: var(--muted); font-size: 0.92rem; line-height: 1.5;
 }
@@ -416,7 +425,7 @@ section[id] { scroll-margin-top: 80px; }
 .drawer-note { color: var(--muted); font-size: 0.85rem; line-height: 1.45; margin: -4px 0 12px; }
 .drawer-ship {
   border: 1px solid var(--line); border-radius: 10px;
-  padding: 10px 12px; margin-bottom: 12px;
+  padding: 10px 12px; margin-bottom: 14px;
 }
 .drawer-ship legend { color: var(--muted); font-size: 0.8rem; padding: 0 4px; }
 .drawer-ship label {
@@ -431,7 +440,6 @@ section[id] { scroll-margin-top: 80px; }
   font-family: var(--font); font-size: 0.95rem; text-transform: uppercase;
 }
 .drawer-promo::placeholder { text-transform: none; color: var(--muted); }
-.drawer-shipping { font-size: 0.8rem; color: var(--muted); margin-bottom: 14px; text-align: center; }
 .drawer-msg { margin-top: 12px; font-size: 0.85rem; text-align: center; color: var(--gold); min-height: 1.2em; }
 
 /* ===== RESPONSIVE ===== */

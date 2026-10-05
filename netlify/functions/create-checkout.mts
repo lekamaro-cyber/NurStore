@@ -2,7 +2,9 @@ import Stripe from "stripe";
 import type { Context, Config } from "@netlify/functions";
 import { STOCK_TOTAL, getSold } from "../lib/stock.mts";
 
-import { CATALOG, CURRENCY, SHIPPING_COUNTRIES, quantiteValide } from "../lib/catalogue.mts";
+import {
+  CATALOG, CURRENCY, SHIPPING_COUNTRIES, LIVRAISONS, estModeLivraison, quantiteValide,
+} from "../lib/catalogue.mts";
 
 export default async (req: Request, context: Context) => {
   if (req.method !== "POST") {
@@ -22,7 +24,7 @@ export default async (req: Request, context: Context) => {
     );
   }
 
-  let body: { items?: { id: string; quantity: number }[]; promo?: string };
+  let body: { items?: { id: string; quantity: number }[]; promo?: string; livraison?: string };
   try {
     body = await req.json();
   } catch {
@@ -33,6 +35,16 @@ export default async (req: Request, context: Context) => {
   if (!items.length) {
     return Response.json({ error: "Panier vide." }, { status: 400 });
   }
+
+  // Le mode de livraison est choisi dans le panier, pas dans le tunnel Stripe :
+  // il doit valoir pour les deux moyens de paiement, et le total affiché avant
+  // de cliquer doit être celui qui sera débité. Une seule option est donc
+  // transmise à Stripe — celle déjà retenue — au lieu de redemander un choix
+  // déjà fait.
+  if (!estModeLivraison(body.livraison)) {
+    return Response.json({ error: "Mode de livraison invalide." }, { status: 400 });
+  }
+  const livraison = LIVRAISONS[body.livraison];
 
   // Nombre de tablettes demandées (sert au code promo et au contrôle du stock).
   const tabletQty = items
@@ -112,22 +124,11 @@ export default async (req: Request, context: Context) => {
         {
           shipping_rate_data: {
             type: "fixed_amount",
-            fixed_amount: { amount: promoValid ? 0 : 500, currency: CURRENCY },
-            display_name: promoValid ? "Mondial Relay — Point relais (offert)" : "Mondial Relay — Point relais",
+            fixed_amount: { amount: promoValid ? 0 : livraison.montant, currency: CURRENCY },
+            display_name: promoValid ? `${livraison.libelle} (offert)` : livraison.libelle,
             delivery_estimate: {
               minimum: { unit: "business_day", value: 2 },
               maximum: { unit: "business_day", value: 4 },
-            },
-          },
-        },
-        {
-          shipping_rate_data: {
-            type: "fixed_amount",
-            fixed_amount: { amount: promoValid ? 0 : 1000, currency: CURRENCY },
-            display_name: promoValid ? "Colissimo — Livraison à domicile (offerte)" : "Colissimo — Livraison à domicile",
-            delivery_estimate: {
-              minimum: { unit: "business_day", value: 2 },
-              maximum: { unit: "business_day", value: 3 },
             },
           },
         },
