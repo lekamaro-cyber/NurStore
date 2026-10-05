@@ -23,6 +23,13 @@ export type CommandePayee = {
   /** Référence du paiement, reprise dans les e-mails et chez Sendcloud. */
   reference: string;
   source: "stripe" | "paypal";
+  /**
+   * Vraie vente ou essai ? Le compteur de stock se sépare test/live d'après le
+   * préfixe de la clé Stripe — qui ne sait rien de l'environnement PayPal. Un
+   * paiement en bac à sable décomptait donc du stock réel. Le parcours qui
+   * encaisse est seul à savoir, il le dit ici.
+   */
+  reel: boolean;
   /** Mention affichée au marchand, ex. « PayPal — paiement en 4 fois ». */
   moyenPaiement: string;
   client: { nom: string; email: string; telephone: string };
@@ -68,7 +75,8 @@ const formaterAdresse = (a: CommandePayee["adresse"]) =>
  * Décompte du stock. Ne compte que les tablettes : la housse et le produit de
  * validation interne n'entament pas la série.
  */
-async function majStock(articles: ArticleCommande[]): Promise<string> {
+async function majStock(articles: ArticleCommande[], reel: boolean): Promise<string> {
+  if (!reel) return "STOCK : commande d'essai, compteur inchangé.";
   const qte = articles
     .filter((a) => a.nom.includes("Tablette NUR"))
     .reduce((n, a) => n + a.quantite, 0);
@@ -114,10 +122,24 @@ export async function traiterCommande(c: CommandePayee): Promise<void> {
     .map((a) => `  • ${a.quantite} × ${a.nom} — ${euro(a.totalCents)}`)
     .join("\n");
 
-  const [ligneStock, ligneSendcloud] = await Promise.all([
-    majStock(c.articles),
+  // `allSettled`, et non `all` : un rejet de Sendcloud faisait échouer toute la
+  // fonction AVANT l'envoi des e-mails. Le client avait payé, le stock était
+  // décompté, et le marchand n'était prévenu de rien. L'e-mail marchand est
+  // l'effet le plus important de cette chaîne — c'est lui qui déclenche
+  // l'expédition —, il doit donc être le mieux protégé, pas le plus fragile.
+  const [rStock, rSendcloud] = await Promise.allSettled([
+    majStock(c.articles, c.reel),
     annoncerSendcloud(c),
   ]);
+  const ligneStock =
+    rStock.status === "fulfilled"
+      ? rStock.value
+      : "STOCK : échec — " + String(rStock.reason);
+  const ligneSendcloud =
+    rSendcloud.status === "fulfilled"
+      ? rSendcloud.value
+      : "SENDCLOUD : échec — créer l'envoi à la main depuis cet e-mail.\n  Détail : " +
+        String(rSendcloud.reason);
 
   const texte = [
     `NOUVELLE COMMANDE NUR 🎉`,
@@ -149,11 +171,15 @@ export async function traiterCommande(c: CommandePayee): Promise<void> {
     c.lienDetail ? `Détail : ${c.lienDetail}` : ``,
   ].join("\n");
 
-  await envoyerEmail(
-    Netlify.env.get("ORDER_NOTIFY_EMAIL") ?? "",
-    `🛒 Commande NUR — ${euro(c.totalCents)} — ${c.client.nom || c.client.email}`,
-    texte
-  );
+  try {
+    await envoyerEmail(
+      Netlify.env.get("ORDER_NOTIFY_EMAIL") ?? "",
+      `🛒 Commande NUR${c.reel ? "" : " (ESSAI)"} — ${euro(c.totalCents)} — ${c.client.nom || c.client.email}`,
+      texte
+    );
+  } catch (err) {
+    console.error("E-mail marchand en échec", err);
+  }
 
   // Confirmation au client — uniquement si RESEND_FROM est configuré
   // (domaine vérifié chez Resend), sinon Resend refuserait l'envoi.
@@ -179,6 +205,10 @@ export async function traiterCommande(c: CommandePayee): Promise<void> {
       `Qu'Allah vous récompense pour votre confiance.`,
       `L'équipe NUR — nur-store.com`,
     ].join("\n");
-    await envoyerEmail(c.client.email, `Votre commande NUR est confirmée ✓`, texteClient);
+    try {
+      await envoyerEmail(c.client.email, `Votre commande NUR est confirmée ✓`, texteClient);
+    } catch (err) {
+      console.error("E-mail client en échec", err);
+    }
   }
 }

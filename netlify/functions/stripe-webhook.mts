@@ -61,6 +61,9 @@ export default async (req: Request) => {
   const commande: CommandePayee = {
     reference: session.id,
     source: "stripe",
+    // Stripe sépare déjà ses clés test/live, et le compteur de stock s'aligne
+    // sur ce préfixe : une session reçue ici est toujours du même monde que lui.
+    reel: true,
     moyenPaiement: "Stripe — paiement comptant",
     client: {
       nom: s?.name ?? c?.name ?? "",

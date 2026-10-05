@@ -63,7 +63,8 @@ export default async (req: Request) => {
   const commande: CommandePayee = {
     reference: detail.reference,
     source: "paypal",
-    moyenPaiement: "PayPal — paiement en 4 fois",
+    reel: paypalEnv() === "live",
+    moyenPaiement: `PayPal — paiement en 4 fois${paypalEnv() === "live" ? "" : " (BAC À SABLE)"}`,
     client: { nom, email: payeur?.email_address ?? "", telephone: "" },
     adresse: adr
       ? {
