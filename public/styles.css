@@ -413,7 +413,7 @@ section[id] { scroll-margin-top: 80px; }
 .drawer-sep::before, .drawer-sep::after {
   content: ""; flex: 1; height: 1px; background: var(--line);
 }
-.drawer-conflit p { color: var(--muted); font-size: 0.9rem; margin-bottom: 10px; }
+.drawer-note { color: var(--muted); font-size: 0.85rem; line-height: 1.45; margin: -4px 0 12px; }
 .drawer-ship {
   border: 1px solid var(--line); border-radius: 10px;
   padding: 10px 12px; margin-bottom: 12px;

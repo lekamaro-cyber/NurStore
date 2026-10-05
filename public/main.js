@@ -29,12 +29,6 @@ const splitPay = (totalCents, n = 4) =>
     ? { each: euro(Math.floor(totalCents / n)), total: euro(totalCents), n }
     : null;
 
-/** Le code promo n'est pas cumulable avec le paiement en plusieurs fois. */
-const promoSaisi = () => {
-  const i = $("promoInput");
-  return !!(i && i.value.trim());
-};
-
 /* ---- état du panier ---- */
 const loadCart = () => {
   try { return JSON.parse(localStorage.getItem(CART_KEY)) || {}; }
@@ -94,8 +88,6 @@ async function init() {
   document
     .querySelectorAll('input[name="ppShip"]')
     .forEach((r) => r.addEventListener("change", renderCart));
-  const retirer = $("btnRetirerPromo");
-  if (retirer) retirer.onclick = () => { $("promoInput").value = ""; renderCart(); };
   renderBuyPanel();
   renderCart();
   updateCount();
@@ -225,19 +217,16 @@ async function monterBoutonsPaypal() {
   // Le fractionné n'est pas cumulable avec le code promo : si un code est
   // saisi, on retire le bouton plutôt que de laisser le serveur refuser après
   // coup — un refus au moment de payer serait vécu comme une panne.
-  // Le bloc s'affiche dès que le montant le permet ; c'est le code promo qui
-  // décide ensuite ce qu'on y montre. Le faire disparaître sans explication
-  // revenait à supprimer l'offre pour tout le monde, puisque le code de
-  // lancement est pré-rempli automatiquement.
+  // Le code promo ne masque plus le fractionné : il est pré-rempli
+  // automatiquement, le bouton n'apparaîtrait donc jamais. Les deux offres
+  // restent exclusives — payer en 4 fois se fait au prix plein —, et c'est dit
+  // en une ligne sous le séparateur plutôt que par une mécanique de retrait.
   const dansLesBornes =
     splitPay(cartTotal() + (LIVRAISON_CENTS[modeLivraisonChoisi()] ?? 0)) !== null;
   bloc.hidden = !(PAYPAL.actif && dansLesBornes);
   if (bloc.hidden) return;
 
-  const conflit = promoSaisi();
-  $("paypalConflit").hidden = !conflit;
-  $("paypalChoix").hidden = conflit;
-  if (conflit || boutonsPaypalRendus) return;
+  if (boutonsPaypalRendus) return;
 
   try {
     await chargerSdkPaypal();
@@ -330,7 +319,7 @@ function renderCart() {
   // la mensualité sur le seul sous-total la sous-estimerait, et le client
   // découvrirait l'écart sur la page de paiement.
   const totalAvecPort = cartTotal() + (LIVRAISON_CENTS[modeLivraisonChoisi()] ?? 0);
-  const dsplit = entries.length && !promoSaisi() ? splitPay(totalAvecPort) : null;
+  const dsplit = entries.length ? splitPay(totalAvecPort) : null;
   const dnode = $("drawerSplit");
   if (dnode) {
     dnode.innerHTML = dsplit

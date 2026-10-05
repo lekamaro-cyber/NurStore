@@ -253,20 +253,13 @@
            à un paiement qui n'en est pas un. -->
       <div class="drawer-paypal" id="paypalBlock" hidden>
         <div class="drawer-sep"><span>ou payez en 4 fois sans frais</span></div>
-        <!-- Les deux offres ne sont pas cumulables. Plutôt que de faire
-             disparaître le fractionné sans rien dire, on pose le choix. -->
-        <div class="drawer-conflit" id="paypalConflit" hidden>
-          <p>Non cumulable avec l'offre de lancement, qui vous offre déjà la housse et la livraison.</p>
-          <button type="button" class="btn btn-ghost btn-block" id="btnRetirerPromo">Retirer le code et payer en 4 fois</button>
-        </div>
-        <div id="paypalChoix">
+        <p class="drawer-note">Non cumulable avec le code promo : en payant en 4 fois, l'offre de lancement ne s'applique pas.</p>
         <fieldset class="drawer-ship">
           <legend>Livraison</legend>
           <label><input type="radio" name="ppShip" value="relay" checked /> Mondial Relay — point relais <b>5 €</b></label>
           <label><input type="radio" name="ppShip" value="home" /> Colissimo — à domicile <b>10 €</b></label>
         </fieldset>
         <div id="paypalButtons"></div>
-        </div>
         <p class="drawer-msg" id="paypalMsg"></p>
       </div>
     </div>
