@@ -2,23 +2,7 @@ import Stripe from "stripe";
 import type { Context, Config } from "@netlify/functions";
 import { STOCK_TOTAL, getSold } from "../lib/stock.mts";
 
-/**
- * Catalogue AUTORITATIF — les prix sont fixés ICI, côté serveur, en centimes (EUR).
- * On ne fait JAMAIS confiance au prix envoyé par le navigateur.
- * Pour changer le prix : modifie la valeur ci-dessous (et aussi public/products.json
- * pour l'affichage). 29900 = 299,00 €.
- */
-const CATALOG: Record<string, { name: string; price: number }> = {
-  "nur-tablet": { name: "Tablette NUR — Coran, prière & hadith", price: 19900 },
-  "nur-housse": { name: "Housse de protection Nur", price: 1000 },
-  // Produit de validation interne (1 €) — absent du site, accessible via
-  // la page cachée /commande-test.html. N'entame pas le stock.
-  "nur-test": { name: "Commande de validation NUR (interne)", price: 100 },
-};
-
-const CURRENCY = "eur";
-// Pays où la livraison est proposée au moment du paiement.
-const SHIPPING_COUNTRIES = ["FR", "BE", "LU", "MC", "CH"] as const;
+import { CATALOG, CURRENCY, SHIPPING_COUNTRIES, quantiteValide } from "../lib/catalogue.mts";
 
 export default async (req: Request, context: Context) => {
   if (req.method !== "POST") {
@@ -53,7 +37,7 @@ export default async (req: Request, context: Context) => {
   // Nombre de tablettes demandées (sert au code promo et au contrôle du stock).
   const tabletQty = items
     .filter((i) => i.id === "nur-tablet")
-    .reduce((n, i) => n + Math.max(1, Math.min(10, Math.floor(Number(i.quantity) || 1))), 0);
+    .reduce((n, i) => n + quantiteValide(i.quantity), 0);
 
   // Code promo de lancement (défini via la variable d'environnement PROMO_CODE) :
   // housse offerte + livraison offerte — UNIQUEMENT avec une tablette au panier.
@@ -76,7 +60,7 @@ export default async (req: Request, context: Context) => {
     if (!product) {
       return Response.json({ error: `Produit inconnu : ${item.id}` }, { status: 400 });
     }
-    const qty = Math.max(1, Math.min(10, Math.floor(Number(item.quantity) || 1)));
+    const qty = quantiteValide(item.quantity);
     const housseOfferte = promoValid && item.id === "nur-housse";
     line_items.push({
       quantity: qty,

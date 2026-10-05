@@ -1,0 +1,20 @@
+{
+  // Contrôle de types des fonctions Netlify — `npm run typecheck`.
+  // Netlify compile les .mts avec esbuild, qui EFFACE les types sans les
+  // vérifier : une erreur de type ne se verrait donc qu'en production, sur une
+  // commande réelle. Ce fichier est le seul filet du dépôt, il n'y a pas de tests.
+  // `strict` est indispensable : sans strictNullChecks, TypeScript ne discrimine
+  // pas les unions sur un booléen littéral et laisse passer de vraies erreurs.
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "lib": ["ES2022", "DOM"]
+  },
+  "include": ["netlify/**/*.mts"]
+}

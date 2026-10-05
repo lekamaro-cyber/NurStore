@@ -4,9 +4,15 @@
   "description": "Boutique en ligne de la tablette Nur",
   "private": true,
   "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.check.json"
+  },
   "dependencies": {
     "@netlify/blobs": "^8.1.0",
     "@netlify/functions": "^2.8.2",
     "stripe": "^17.5.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
   }
 }
