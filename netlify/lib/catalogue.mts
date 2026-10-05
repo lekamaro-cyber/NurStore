@@ -14,9 +14,15 @@ export type Produit = { name: string; price: number };
 export const CATALOG: Record<string, Produit> = {
   "nur-tablet": { name: "Tablette NUR — Coran, prière & hadith", price: 19900 },
   "nur-housse": { name: "Housse de protection Nur", price: 1000 },
-  // Produit de validation interne (1 €) — absent du site, accessible via
-  // la page cachée /commande-test.html. N'entame pas le stock.
+  // Produits de validation internes — absents du site, accessibles via la page
+  // cachée /commande-test.html. Leur nom ne contient pas « Tablette NUR », ils
+  // n'entament donc pas le compteur de stock.
+  //   · nur-test     : 1 €, pour éprouver le paiement comptant (Stripe).
+  //   · nur-test-4x  : 51 €, pour éprouver le paiement en 4 fois — PayPal ne
+  //     propose le fractionné qu'à partir de 20 €, un test à 1 € ne l'afficherait
+  //     jamais.
   "nur-test": { name: "Commande de validation NUR (interne)", price: 100 },
+  "nur-test-4x": { name: "Commande de validation NUR 4× (interne)", price: 5100 },
 };
 
 export const CURRENCY = "eur";

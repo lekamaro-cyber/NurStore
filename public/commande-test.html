@@ -18,15 +18,76 @@
   <div class="test-wrap">
     <div class="test-card">
       <h1>🔧 Commande de validation (interne)</h1>
-      <p>Page cachée réservée aux tests : elle déclenche un vrai paiement de <strong>1 €</strong>
-      (+ frais de port choisis sur la page Stripe) pour valider toute la chaîne :
-      paiement live, livraison, point relais, e-mails de commande.</p>
-      <p>Rembourse ensuite le paiement depuis Stripe → Paiements.</p>
-      <button class="btn btn-primary btn-block" id="payBtn" style="margin-top: 14px;">Payer 1 € (validation)</button>
+      <p>Page cachée réservée aux tests. Les deux boutons déclenchent de <strong>vrais
+      paiements</strong> sur des produits internes qui n'entament pas le compteur de stock.</p>
+
+      <fieldset style="border:1px solid #d9cfbb;border-radius:10px;padding:10px 12px;margin:14px 0">
+        <legend style="font-size:.8rem">Livraison</legend>
+        <label style="display:block"><input type="radio" name="ship" value="relay" checked /> Mondial Relay — 5 €</label>
+        <label style="display:block"><input type="radio" name="ship" value="home" /> Colissimo — 10 €</label>
+      </fieldset>
+
+      <p><strong>Comptant (Stripe)</strong> — 1 € + port. Rembourse ensuite depuis Stripe → Paiements.</p>
+      <button class="btn btn-primary btn-block" id="payBtn">Payer 1 € (validation)</button>
       <p class="test-msg" id="msg"></p>
+
+      <p style="margin-top:22px"><strong>En 4 fois (PayPal)</strong> — 51 € + port, soit
+      4 échéances d'environ 14 €. PayPal ne propose le fractionné qu'à partir de 20 €,
+      d'où ce montant. Rembourse ensuite depuis PayPal → Activité.</p>
+      <div id="paypalButtons"></div>
+      <p class="test-msg" id="ppMsg"></p>
     </div>
   </div>
   <script>
+    const mode = () =>
+      (document.querySelector('input[name="ship"]:checked') || {}).value || "relay";
+
+    // Parcours PayPal, identique à celui du panier mais sur le produit interne.
+    (async () => {
+      const st = await fetch("/api/paypal/status").then((r) => r.json()).catch(() => null);
+      if (!st || !st.actif) {
+        document.getElementById("ppMsg").textContent =
+          "Paiement en 4 fois inactif (PAYPAL_ENV n'est pas en production).";
+        return;
+      }
+      await new Promise((res, rej) => {
+        const sc = document.createElement("script");
+        sc.src =
+          "https://www.paypal.com/sdk/js?client-id=" + encodeURIComponent(st.clientId) +
+          "&currency=EUR&locale=fr_FR&enable-funding=paylater&intent=capture";
+        sc.onload = res; sc.onerror = rej;
+        document.head.appendChild(sc);
+      });
+      paypal.Buttons({
+        style: { layout: "vertical", label: "pay", height: 45 },
+        createOrder: async () => {
+          const r = await fetch("/api/paypal/create-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ items: [{ id: "nur-test-4x", quantity: 1 }], livraison: mode() }),
+          });
+          const d = await r.json();
+          if (!r.ok) throw new Error(d.error || "création impossible");
+          return d.id;
+        },
+        onApprove: async (data) => {
+          document.getElementById("ppMsg").textContent = "Finalisation…";
+          const r = await fetch("/api/paypal/capture-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ orderID: data.orderID }),
+          });
+          const d = await r.json();
+          if (!r.ok) { document.getElementById("ppMsg").textContent = d.error || "échec"; return; }
+          const relais = mode() === "relay" ? "&relay=1" : "";
+          location.href = "success.html?ref=" + encodeURIComponent(d.reference) + relais;
+        },
+        onError: (e) => {
+          console.error(e);
+          document.getElementById("ppMsg").textContent = "Erreur PayPal — voir la console.";
+        },
+      }).render("#paypalButtons");
+    })();
     document.getElementById("payBtn").addEventListener("click", () => {
       const btn = document.getElementById("payBtn");
       const msg = document.getElementById("msg");
@@ -35,7 +96,7 @@
       fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: [{ id: "nur-test", quantity: 1 }] }),
+        body: JSON.stringify({ items: [{ id: "nur-test", quantity: 1 }], livraison: mode() }),
       })
         .then((r) => r.json().then((d) => ({ ok: r.ok, d })))
         .then(({ ok, d }) => {
