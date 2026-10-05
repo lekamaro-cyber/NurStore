@@ -8,23 +8,29 @@ const euro = (cents) =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
 
 /**
- * Mensualité affichée pour le paiement en 3 fois (Alma).
+ * Mensualité affichée pour le paiement en plusieurs fois (PayPal, 4 fois).
  *
- * Alma calcule lui-même la répartition exacte : 199 € ne se divise pas en
- * trois parts égales au centime. On arrondit donc vers le BAS pour la
- * mensualité — jamais annoncer plus cher que la réalité — et on affiche à
- * côté le total exact, qui est le chiffre qui engage. L'écart d'un centime
- * sur la première échéance est alors sans portée.
+ * PayPal calcule lui-même la répartition exacte. On arrondit la mensualité vers
+ * le BAS — jamais annoncer plus cher que la réalité — et on affiche le total
+ * exact à côté, qui est le chiffre qui engage. L'écart éventuel d'un centime
+ * sur la première échéance perd alors toute portée.
  *
- * Renvoie null sous le minimum d'Alma (120 €) : afficher une facilité de
- * paiement que le client ne verra pas au moment de payer serait pire que
- * de ne rien afficher.
+ * Renvoie null hors des bornes de PayPal (20 € à 3 000 €) : afficher une
+ * facilité que le client ne verra pas au moment de payer serait pire que de ne
+ * rien afficher.
  */
-const ALMA_MIN_CENTS = 12000;
-const splitAlma = (totalCents, n = 3) =>
-  totalCents >= ALMA_MIN_CENTS
+const SPLIT_MIN_CENTS = 2000;
+const SPLIT_MAX_CENTS = 300000;
+const splitPay = (totalCents, n = 4) =>
+  totalCents >= SPLIT_MIN_CENTS && totalCents <= SPLIT_MAX_CENTS
     ? { each: euro(Math.floor(totalCents / n)), total: euro(totalCents), n }
     : null;
+
+/** Le code promo n'est pas cumulable avec le paiement en plusieurs fois. */
+const promoSaisi = () => {
+  const i = $("promoInput");
+  return !!(i && i.value.trim());
+};
 
 /* ---- état du panier ---- */
 const loadCart = () => {
@@ -66,6 +72,10 @@ async function init() {
     const promoInput = $("promoInput");
     if (promoInput && !promoInput.value) promoInput.value = STOCK.promo;
   }
+  // Saisir ou effacer le code fait apparaître/disparaître la mention du
+  // fractionné dans le tiroir, puisque les deux ne se cumulent pas.
+  const pi = $("promoInput");
+  if (pi) pi.addEventListener("input", renderCart);
   renderBuyPanel();
   renderCart();
   updateCount();
@@ -107,10 +117,11 @@ function renderBuyPanel() {
       </span>
       <span class="option-price">+ ${euro(housse.price)}</span>
     </label>` : "";
-  const split = splitAlma(p.price);
+  const split = splitPay(p.price);
   const splitRow = split
-    ? `<div class="buy-split">ou <strong>${split.n} × ${split.each}</strong> sans frais —
-         soit ${split.total} au total, sans intérêts ni frais de retard</div>`
+    ? `<div class="buy-split">ou <strong>${split.n} × ${split.each}</strong> sans frais avec PayPal —
+         soit ${split.total} au total, sans intérêts ni pénalité de retard.
+         <small>Non cumulable avec l'offre de lancement.</small></div>`
     : "";
   $("buyPanel").innerHTML = `
     <h2>${p.name}</h2>
@@ -194,12 +205,13 @@ function renderCart() {
     items.querySelectorAll("[data-rm]").forEach((b) => b.onclick = () => { delete cart[b.dataset.rm]; saveCart(cart); renderCart(); updateCount(); });
   }
   $("drawerTotal").textContent = euro(cartTotal());
-  // Le 3× suit le sous-total : il disparaît si le panier repasse sous 120 €.
-  const dsplit = entries.length ? splitAlma(cartTotal()) : null;
+  // Le fractionné suit le sous-total, et disparaît dès qu'un code promo est
+  // saisi : les deux ne sont pas cumulables, autant ne pas le promettre.
+  const dsplit = entries.length && !promoSaisi() ? splitPay(cartTotal()) : null;
   const dnode = $("drawerSplit");
   if (dnode) {
     dnode.innerHTML = dsplit
-      ? `ou <strong>${dsplit.n} × ${dsplit.each}</strong> sans frais, à choisir au paiement`
+      ? `ou <strong>${dsplit.n} × ${dsplit.each}</strong> sans frais avec PayPal, à choisir au paiement`
       : "";
     dnode.hidden = !dsplit;
   }
