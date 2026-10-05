@@ -73,6 +73,10 @@ async function init() {
     const res = await fetch("/api/paypal/status" + essai);
     if (res.ok) PAYPAL = await res.json();
   } catch (e) { /* silencieux : le comptant reste disponible */ }
+  // Révèle les mentions écrites en dur dans le HTML (barre d'achat, FAQ).
+  if (PAYPAL.actif) {
+    document.querySelectorAll("[data-paypal-only]").forEach((e) => e.classList.add("pp-dispo"));
+  }
 
   // Offre de lancement publique : bandeau + champ code pré-rempli.
   if (STOCK.promo) {

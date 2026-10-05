@@ -396,6 +396,14 @@ section[id] { scroll-margin-top: 80px; }
   margin: -8px 0 14px; color: var(--muted); font-size: 0.92rem; line-height: 1.5;
 }
 .drawer-split strong { color: var(--text); }
+/* Tout ce qui annonce le paiement en plusieurs fois est masqué PAR DÉFAUT.
+   Le JavaScript le révèle seulement si /api/paypal/status le déclare actif.
+   Masquer en CSS plutôt qu'en JS évite que la mention apparaisse une fraction
+   de seconde avant d'être retirée — et surtout, si le JavaScript échoue, le
+   site reste muet au lieu de promettre un moyen de paiement absent. */
+[data-paypal-only] { display: none !important; }
+[data-paypal-only].pp-dispo { display: revert !important; }
+
 /* Paiement en plusieurs fois, dans le tiroir. */
 .drawer-paypal { margin-top: 18px; }
 .drawer-sep {
