@@ -21,6 +21,8 @@ const euro = (cents) =>
  * rien afficher.
  */
 const SPLIT_MIN_CENTS = 2000;
+/** Tarifs de livraison — doivent rester alignés sur netlify/lib/catalogue.mts. */
+const LIVRAISON_CENTS = { relay: 500, home: 1000 };
 const SPLIT_MAX_CENTS = 300000;
 const splitPay = (totalCents, n = 4) =>
   PAYPAL.actif && totalCents >= SPLIT_MIN_CENTS && totalCents <= SPLIT_MAX_CENTS
@@ -85,6 +87,9 @@ async function init() {
   // fractionné dans le tiroir, puisque les deux ne se cumulent pas.
   const pi = $("promoInput");
   if (pi) pi.addEventListener("input", renderCart);
+  document
+    .querySelectorAll('input[name="ppShip"]')
+    .forEach((r) => r.addEventListener("change", renderCart));
   renderBuyPanel();
   renderCart();
   updateCount();
@@ -129,7 +134,7 @@ function renderBuyPanel() {
   const split = splitPay(p.price);
   const splitRow = split
     ? `<div class="buy-split">ou <strong>${split.n} × ${split.each}</strong> sans frais avec PayPal —
-         soit ${split.total} au total, sans intérêts ni pénalité de retard.
+         soit ${split.total} au total hors livraison, sans intérêts ni pénalité de retard.
          <small>Non cumulable avec l'offre de lancement.</small></div>`
     : "";
   $("buyPanel").innerHTML = `
@@ -214,7 +219,9 @@ async function monterBoutonsPaypal() {
   // Le fractionné n'est pas cumulable avec le code promo : si un code est
   // saisi, on retire le bouton plutôt que de laisser le serveur refuser après
   // coup — un refus au moment de payer serait vécu comme une panne.
-  const dispo = PAYPAL.actif && !promoSaisi() && splitPay(cartTotal()) !== null;
+  const dispo =
+    PAYPAL.actif && !promoSaisi() &&
+    splitPay(cartTotal() + (LIVRAISON_CENTS[modeLivraisonChoisi()] ?? 0)) !== null;
   bloc.hidden = !dispo;
   if (!dispo || boutonsPaypalRendus) return;
 
@@ -305,11 +312,15 @@ function renderCart() {
   $("drawerTotal").textContent = euro(cartTotal());
   // Le fractionné suit le sous-total, et disparaît dès qu'un code promo est
   // saisi : les deux ne sont pas cumulables, autant ne pas le promettre.
-  const dsplit = entries.length && !promoSaisi() ? splitPay(cartTotal()) : null;
+  // Livraison comprise : c'est le montant que PayPal débitera vraiment. Annoncer
+  // la mensualité sur le seul sous-total la sous-estimerait, et le client
+  // découvrirait l'écart sur la page de paiement.
+  const totalAvecPort = cartTotal() + (LIVRAISON_CENTS[modeLivraisonChoisi()] ?? 0);
+  const dsplit = entries.length && !promoSaisi() ? splitPay(totalAvecPort) : null;
   const dnode = $("drawerSplit");
   if (dnode) {
     dnode.innerHTML = dsplit
-      ? `ou <strong>${dsplit.n} × ${dsplit.each}</strong> sans frais avec PayPal, à choisir au paiement`
+      ? `ou <strong>${dsplit.n} × ${dsplit.each}</strong> sans frais avec PayPal, livraison comprise`
       : "";
     dnode.hidden = !dsplit;
   }
