@@ -94,6 +94,8 @@ async function init() {
   document
     .querySelectorAll('input[name="ppShip"]')
     .forEach((r) => r.addEventListener("change", renderCart));
+  const retirer = $("btnRetirerPromo");
+  if (retirer) retirer.onclick = () => { $("promoInput").value = ""; renderCart(); };
   renderBuyPanel();
   renderCart();
   updateCount();
@@ -223,11 +225,19 @@ async function monterBoutonsPaypal() {
   // Le fractionné n'est pas cumulable avec le code promo : si un code est
   // saisi, on retire le bouton plutôt que de laisser le serveur refuser après
   // coup — un refus au moment de payer serait vécu comme une panne.
-  const dispo =
-    PAYPAL.actif && !promoSaisi() &&
+  // Le bloc s'affiche dès que le montant le permet ; c'est le code promo qui
+  // décide ensuite ce qu'on y montre. Le faire disparaître sans explication
+  // revenait à supprimer l'offre pour tout le monde, puisque le code de
+  // lancement est pré-rempli automatiquement.
+  const dansLesBornes =
     splitPay(cartTotal() + (LIVRAISON_CENTS[modeLivraisonChoisi()] ?? 0)) !== null;
-  bloc.hidden = !dispo;
-  if (!dispo || boutonsPaypalRendus) return;
+  bloc.hidden = !(PAYPAL.actif && dansLesBornes);
+  if (bloc.hidden) return;
+
+  const conflit = promoSaisi();
+  $("paypalConflit").hidden = !conflit;
+  $("paypalChoix").hidden = conflit;
+  if (conflit || boutonsPaypalRendus) return;
 
   try {
     await chargerSdkPaypal();
