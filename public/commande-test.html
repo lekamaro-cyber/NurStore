@@ -54,7 +54,7 @@
         const sc = document.createElement("script");
         sc.src =
           "https://www.paypal.com/sdk/js?client-id=" + encodeURIComponent(st.clientId) +
-          "&currency=EUR&locale=fr_FR&enable-funding=paylater&intent=capture";
+          "&currency=EUR&locale=fr_FR&enable-funding=paylater&disable-funding=card&intent=capture";
         sc.onload = res; sc.onerror = rej;
         document.head.appendChild(sc);
       });

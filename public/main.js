@@ -198,7 +198,10 @@ const chargerSdkPaypal = () => {
     const s = document.createElement("script");
     s.src =
       "https://www.paypal.com/sdk/js?client-id=" + encodeURIComponent(PAYPAL.clientId) +
-      "&currency=EUR&locale=fr_FR&enable-funding=paylater&intent=capture";
+      // `disable-funding=card` : les cartes passent par Stripe. Laisser PayPal en
+      // proposer une troisième entrée dupliquait le moyen de paiement, à des
+      // frais différents, et allongeait d'autant un tiroir déjà chargé.
+      "&currency=EUR&locale=fr_FR&enable-funding=paylater&disable-funding=card&intent=capture";
     s.onload = res;
     s.onerror = () => rej(new Error("SDK PayPal indisponible"));
     document.head.appendChild(s);
