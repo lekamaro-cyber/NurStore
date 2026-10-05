@@ -3,6 +3,7 @@
 const CART_KEY = "nur_cart";
 let CATALOG = {}; // { id: {id, name, price, description} }
 let STOCK = { remaining: Infinity }; // état du stock (rempli par /api/stock)
+let PAYPAL = { actif: false, clientId: null }; // fractionné (rempli par /api/paypal/status)
 
 const euro = (cents) =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
@@ -22,7 +23,7 @@ const euro = (cents) =>
 const SPLIT_MIN_CENTS = 2000;
 const SPLIT_MAX_CENTS = 300000;
 const splitPay = (totalCents, n = 4) =>
-  totalCents >= SPLIT_MIN_CENTS && totalCents <= SPLIT_MAX_CENTS
+  PAYPAL.actif && totalCents >= SPLIT_MIN_CENTS && totalCents <= SPLIT_MAX_CENTS
     ? { each: euro(Math.floor(totalCents / n)), total: euro(totalCents), n }
     : null;
 
@@ -63,6 +64,14 @@ async function init() {
     const res = await fetch("/api/stock");
     if (res.ok) STOCK = await res.json();
   } catch (e) { /* silencieux */ }
+  // Fractionné : disponible seulement si PayPal est configuré ET en production
+  // (ou si l'URL porte ?pp=test, pour essayer sans l'exposer au public).
+  try {
+    const essai = new URLSearchParams(location.search).get("pp") === "test" ? "?pp=test" : "";
+    const res = await fetch("/api/paypal/status" + essai);
+    if (res.ok) PAYPAL = await res.json();
+  } catch (e) { /* silencieux : le comptant reste disponible */ }
+
   // Offre de lancement publique : bandeau + champ code pré-rempli.
   if (STOCK.promo) {
     document.body.insertAdjacentHTML(
@@ -175,6 +184,95 @@ function updateCount() {
   $("cartCount").style.display = n > 0 ? "flex" : "none";
 }
 
+
+/* ---- paiement en 4 fois (PayPal) ----
+   Chargé à la demande : tant que le fractionné n'est pas actif, aucune requête
+   vers PayPal n'est faite et le SDK n'est pas téléchargé. */
+let sdkPaypal = null;
+const chargerSdkPaypal = () => {
+  if (sdkPaypal) return sdkPaypal;
+  sdkPaypal = new Promise((res, rej) => {
+    const s = document.createElement("script");
+    s.src =
+      "https://www.paypal.com/sdk/js?client-id=" + encodeURIComponent(PAYPAL.clientId) +
+      "&currency=EUR&locale=fr_FR&enable-funding=paylater&intent=capture";
+    s.onload = res;
+    s.onerror = () => rej(new Error("SDK PayPal indisponible"));
+    document.head.appendChild(s);
+  });
+  return sdkPaypal;
+};
+
+const modeLivraisonChoisi = () =>
+  (document.querySelector('input[name="ppShip"]:checked') || {}).value || "relay";
+
+let boutonsPaypalRendus = false;
+
+async function monterBoutonsPaypal() {
+  const bloc = $("paypalBlock");
+  if (!bloc) return;
+  // Le fractionné n'est pas cumulable avec le code promo : si un code est
+  // saisi, on retire le bouton plutôt que de laisser le serveur refuser après
+  // coup — un refus au moment de payer serait vécu comme une panne.
+  const dispo = PAYPAL.actif && !promoSaisi() && splitPay(cartTotal()) !== null;
+  bloc.hidden = !dispo;
+  if (!dispo || boutonsPaypalRendus) return;
+
+  try {
+    await chargerSdkPaypal();
+  } catch (e) {
+    $("paypalMsg").textContent = "Le paiement en plusieurs fois est momentanément indisponible.";
+    return;
+  }
+  boutonsPaypalRendus = true;
+
+  window.paypal
+    .Buttons({
+      style: { layout: "vertical", label: "pay", height: 45 },
+      createOrder: async () => {
+        $("paypalMsg").textContent = "";
+        const r = await fetch("/api/paypal/create-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            items: Object.entries(cart).map(([id, quantity]) => ({ id, quantity })),
+            livraison: modeLivraisonChoisi(),
+          }),
+        });
+        const d = await r.json();
+        if (!r.ok) throw new Error(d.error || "Création de commande impossible");
+        return d.id;
+      },
+      onApprove: async (data) => {
+        $("paypalMsg").textContent = "Finalisation du paiement…";
+        const r = await fetch("/api/paypal/capture-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderID: data.orderID }),
+        });
+        const d = await r.json();
+        if (!r.ok) {
+          $("paypalMsg").textContent = d.error || "Le paiement n'a pas pu être finalisé.";
+          return;
+        }
+        // Panier vidé seulement après encaissement confirmé.
+        cart = {}; saveCart(cart); updateCount();
+        const relais = modeLivraisonChoisi() === "relay" ? "&relay=1" : "";
+        location.href = "success.html?ref=" + encodeURIComponent(d.reference) + relais;
+      },
+      onError: (err) => {
+        console.error("PayPal", err);
+        $("paypalMsg").textContent =
+          "Le paiement en plusieurs fois a rencontré un problème. Vous pouvez payer comptant ci-dessus.";
+      },
+    })
+    .render("#paypalButtons")
+    .catch((e) => {
+      console.error("Rendu PayPal", e);
+      bloc.hidden = true;
+    });
+}
+
 /* ---- rendu du panier ---- */
 function renderCart() {
   const items = $("drawerItems");
@@ -216,6 +314,7 @@ function renderCart() {
     dnode.hidden = !dsplit;
   }
   $("checkoutBtn").disabled = entries.length === 0;
+  monterBoutonsPaypal();
 }
 
 function changeQty(id, delta) {

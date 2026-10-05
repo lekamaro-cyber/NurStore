@@ -106,7 +106,17 @@
 
     // Détecte une commande Mondial Relay.
     var sessionData = null;
-    var sid = new URLSearchParams(location.search).get("session_id");
+    var params = new URLSearchParams(location.search);
+    var sid = params.get("session_id");
+
+    // Commande payée en plusieurs fois (PayPal) : le mode de livraison est déjà
+    // connu du navigateur qui l'a choisi, inutile d'interroger le serveur.
+    var ppRef = params.get("ref");
+    if (ppRef && params.get("relay") === "1") {
+      $id("relaySession").value = ppRef;
+      $id("relayBlock").style.display = "block";
+    }
+
     if (sid) {
       fetch("/api/session?session_id=" + encodeURIComponent(sid))
         .then(function (r) { return r.ok ? r.json() : null; })

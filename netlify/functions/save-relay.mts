@@ -38,7 +38,11 @@ export default async (req: Request) => {
   const sessionId = (body.session_id || "").trim();
   const relais = (body.relais || "").trim().slice(0, 600);
   const email = (body.email || "").trim().slice(0, 200);
-  if (!sessionId.startsWith("cs_") || !relais) {
+  // Deux formes de référence : `cs_…` pour une commande Stripe, `nur-…` pour une
+  // commande PayPal (le fractionné). La vérification diffère, pas le reste.
+  const estStripe = sessionId.startsWith("cs_");
+  const estPaypal = sessionId.startsWith("nur-");
+  if ((!estStripe && !estPaypal) || !relais) {
     return Response.json({ error: "Données manquantes." }, { status: 400 });
   }
 
@@ -46,7 +50,7 @@ export default async (req: Request) => {
   const secret = Netlify.env.get("STRIPE_SECRET_KEY");
   let customerName = "";
   let amount = "";
-  if (secret) {
+  if (estStripe && secret) {
     try {
       const stripe = new Stripe(secret);
       const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -89,7 +93,7 @@ export default async (req: Request) => {
       ``,
       sendcloudNote,
       ``,
-      `Référence Stripe : ${sessionId}`,
+      `Référence ${estPaypal ? "PayPal" : "Stripe"} : ${sessionId}`,
     ].join("\n")
   );
 
