@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mises à jour NUR — nouveautés, améliorations et correctifs</title>
+  <meta name="description" content="Tout ce qui a changé sur la tablette NUR depuis sa sortie : nouvelles fonctionnalités, améliorations et correctifs, version par version. Les mises à jour arrivent toutes seules, par Wi-Fi." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23f4b942'/></svg>" />
+  <style>
+    .maj-page { max-width: var(--max); margin: 0 auto; padding: 48px 24px 80px; }
+    .maj-head { text-align: center; max-width: 680px; margin: 0 auto 36px; }
+    .maj-head h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); margin-bottom: 12px; }
+    .maj-head p { color: var(--muted); }
+
+    .maj-now {
+      max-width: 680px; margin: 0 auto 48px;
+      background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+      padding: 18px 22px; text-align: center;
+    }
+    .maj-now strong { color: var(--text); font-size: 1.05rem; }
+    .maj-now span { color: var(--muted); display: block; margin-top: 6px; font-size: 0.94rem; }
+
+    .frise { max-width: 860px; margin: 0 auto; }
+
+    .rel { margin-bottom: 56px; scroll-margin-top: 24px; }
+    .rel-tete {
+      display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+      padding-bottom: 12px; margin-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .rel-tete h2 { font-size: 1.5rem; }
+    .rel-date { color: var(--muted); font-size: 0.95rem; }
+    .rel-note { color: var(--muted); max-width: 70ch; margin-bottom: 22px; }
+
+    .lot { margin-bottom: 22px; }
+    .lot h3 {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--gold); font-weight: 700; margin-bottom: 10px;
+    }
+    .lot h3::before {
+      content: ""; width: 9px; height: 9px; border-radius: 50%;
+      background: var(--gold); flex: none;
+    }
+    .lot-liste { color: var(--muted); max-width: 72ch; margin: 0; padding-left: 22px; }
+    .lot-liste li { margin-bottom: 10px; line-height: 1.6; }
+    .lot-liste li::marker { color: var(--gold-soft); }
+    .lot-liste strong { color: var(--text); }
+
+    .maj-aide {
+      max-width: 860px; margin: 8px auto 0;
+      background: var(--bg-soft); border: 1px solid var(--line); border-radius: 14px;
+      padding: 24px 26px;
+    }
+    .maj-aide h2 { font-size: 1.2rem; margin-bottom: 10px; }
+    .maj-aide p { color: var(--muted); max-width: 70ch; margin-bottom: 12px; }
+    .maj-aide p:last-of-type { margin-bottom: 18px; }
+    .maj-aide .btn { margin-right: 10px; }
+
+    @media (max-width: 640px) {
+      .maj-page { padding: 32px 16px 64px; }
+      .rel-tete { gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="brand" aria-label="Nur — accueil">
+      <img src="assets/logo.svg" alt="NUR" class="brand-logo" width="1133" height="944" />
+    </a>
+    <nav class="nav">
+      <a href="/">Boutique</a>
+      <a href="decouvrir.html">Découvrir</a>
+      <a href="aide.html">Aide</a>
+    </nav>
+    <a href="/#commander" class="btn btn-primary" style="padding: 10px 20px;">Commander</a>
+  </header>
+
+  <main class="maj-page">
+    <div class="maj-head">
+      <h1>Mises à jour</h1>
+      <p>NUR s'améliore sans que vous ayez à y penser. La tablette vérifie une fois par jour
+      s'il existe une nouvelle version et vous propose de l'installer. Une connexion Wi-Fi
+      suffit : rien à brancher, rien à télécharger sur un ordinateur.</p>
+    </div>
+
+    <div class="maj-now">
+      <strong>Dernière version : 0.7.8 — 10 octobre 2026</strong>
+      <span>Pour voir la vôtre : Réglages → Aide et outils → À propos.
+      Pour chercher une mise à jour tout de suite : Réglages → Aide et outils →
+      Vérifier les mises à jour.</span>
+    </div>
+
+    <div class="frise">
+
+      <article class="rel" id="v078">
+        <div class="rel-tete">
+          <h2>Version 0.7.8</h2>
+          <span class="rel-date">10 octobre 2026</span>
+        </div>
+        <p class="rel-note">Une mise au point sur les langues, trouvée en repassant
+        l'application au peigne fin.</p>
+
+        <div class="lot">
+          <h3>Correctifs</h3>
+          <ul class="lot-liste">
+            <li><strong>Le Coran en bengali.</strong> L'application proposait le bengali, mais
+            ouvrir une sourate dans cette langue affichait une erreur et pas un seul verset —
+            pas même le texte arabe. Le Coran s'ouvre de nouveau, avec sa récitation et son
+            commentaire en bengali. La traduction des versets, elle, s'affiche en anglais tant
+            qu'une traduction bengalie n'a pas été ajoutée.</li>
+            <li><strong>L'aide emploie les mots de l'écran.</strong> Dans huit des onze langues,
+            elle désignait certains boutons et sections par d'autres termes que ceux réellement
+            affichés : on pouvait chercher en vain le réglage indiqué. Trente-trois formulations
+            ont été reprises.</li>
+            <li>Les trois modes d'alerte d'une prière annonçaient tous « Mode adhan » à la
+            lecture vocale, quel que soit le mode choisi.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="rel" id="v077">
+        <div class="rel-tete">
+          <h2>Version 0.7.7</h2>
+          <span class="rel-date">10 octobre 2026</span>
+        </div>
+        <p class="rel-note">La grande mise à jour depuis la version livrée avec les tablettes.
+        Elle rassemble plusieurs mois de travail : si votre tablette était encore en 0.5.1,
+        c'est tout ceci que vous recevez d'un coup.</p>
+
+        <div class="lot">
+          <h3>Nouveautés</h3>
+          <ul class="lot-liste">
+            <li><strong>Six nouveaux recueils de hadiths</strong>, bilingues arabe/français :
+            Sahih al-Bukhari, Sounan an-Nassaï, Sounan Abou Dawoud, Sounan Ibn Maja,
+            les 40 Hadiths Qoudsi et les 40 Hadiths de ad-Dahlawî. La bibliothèque compte
+            désormais près de 28 700 hadiths, tous consultables sans connexion.</li>
+            <li><strong>Deux volumes séparés</strong> : celui de l'adhan et celui des
+            récitations du Coran se règlent indépendamment. Monter l'un ne touche plus
+            à l'autre.</li>
+            <li><strong>Télécharger tout le Coran en une fois</strong>, pour l'écouter sans
+            connexion. Le téléchargement reprend tout seul s'il est interrompu.</li>
+            <li><strong>Les marque-pages portent leur date.</strong> La liste est triée du plus
+            récent, et un appui long sur une ligne propose de la supprimer.</li>
+            <li><strong>Reprendre sa lecture.</strong> À la première ouverture du Coran, NUR
+            demande une seule fois si vous préférez retrouver l'endroit où vous vous étiez
+            arrêté ou revenir à l'index des sourates. Le choix reste modifiable dans les
+            réglages.</li>
+            <li><strong>Un nouvel écran de réglages</strong> : cinq sections sur le côté —
+            Prière, Adhan, Lecture, Appareil, Aide et outils — chacune affichant son réglage
+            actuel, le détail à côté.</li>
+            <li><strong>L'aide de l'application a été entièrement réécrite</strong>, dans les
+            onze langues. Elle décrivait des écrans qui n'existaient plus et promettait un GPS
+            que la tablette n'a pas.</li>
+          </ul>
+        </div>
+
+        <div class="lot">
+          <h3>Améliorations</h3>
+          <ul class="lot-liste">
+            <li><strong>L'écran ne clignote plus à chaque défilement.</strong> Le
+            rafraîchissement rapide est désormais le réglage par défaut.</li>
+            <li><strong>Le mode plein écran tient.</strong> Il ne s'éteint plus tout seul quand
+            vous débranchez la tablette : il reste affiché jusqu'à ce que vous y touchiez, ou
+            jusqu'à 15 % de batterie — de quoi garder l'énergie nécessaire aux prières.</li>
+            <li><strong>La rotation automatique est désactivée par défaut.</strong> Sur une
+            tablette posée sur un support, elle coûtait une douzaine d'heures d'autonomie.
+            Elle reste activable dans les réglages.</li>
+            <li><strong>Lecture du Coran plus confortable</strong> : la tourne de page se cale
+            sur les lignes, l'interligne de l'arabe a été revu, et le numéro de verset ne prend
+            plus une ligne à lui seul.</li>
+            <li>L'assistant de première mise en route a été entièrement repris.</li>
+          </ul>
+        </div>
+
+        <div class="lot">
+          <h3>Correctifs</h3>
+          <ul class="lot-liste">
+            <li><strong>L'adhan, sur son chemin critique.</strong> Une alarme pouvait porter
+            l'horaire de la veille — jusqu'à deux minutes d'écart, et le Fajr sonnait deux fois.
+            Une prière pouvait aussi rester muette après un recalage de l'horloge. Les alarmes
+            se replanifient maintenant d'elles-mêmes après une mise à jour, un changement
+            d'heure ou de fuseau.</li>
+            <li>Quitter les réglages pendant l'adhan coupait le son.</li>
+            <li>L'application pouvait s'arrêter au moment d'interrompre l'adhan.</li>
+            <li>Tant que l'assistant de configuration n'est pas terminé, la tablette ne sonne
+            plus sur une ville par défaut.</li>
+            <li><strong>En arabe</strong>, le nom de chaque prière s'affichait en double et les
+            flèches de retour pointaient du mauvais côté. Les lettres arabes se détachaient les
+            unes des autres sur l'écran d'accueil et dans le Coran.</li>
+            <li>La méthode de calcul recommandée apparaissait deux fois dans la liste, et aucune
+            n'était suggérée lorsque l'application n'était pas en français.</li>
+            <li>Plus de message « vous avez la dernière version » quand le réseau est
+            inaccessible, et une mise à jour reportée est de nouveau proposée.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="rel" id="v051">
+        <div class="rel-tete">
+          <h2>Version 0.5.1</h2>
+          <span class="rel-date">juin 2026</span>
+        </div>
+        <p class="rel-note">La version installée sur les tablettes au moment de leur
+        expédition. Correctif de fiabilité de l'adhan.</p>
+      </article>
+
+    </div>
+
+    <div class="maj-aide">
+      <h2>Votre tablette n'a pas encore reçu la mise à jour ?</h2>
+      <p>La vérification a lieu une fois par jour, et seulement si la tablette est connectée
+      au Wi-Fi. Vous pouvez la déclencher à la main depuis
+      <strong>Réglages → Aide et outils → Vérifier les mises à jour</strong>.</p>
+      <p>Le téléchargement fait une soixantaine de mégaoctets : laissez la tablette connectée
+      le temps qu'il se termine. Si quelque chose coince, écrivez-nous.</p>
+      <div>
+        <a href="aide.html#mise-a-jour" class="btn btn-ghost">Voir la marche à suivre</a>
+        <a href="mailto:contact@nur-store.com" class="btn btn-primary">Nous écrire</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand"><img src="assets/logo.svg" alt="NUR" class="brand-logo" width="1133" height="944" /></div>
+    <p>© 2026 Nur Store. Tous droits réservés.</p>
+    <nav class="footer-nav">
+      <a href="/">Boutique</a>
+      <a href="aide.html"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 1 1 3.4 2.5c-.7.3-1 .9-1 1.6v.3"/><circle cx="11.9" cy="17" r=".9" fill="currentColor" stroke="none"/></svg>Aide</a>
+      <a href="nouveautes.html">Mises à jour</a>
+      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="cgv.html">CGV</a>
+    </nav>
+  </footer>
+  <script src="track.js" defer></script>
+</body>
+</html>
