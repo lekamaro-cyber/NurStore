@@ -34,13 +34,13 @@
   <main class="stats" id="dash" style="display:none;">
     <h1>📊 Stats des 14 derniers jours</h1>
     <div class="kpis" id="kpis"></div>
-    <h2>Provenance des visites</h2>
-    <table id="paysTable"></table>
-    <p class="muted" id="paysNote" style="margin-top:8px;"></p>
     <h2>Visites par jour</h2>
     <table id="daysTable"></table>
     <h2>Jusqu'où les visiteurs descendent (page d'accueil)</h2>
     <table id="funnelTable"></table>
+    <h2>Provenance des visites</h2>
+    <table id="paysTable"></table>
+    <p class="muted" id="paysNote" style="margin-top:8px;"></p>
     <h2>Temps passé</h2>
     <table id="timeTable"></table>
     <h2>Pages vues</h2>
@@ -126,12 +126,11 @@
       var pvPays = total(pays);
       var paysTries = Object.keys(pays).map(function (k) { return [k, pays[k]]; })
         .sort(function (a, b) { return b[1] - a[1]; });
-      var horsFr = pvPays - (pays["FR"] || 0);
-      var partHorsFr = pvPays ? Math.round((horsFr / pvPays) * 100) : 0;
+      var partFr = pvPays ? Math.round(((pays["FR"] || 0) / pvPays) * 100) : 0;
 
       $("kpis").innerHTML =
         "<div class='kpi'><b>" + pv + "</b><span>pages vues (14 j)</span></div>" +
-        "<div class='kpi'><b>" + (pvPays ? partHorsFr + " %" : "—") + "</b><span>visites hors France</span></div>" +
+        "<div class='kpi'><b>" + (pvPays ? partFr + " %" : "—") + "</b><span>visites françaises</span></div>" +
         "<div class='kpi'><b>" + (events["panier:ajout"] || 0) + "</b><span>ajouts au panier</span></div>" +
         "<div class='kpi'><b>" + (events["panier:paiement"] || 0) + "</b><span>clics « payer »</span></div>" +
         "<div class='kpi'><b>" + (events["vu:achat"] || 0) + "</b><span>ont vu le bloc achat</span></div>";
