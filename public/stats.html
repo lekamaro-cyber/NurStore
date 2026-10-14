@@ -10,14 +10,28 @@
     .stats { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
     .stats h1 { font-size: 1.6rem; margin-bottom: 20px; }
     .stats h2 { font-size: 1.1rem; margin: 30px 0 10px; }
-    .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
-    .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
-    .kpi b { display: block; font-size: 1.6rem; }
-    .kpi span { color: var(--muted); font-size: 0.82rem; }
+    /* Grille de 6 : les deux premières tuiles occupent 3 colonnes, les trois
+       suivantes 2 — donc 2 en haut, 3 en dessous, sans trou en bout de ligne. */
+    .kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+    .kpi { grid-column: span 2; background: var(--card); border: 1px solid var(--line);
+           border-radius: 12px; padding: 12px 14px; }
+    .kpi:nth-child(1), .kpi:nth-child(2) { grid-column: span 3; }
+    .kpi b { display: block; font-size: 1.45rem; line-height: 1.2; }
+    .kpi span { color: var(--muted); font-size: 0.8rem; }
+    @media (max-width: 640px) {
+      .kpis { grid-template-columns: repeat(2, 1fr); }
+      .kpi, .kpi:nth-child(1), .kpi:nth-child(2) { grid-column: span 1; }
+      .kpi:last-child { grid-column: span 2; }
+    }
     table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
     th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); }
     td:last-child, th:last-child { text-align: right; }
     .bar { background: var(--gold); height: 8px; border-radius: 4px; display: inline-block; vertical-align: middle; }
+    .pcode {
+      display: inline-block; min-width: 2.4em; margin-right: 9px; padding: 1px 5px;
+      border: 1px solid var(--line); border-radius: 5px; background: var(--bg-soft);
+      font-size: 0.72rem; letter-spacing: 0.06em; color: var(--muted); text-align: center;
+    }
     #login { max-width: 380px; margin: 80px auto; text-align: center; }
     #login input { width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg-soft); color: var(--text); margin-bottom: 12px; }
     .muted { color: var(--muted); font-size: 0.85rem; }
@@ -87,13 +101,10 @@
         return new Intl.DisplayNames(["fr"], { type: "region" }).of(code) || code;
       } catch (e) { return code; }
     }
-    // « FR » → 🇫🇷, par les indicateurs régionaux Unicode.
-    function drapeau(code) {
-      if (!/^[A-Z]{2}$/.test(code)) return "🏳️";
-      return String.fromCodePoint(
-        0x1f1e6 + code.charCodeAt(0) - 65,
-        0x1f1e6 + code.charCodeAt(1) - 65
-      );
+    // Pastille « FR ». Pas de drapeau emoji : Windows n'embarque aucune police
+    // pour les indicateurs régionaux et les afficherait en petites lettres.
+    function pastille(code) {
+      return "<span class='pcode'>" + (code === "??" ? "—" : code) + "</span>";
     }
 
     function rowsPays(el, entries, somme) {
@@ -103,7 +114,7 @@
         entries.map(function (e) {
           var part = somme ? (e[1] / somme) * 100 : 0;
           var w = Math.round((e[1] / max) * 120);
-          return "<tr><td>" + drapeau(e[0]) + " " + nomPays(e[0]) + "</td>" +
+          return "<tr><td>" + pastille(e[0]) + nomPays(e[0]) + "</td>" +
             "<td><span class='bar' style='width:" + w + "px'></span> " +
             (part >= 10 ? part.toFixed(0) : part.toFixed(1)) + " %</td>" +
             "<td>" + e[1] + "</td></tr>";
