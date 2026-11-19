@@ -20,14 +20,8 @@
     .vid h2 { font-size: 1.15rem; margin-bottom: 6px; }
     .vid > p { color: var(--muted); font-size: 0.93rem; margin-bottom: 16px; }
     .vid .video-frame { margin-top: auto; }
-    /* Emplacement "bientôt disponible" */
-    .vid-soon {
-      aspect-ratio: 16 / 9; border-radius: 12px;
-      background: repeating-linear-gradient(45deg, #e2d5b6 0 12px, #dccca8 12px 24px);
-      border: 1px dashed #c3ac7f;
-      display: flex; align-items: center; justify-content: center;
-      color: #93825f; font-weight: 600;
-    }
+    .vid { scroll-margin-top: 24px; }
+    .vid-grid-titre { grid-column: 1 / -1; font-size: 1.05rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-top: 12px; }
     .support-block {
       margin-top: 56px; text-align: center;
       background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
@@ -60,9 +54,9 @@
     </div>
 
     <div class="vid-grid">
-      <!-- Pour activer une vidéo : remplacer le bloc .vid-soon par
-           <div class="video-frame video-vertical"> (format Short) ou
-           <div class="video-frame"> (format paysage) avec l'iframe YouTube. -->
+      <!-- Les cartes « data-video » sont remplies par videos.js : l'identifiant YouTube
+           de chaque vidéo de fonction se change là-bas, et nulle part ailleurs. -->
+      <h2 class="vid-grid-titre">La tablette</h2>
 
       <article class="vid">
         <h2>🌙 NUR en une minute</h2>
@@ -105,7 +99,7 @@
 
       <article class="vid">
         <h2>⚙️ Premier démarrage</h2>
-        <p>La configuration en 6 étapes : langue, ville, méthode de calcul, muezzin. Prêt en 2 minutes.</p>
+        <p>La configuration en 6 étapes : langue, ville, méthode de calcul, mou'adhin. Prêt en 2 minutes.</p>
         <div class="video-frame">
           <iframe
             src="https://www.youtube.com/embed/q_kz3mjcRvg"
@@ -127,6 +121,44 @@
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen></iframe>
         </div>
+      </article>
+
+      <h2 class="vid-grid-titre">Les fonctions, une par une</h2>
+
+      <article class="vid" id="v3">
+        <h2>🕌 Les horaires de votre pays</h2>
+        <p>Vous choisissez votre ville, la méthode de votre pays est proposée en tête. Mosquée de Paris, Algérie, Tunisie, Maroc, Turquie, Émirats, Indonésie, Malaisie : chaque méthode suit le calendrier de son autorité.</p>
+        <div class="video-frame" data-video="v3"></div>
+      </article>
+
+      <article class="vid" id="v4">
+        <h2>🔊 L'adhan</h2>
+        <p>Neuf voix de mou'adhins, un mode par prière, l'alerte plein écran et son bouton d'arrêt, deux volumes séparés.</p>
+        <div class="video-frame" data-video="v4"></div>
+      </article>
+
+      <article class="vid" id="v5">
+        <h2>📖 Le Coran, sans connexion</h2>
+        <p>Le texte du Mushaf de Médine, trois affichages, huit récitateurs, le téléchargement complet, les marque-pages datés et la reprise de lecture.</p>
+        <div class="video-frame" data-video="v5"></div>
+      </article>
+
+      <article class="vid" id="v6">
+        <h2>📚 La bibliothèque de hadiths</h2>
+        <p>Près de 28 700 hadiths hors connexion : Riyâd as-Sâlihîn, les 40 de Nawawi, Sahih al-Bukhari, Abou Dawoud, Ibn Maja, an-Nassaï, et Hisn al-Muslim pour les invocations.</p>
+        <div class="video-frame" data-video="v6"></div>
+      </article>
+
+      <article class="vid" id="v1">
+        <h2>🔤 Les lettres de l'arabe</h2>
+        <p>Les premiers pas, comme à l'école coranique : la lettre, la voyelle, la syllabe, le mot. Chaque carte s'écoute dans la voix d'un natif. Un moyen de démarrer, un peu chaque jour.</p>
+        <div class="video-frame" data-video="v1"></div>
+      </article>
+
+      <article class="vid" id="v2">
+        <h2>🔎 La taille du texte</h2>
+        <p>Un réglage, une fois, pour toute la tablette : normale, grande ou très grande. L'accueil, les horaires, le Coran et les hadiths suivent.</p>
+        <div class="video-frame" data-video="v2"></div>
       </article>
     </div>
 
@@ -155,6 +187,7 @@
   <a class="wa-fab" href="#" target="_blank" rel="noopener" aria-label="Nous contacter sur WhatsApp">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
+  <script src="videos.js" defer></script>
   <script src="track.js" defer></script>
 </body>
 </html>

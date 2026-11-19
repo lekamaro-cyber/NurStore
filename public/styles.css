@@ -200,6 +200,14 @@ section[id] { scroll-margin-top: 80px; }
   display: flex; align-items: center; justify-content: center;
 }
 .video-frame iframe { width: 100%; height: 100%; border: 0; }
+/* Emplacement d'une vidéo pas encore en ligne (rempli par videos.js) */
+.vid-soon {
+  aspect-ratio: 16 / 9; border-radius: 12px;
+  background: repeating-linear-gradient(45deg, #e2d5b6 0 12px, #dccca8 12px 24px);
+  border: 1px dashed #c3ac7f;
+  display: flex; align-items: center; justify-content: center;
+  color: #93825f; font-weight: 600; text-align: center; padding: 12px;
+}
 /* Short YouTube = format vertical : cadre portrait centré */
 .video-vertical {
   aspect-ratio: 9 / 16;
