@@ -5,8 +5,94 @@ let CATALOG = {}; // { id: {id, name, price, description} }
 let STOCK = { remaining: Infinity }; // état du stock (rempli par /api/stock)
 let PAYPAL = { actif: false, clientId: null }; // fractionné (rempli par /api/paypal/status)
 
+/* ---- langue de la page (/ = fr, /en/, /ar/) : textes du panier et format des prix ---- */
+const LANG = document.documentElement.lang === "en" ? "en" : document.documentElement.lang === "ar" ? "ar" : "fr";
+const LOCALE = { fr: "fr-FR", en: "en-IE", ar: "ar-u-nu-latn" }[LANG];
+const T = {
+  fr: {
+    promoBanner: (code) => `🎁 Offre de lancement : housse + livraison <strong>offertes</strong> avec le code <strong>${code}</strong>`,
+    ttc: "TTC", soldout: "😔 Rupture de stock — la première série est épuisée.",
+    soldoutNote: (a) => `Suivez-nous sur ${a} pour être prévenu du réassort.`,
+    stock: (n) => `🔥 Plus que ${n} exemplaire${n > 1 ? "s" : ""} disponible${n > 1 ? "s" : ""}`,
+    promoTag: (code) => `🎁 Offre de lancement — avec le code <strong>${code}</strong> : housse <strong>offerte</strong> et livraison <strong>offerte</strong> (le code est déjà pré-rempli dans votre panier)`,
+    housseAlt: "Housse de protection NUR", housseAdd: "Ajouter la housse de protection",
+    split: (s) => `ou <strong>${s.n} × ${s.each}</strong> sans frais avec PayPal —
+         soit ${s.total} au total hors livraison, sans intérêts ni pénalité de retard.
+         <small>Non cumulable avec l'offre de lancement.</small>`,
+    qty: "Quantité", minus: "Diminuer", plus: "Augmenter", add: "Ajouter au panier",
+    reassure1: "<strong>Satisfait ou remboursé 14 jours</strong> — retournez-la, remboursement intégral",
+    reassure2: "Paiement sécurisé (Stripe · Visa · Mastercard) — vos données bancaires ne passent jamais par notre site",
+    reassure3: "Expédié de France sous 48 h, envoi suivi et assuré",
+    payLabel: "Paiement 100&nbsp;% sécurisé :",
+    anchor: "📚 À elle seule, la bibliothèque qu'elle contient (mushaf, tafsir, recueils de hadith) vaut plus de 100 € en livres papier.",
+    wa: "💬 Une question avant de commander ? Écrivez-nous sur WhatsApp — réponse rapide",
+    empty: "Votre panier est vide.", remove: "Retirer",
+    drawerSplit: (s) => `ou <strong>${s.n} × ${s.each}</strong> sans frais`,
+    ppUnavailable: "Le paiement en plusieurs fois est momentanément indisponible.",
+    ppCreate: "Création de commande impossible", ppFinalizing: "Finalisation du paiement…",
+    ppFailed: "Le paiement n'a pas pu être finalisé.",
+    ppError: "Le paiement en plusieurs fois a rencontré un problème. Vous pouvez payer comptant ci-dessus.",
+    redirect: "Redirection vers le paiement…", notConfigured: "Le paiement n'est pas encore configuré.",
+    network: "Erreur réseau. Réessaie dans un instant.",
+  },
+  en: {
+    promoBanner: (code) => `🎁 Launch offer: cover + shipping <strong>free</strong> with the code <strong>${code}</strong>`,
+    ttc: "incl. VAT", soldout: "😔 Sold out — the first batch is gone.",
+    soldoutNote: (a) => `Follow us on ${a} to be told when it is back in stock.`,
+    stock: (n) => `🔥 Only ${n} left`,
+    promoTag: (code) => `🎁 Launch offer — with the code <strong>${code}</strong>: <strong>free</strong> cover and <strong>free</strong> shipping (the code is already filled in your cart)`,
+    housseAlt: "NUR protective cover", housseAdd: "Add the protective cover",
+    split: (s) => `or <strong>${s.n} × ${s.each}</strong> interest-free with PayPal —
+         ${s.total} in total excluding shipping, no interest, no late fees.
+         <small>Cannot be combined with the launch offer.</small>`,
+    qty: "Quantity", minus: "Decrease", plus: "Increase", add: "Add to cart",
+    reassure1: "<strong>14-day money-back guarantee</strong> — return it for a full refund",
+    reassure2: "Secure payment (Stripe · Visa · Mastercard) — your card details never pass through our site",
+    reassure3: "Shipped from France within 48 h, tracked and insured",
+    payLabel: "100&nbsp;% secure payment:",
+    anchor: "📚 The library it holds (mushaf, tafsir, hadith collections) alone is worth over €100 in printed books.",
+    wa: "💬 A question before ordering? Write to us on WhatsApp — quick reply",
+    empty: "Your cart is empty.", remove: "Remove",
+    drawerSplit: (s) => `or <strong>${s.n} × ${s.each}</strong> interest-free`,
+    ppUnavailable: "Instalment payment is temporarily unavailable.",
+    ppCreate: "Could not create the order", ppFinalizing: "Finalising payment…",
+    ppFailed: "The payment could not be completed.",
+    ppError: "Instalment payment ran into a problem. You can pay in full above.",
+    redirect: "Redirecting to payment…", notConfigured: "Payment is not configured yet.",
+    network: "Network error. Please try again in a moment.",
+  },
+  ar: {
+    promoBanner: (code) => `🎁 عرض الإطلاق: الغطاء والشحن <strong>مجاناً</strong> مع الرمز <strong>${code}</strong>`,
+    ttc: "شامل الضريبة", soldout: "😔 نفدت الكمية — الدفعة الأولى بيعت بالكامل.",
+    soldoutNote: (a) => `تابعنا على ${a} لنخبرك عند توفرها من جديد.`,
+    stock: (n) => `🔥 لم يتبقَّ سوى ${n}`,
+    promoTag: (code) => `🎁 عرض الإطلاق — مع الرمز <strong>${code}</strong>: الغطاء <strong>مجاناً</strong> والشحن <strong>مجاناً</strong> (الرمز مُدخل مسبقاً في سلتك)`,
+    housseAlt: "غطاء حماية NUR", housseAdd: "إضافة غطاء الحماية",
+    split: (s) => `أو <strong>${s.n} × ${s.each}</strong> بدون فوائد عبر PayPal —
+         أي ${s.total} إجمالاً دون الشحن، بلا فوائد ولا غرامات تأخير.
+         <small>لا يُجمع مع عرض الإطلاق.</small>`,
+    qty: "الكمية", minus: "إنقاص", plus: "زيادة", add: "أضف إلى السلة",
+    reassure1: "<strong>ضمان استرداد المبلغ خلال 14 يوماً</strong> — أعده واسترد المبلغ كاملاً",
+    reassure2: "دفع آمن (Stripe · Visa · Mastercard) — بيانات بطاقتك لا تمر عبر موقعنا أبداً",
+    reassure3: "يُشحن من فرنسا خلال 48 ساعة، شحن متتبَّع ومؤمَّن",
+    payLabel: "دفع آمن 100&nbsp;% :",
+    anchor: "📚 المكتبة التي يحتويها وحدها (مصحف، تفسير، كتب حديث) تساوي أكثر من 100 € من الكتب الورقية.",
+    wa: "💬 سؤال قبل الطلب؟ راسلنا على WhatsApp — رد سريع",
+    empty: "سلتك فارغة.", remove: "إزالة",
+    drawerSplit: (s) => `أو <strong>${s.n} × ${s.each}</strong> بدون فوائد`,
+    ppUnavailable: "الدفع بالتقسيط غير متاح مؤقتاً.",
+    ppCreate: "تعذّر إنشاء الطلب", ppFinalizing: "جارٍ إتمام الدفع…",
+    ppFailed: "تعذّر إتمام الدفع.",
+    ppError: "واجه الدفع بالتقسيط مشكلة. يمكنك الدفع دفعة واحدة أعلاه.",
+    redirect: "جارٍ التحويل إلى صفحة الدفع…", notConfigured: "الدفع غير مهيأ بعد.",
+    network: "خطأ في الشبكة. حاول مجدداً بعد لحظة.",
+  },
+}[LANG];
+const nom = (p) => p["name_" + LANG] || p.name;
+const descr = (p) => p["description_" + LANG] || p.description;
+
 const euro = (cents) =>
-  new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
+  new Intl.NumberFormat(LOCALE, { style: "currency", currency: "EUR" }).format(cents / 100);
 
 /**
  * Mensualité affichée pour le paiement en plusieurs fois (PayPal, 4 fois).
@@ -48,7 +134,7 @@ const $ = (id) => document.getElementById(id);
 /* ---- chargement du catalogue ---- */
 async function init() {
   try {
-    const res = await fetch("products.json");
+    const res = await fetch("/products.json");
     const data = await res.json();
     data.products.forEach((p) => { CATALOG[p.id] = p; });
   } catch (e) {
@@ -76,7 +162,7 @@ async function init() {
   if (STOCK.promo) {
     document.body.insertAdjacentHTML(
       "afterbegin",
-      `<a href="#commander" class="promo-banner">🎁 Offre de lancement : housse + livraison <strong>offertes</strong> avec le code <strong>${STOCK.promo}</strong></a>`
+      `<a href="#commander" class="promo-banner">${T.promoBanner(STOCK.promo)}</a>`
     );
     const promoInput = $("promoInput");
     if (promoInput && !promoInput.value) promoInput.value = STOCK.promo;
@@ -103,69 +189,65 @@ function renderBuyPanel() {
   // Rupture de stock : panneau dédié, pas d'achat possible.
   if (STOCK.remaining <= 0) {
     $("buyPanel").innerHTML = `
-      <h2>${p.name}</h2>
-      <div class="buy-price">${euro(p.price)} <small>TTC</small></div>
-      <p class="buy-desc">${p.description}</p>
-      <div class="soldout">😔 Rupture de stock — la première série est épuisée.</div>
-      <p class="soldout-note">Suivez-nous sur
-        <a href="https://instagram.com/nur_tab_official" target="_blank" rel="noopener">Instagram</a>
-        pour être prévenu du réassort.</p>
+      <h2>${nom(p)}</h2>
+      <div class="buy-price">${euro(p.price)} <small>${T.ttc}</small></div>
+      <p class="buy-desc">${descr(p)}</p>
+      <div class="soldout">${T.soldout}</div>
+      <p class="soldout-note">${T.soldoutNote('<a href="https://instagram.com/nur_tab_official" target="_blank" rel="noopener">Instagram</a>')}</p>
     `;
     return;
   }
   const stockBadge = (STOCK.remaining <= 10)
-    ? `<div class="stock-badge">🔥 Plus que ${STOCK.remaining} exemplaire${STOCK.remaining > 1 ? "s" : ""} disponible${STOCK.remaining > 1 ? "s" : ""}</div>`
+    ? `<div class="stock-badge">${T.stock(STOCK.remaining)}</div>`
     : "";
   const promoTag = STOCK.promo
-    ? `<div class="promo-tag">🎁 Offre de lancement — avec le code <strong>${STOCK.promo}</strong> : housse <strong>offerte</strong> et livraison <strong>offerte</strong> (le code est déjà pré-rempli dans votre panier)</div>`
+    ? `<div class="promo-tag">${T.promoTag(STOCK.promo)}</div>`
     : "";
   const housseRow = housse ? `
     <label class="option-row">
       <input type="checkbox" id="withHousse" checked />
-      ${housse.image ? `<img class="option-thumb" src="${housse.image}" alt="Housse de protection NUR" />` : ""}
+      ${housse.image ? `<img class="option-thumb" src="${housse.image}" alt="${T.housseAlt}" />` : ""}
       <span class="option-text">
-        <strong>Ajouter la housse de protection</strong>
-        <small>${housse.description}</small>
+        <strong>${T.housseAdd}</strong>
+        <small>${descr(housse)}</small>
       </span>
       <span class="option-price">+ ${euro(housse.price)}</span>
     </label>` : "";
   const split = splitPay(p.price);
   const splitRow = split
-    ? `<div class="buy-split">ou <strong>${split.n} × ${split.each}</strong> sans frais avec PayPal —
-         soit ${split.total} au total hors livraison, sans intérêts ni pénalité de retard.
-         <small>Non cumulable avec l'offre de lancement.</small></div>`
+    ? `<div class="buy-split">${T.split(split)}</div>`
     : "";
   $("buyPanel").innerHTML = `
-    <h2>${p.name}</h2>
-    <div class="buy-price">${euro(p.price)} <small>TTC</small></div>
+    <h2>${nom(p)}</h2>
+    <div class="buy-price">${euro(p.price)} <small>${T.ttc}</small></div>
     ${splitRow}
     ${stockBadge}
     ${promoTag}
-    <p class="buy-desc">${p.description}</p>
+    <p class="buy-desc">${descr(p)}</p>
     ${housseRow}
     <div class="qty">
-      <label>Quantité</label>
+      <label>${T.qty}</label>
       <div class="qty-control">
-        <button type="button" id="qtyMinus" aria-label="Diminuer">−</button>
+        <button type="button" id="qtyMinus" aria-label="${T.minus}">−</button>
         <span id="qtyValue">1</span>
-        <button type="button" id="qtyPlus" aria-label="Augmenter">+</button>
+        <button type="button" id="qtyPlus" aria-label="${T.plus}">+</button>
       </div>
     </div>
-    <button class="btn btn-primary btn-block" id="addToCart">Ajouter au panier</button>
+    <button class="btn btn-primary btn-block" id="addToCart">${T.add}</button>
     <div class="buy-reassure">
-      <span><strong>Satisfait ou remboursé 14 jours</strong> — retournez-la, remboursement intégral</span>
-      <span>Paiement sécurisé (Stripe · Visa · Mastercard) — vos données bancaires ne passent jamais par notre site</span>
-      <span>Expédié de France sous 48 h, envoi suivi et assuré</span>
+      <span>${T.reassure1}</span>
+      <span>${T.reassure2}</span>
+      <span>${T.reassure3}</span>
     </div>
     <div class="pay-logos">
-      <span class="pay-label">Paiement 100&nbsp;% sécurisé :</span>
+      <span class="pay-label">${T.payLabel}</span>
       <span class="pay-badge pay-visa">VISA</span>
       <span class="pay-badge pay-mc"><i></i><i></i></span>
       <span class="pay-badge pay-cb">CB</span>
       <span class="pay-badge pay-stripe">Stripe</span>
     </div>
-    <p class="buy-anchor">📚 À elle seule, la bibliothèque qu'elle contient (mushaf, tafsir, recueils de hadith) vaut plus de 100 € en livres papier.</p>
-    <a class="wa-inline" href="#" target="_blank" rel="noopener">💬 Une question avant de commander ? Écrivez-nous sur WhatsApp — réponse rapide</a>
+    <p class="buy-anchor">${T.anchor}</p>
+    <a class="wa-inline" href="#" target="_blank" rel="noopener">${T.wa}</a>
   `;
   $("qtyMinus").onclick = () => { selectedQty = Math.max(1, selectedQty - 1); $("qtyValue").textContent = selectedQty; };
   $("qtyPlus").onclick = () => { selectedQty = Math.min(10, selectedQty + 1); $("qtyValue").textContent = selectedQty; };
@@ -201,7 +283,7 @@ const chargerSdkPaypal = () => {
       // `disable-funding=card` : les cartes passent par Stripe. Laisser PayPal en
       // proposer une troisième entrée dupliquait le moyen de paiement, à des
       // frais différents, et allongeait d'autant un tiroir déjà chargé.
-      "&currency=EUR&locale=fr_FR&enable-funding=paylater&disable-funding=card&intent=capture";
+      "&currency=EUR&locale=" + { fr: "fr_FR", en: "en_GB", ar: "ar_EG" }[LANG] + "&enable-funding=paylater&disable-funding=card&intent=capture";
     s.onload = res;
     s.onerror = () => rej(new Error("SDK PayPal indisponible"));
     document.head.appendChild(s);
@@ -234,7 +316,7 @@ async function monterBoutonsPaypal() {
   try {
     await chargerSdkPaypal();
   } catch (e) {
-    $("paypalMsg").textContent = "Le paiement en plusieurs fois est momentanément indisponible.";
+    $("paypalMsg").textContent = T.ppUnavailable;
     return;
   }
   boutonsPaypalRendus = true;
@@ -253,11 +335,11 @@ async function monterBoutonsPaypal() {
           }),
         });
         const d = await r.json();
-        if (!r.ok) throw new Error(d.error || "Création de commande impossible");
+        if (!r.ok) throw new Error(d.error || T.ppCreate);
         return d.id;
       },
       onApprove: async (data) => {
-        $("paypalMsg").textContent = "Finalisation du paiement…";
+        $("paypalMsg").textContent = T.ppFinalizing;
         const r = await fetch("/api/paypal/capture-order", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -265,7 +347,7 @@ async function monterBoutonsPaypal() {
         });
         const d = await r.json();
         if (!r.ok) {
-          $("paypalMsg").textContent = d.error || "Le paiement n'a pas pu être finalisé.";
+          $("paypalMsg").textContent = d.error || T.ppFailed;
           return;
         }
         // Panier vidé seulement après encaissement confirmé.
@@ -275,8 +357,7 @@ async function monterBoutonsPaypal() {
       },
       onError: (err) => {
         console.error("PayPal", err);
-        $("paypalMsg").textContent =
-          "Le paiement en plusieurs fois a rencontré un problème. Vous pouvez payer comptant ci-dessus.";
+        $("paypalMsg").textContent = T.ppError;
       },
     })
     .render("#paypalButtons")
@@ -291,7 +372,7 @@ function renderCart() {
   const items = $("drawerItems");
   const entries = Object.entries(cart).filter(([id, q]) => q > 0 && CATALOG[id]);
   if (!entries.length) {
-    items.innerHTML = `<p class="drawer-empty">Votre panier est vide.</p>`;
+    items.innerHTML = `<p class="drawer-empty">${T.empty}</p>`;
   } else {
     items.innerHTML = entries.map(([id, qty]) => {
       const p = CATALOG[id];
@@ -300,13 +381,13 @@ function renderCart() {
         <div class="cart-line">
           <div class="cart-line-thumb"${thumbStyle}></div>
           <div class="cart-line-info">
-            <div class="cart-line-name">${p.name}</div>
+            <div class="cart-line-name">${nom(p)}</div>
             <div class="cart-line-price">${euro(p.price)}</div>
             <div class="cart-line-qty">
               <button data-dec="${id}">−</button>
               <span>${qty}</span>
               <button data-inc="${id}">+</button>
-              <button class="cart-line-remove" data-rm="${id}">Retirer</button>
+              <button class="cart-line-remove" data-rm="${id}">${T.remove}</button>
             </div>
           </div>
         </div>`;
@@ -333,7 +414,7 @@ function renderCart() {
   const dnode = $("drawerSplit");
   if (dnode) {
     dnode.innerHTML = dsplit
-      ? `ou <strong>${dsplit.n} × ${dsplit.each}</strong> sans frais`
+      ? T.drawerSplit(dsplit)
       : "";
     dnode.hidden = !dsplit;
   }
@@ -362,24 +443,24 @@ $("checkoutBtn").onclick = async () => {
   if (!items.length) return;
   if (window.nurStat) window.nurStat("ev", "panier:paiement");
   btn.disabled = true;
-  msg.textContent = "Redirection vers le paiement…";
+  msg.textContent = T.redirect;
   try {
     const promo = ($("promoInput") ? $("promoInput").value : "").trim();
     if (promo && window.nurStat) window.nurStat("ev", "panier:code");
     const res = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items, promo, livraison: modeLivraison() }),
+      body: JSON.stringify({ items, promo, livraison: modeLivraison(), lang: LANG }),
     });
     const data = await res.json();
     if (res.ok && data.url) {
       window.location.href = data.url;
     } else {
-      msg.textContent = data.error || "Le paiement n'est pas encore configuré.";
+      msg.textContent = data.error || T.notConfigured;
       btn.disabled = false;
     }
   } catch (e) {
-    msg.textContent = "Erreur réseau. Réessaie dans un instant.";
+    msg.textContent = T.network;
     btn.disabled = false;
   }
 };

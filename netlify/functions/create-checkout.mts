@@ -24,7 +24,7 @@ export default async (req: Request, context: Context) => {
     );
   }
 
-  let body: { items?: { id: string; quantity: number }[]; promo?: string; livraison?: string };
+  let body: { items?: { id: string; quantity: number }[]; promo?: string; livraison?: string; lang?: string };
   try {
     body = await req.json();
   } catch {
@@ -109,11 +109,15 @@ export default async (req: Request, context: Context) => {
 
   const stripe = new Stripe(secret);
   const origin = req.headers.get("origin") || new URL(req.url).origin;
+  // Langue du site d'où vient le client : locale de la page Stripe et pages de retour.
+  const lang = body.lang === "en" || body.lang === "ar" ? body.lang : "fr";
+  const prefixe = lang === "fr" ? "" : `/${lang}`;
 
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      locale: "fr",
+      // Stripe Checkout n'a pas d'arabe : « auto » suit la langue du navigateur.
+      locale: lang === "ar" ? "auto" : lang,
       line_items,
       phone_number_collection: { enabled: true },
       shipping_address_collection: { allowed_countries: [...SHIPPING_COUNTRIES] },
@@ -134,8 +138,8 @@ export default async (req: Request, context: Context) => {
         },
       ],
       metadata: { promo: promoValid ? promoCode : "" },
-      success_url: `${origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/cancel.html`,
+      success_url: `${origin}${prefixe}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}${prefixe}/cancel.html`,
     });
     return Response.json({ url: session.url });
   } catch (err) {

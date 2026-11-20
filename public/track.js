@@ -5,7 +5,9 @@
     try {
       var links = document.querySelectorAll(".wa-fab, .wa-inline");
       var num = ["3", "3", "6", "5", "2", "6", "7", "0", "4", "5", "7"].join("");
-      var url = "https://wa.me/" + num + "?text=" + encodeURIComponent("Salam, j'ai une question sur la tablette NUR");
+      var url = "https://wa.me/" + num + "?text=" + encodeURIComponent(document.documentElement.lang === "en" ? "Salam, I have a question about the NUR tablet" :
+        document.documentElement.lang === "ar" ? "السلام عليكم، لدي سؤال عن لوحي NUR" :
+        "Salam, j'ai une question sur la tablette NUR");
       for (var i = 0; i < links.length; i++) links[i].setAttribute("href", url);
     } catch (e) { /* silencieux */ }
   }

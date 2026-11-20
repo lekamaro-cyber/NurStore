@@ -1,0 +1,21 @@
+{
+ "Merci pour votre commande — Nur": "Thank you for your order — Nur",
+ "Merci pour votre commande !": "Thank you for your order!",
+ "Votre paiement a bien été reçu et votre commande est enregistrée. Vous allez recevoir un e-mail de confirmation. Nous préparons votre tablette NUR avec soin.": "Your payment has been received and your order is confirmed. You will receive a confirmation e-mail shortly. We are preparing your NUR tablet with care.",
+ "📍 Dernière étape : votre point relais": "📍 Last step: your pickup point",
+ "Vous avez choisi la livraison <strong>Mondial Relay</strong>. Le plus simple : nous expédions au point relais <strong>le plus proche de votre adresse de livraison</strong>, et vous recevez le numéro de suivi dès l'envoi.": "You chose <strong>Mondial Relay</strong> delivery. The simplest option: we ship to the pickup point <strong>closest to your delivery address</strong>, and you receive the tracking number as soon as it is sent.",
+ "🗺️ Choisir mon point relais sur la carte": "🗺️ Choose my pickup point on the map",
+ "Votre choix :": "Your choice:",
+ "Confirmer ce point relais": "Confirm this pickup point",
+ "Ou : expédiez au relais le plus proche de chez moi": "Or: ship to the pickup point closest to my home",
+ "Indiquer un relais manuellement": "Enter a pickup point manually",
+ "Trouvez votre relais sur <a href=\"https://www.mondialrelay.fr/trouver-le-point-relais-le-plus-proche-de-chez-moi/\" target=\"_blank\" rel=\"noopener\">le site Mondial Relay</a>, puis indiquez-le :": "Find your pickup point on <a href=\"https://www.mondialrelay.fr/trouver-le-point-relais-le-plus-proche-de-chez-moi/\" target=\"_blank\" rel=\"noopener\">the Mondial Relay website</a>, then enter it here:",
+ "Point relais souhaité (nom + ville, ou n° du relais)": "Preferred pickup point (name + town, or pickup point no.)",
+ "Ex. : Tabac de la Gare, Paris 11e (n° 45210)": "E.g.: Tabac de la Gare, Paris 11e (no. 45210)",
+ "✓ C'est noté ! Votre colis sera expédié vers ce point relais et vous recevrez le numéro de suivi.": "✓ Noted! Your parcel will be shipped to this pickup point and you will receive the tracking number.",
+ "Retour à la boutique": "Back to the shop",
+ "@script": {
+  "Une erreur est survenue, réessayez ou contactez-nous.": "An error occurred, please try again or contact us.",
+  "Le point relais le plus proche de l'adresse de livraison": "Le point relais le plus proche de l'adresse de livraison"
+ }
+}

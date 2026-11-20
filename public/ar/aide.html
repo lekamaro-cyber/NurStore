@@ -1,0 +1,402 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مساعدة NUR — ضبط الصوت، وWi-Fi، والقرآن الكريم دون اتصال</title>
+  <meta name="description" content="كل الإجابات لاستخدام لوحي NUR: الاتصال بشبكة Wi-Fi، وضبط مستوى صوت الأذان والتلاوات، والاستماع إلى القرآن الكريم دون اتصال، واستئناف القراءة، والحفظ عن ظهر قلب.">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23f4b942'/></svg>">
+  <style>
+    .aide { max-width: var(--max); margin: 0 auto; padding: 48px 24px 80px; }
+    .aide-head { text-align: center; max-width: 660px; margin: 0 auto 40px; }
+    .aide-head h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); margin-bottom: 12px; }
+    .aide-head p { color: var(--muted); }
+
+    .sommaire {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+      margin-bottom: 56px;
+    }
+    .sommaire a {
+      background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+      padding: 14px 16px; text-decoration: none; color: var(--text);
+      font-weight: 600; font-size: 0.95rem; line-height: 1.3;
+    }
+    .sommaire a:hover { border-color: var(--gold); }
+
+    .aide-sec { margin-bottom: 64px; scroll-margin-top: 24px; }
+    .aide-sec > h2 {
+      font-size: 1.45rem; margin-bottom: 10px;
+      padding-bottom: 10px; border-bottom: 1px solid var(--line);
+    }
+    .aide-sec p { color: var(--muted); margin-bottom: 14px; max-width: 70ch; }
+    .aide-sec p strong { color: var(--text); }
+    .aide-liste { color: var(--muted); max-width: 70ch; margin: 0 0 18px; padding-left: 22px; }
+    .aide-liste li { margin-bottom: 9px; line-height: 1.6; }
+    .aide-liste li::marker { color: var(--gold); }
+    .aide-liste strong { color: var(--text); }
+
+    .etapes { counter-reset: etape; list-style: none; margin: 0 0 20px; padding: 0; }
+    .etapes li {
+      counter-increment: etape; position: relative;
+      padding-left: 44px; margin-bottom: 12px; color: var(--muted); max-width: 70ch;
+    }
+    .etapes li::before {
+      content: counter(etape); position: absolute; left: 0; top: -2px;
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--gold); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.9rem;
+    }
+
+    .shots { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-top: 20px; }
+    .shots.une { grid-template-columns: 1fr; max-width: 760px; }
+    figure.shot { margin: 0; }
+    figure.shot img {
+      width: 100%; height: auto; display: block;
+      border: 1px solid var(--line); border-radius: 12px; background: #fff;
+    }
+    figure.shot figcaption {
+      color: var(--muted); font-size: 0.88rem; margin-top: 8px; line-height: 1.45;
+    }
+
+    .repere {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--gold); color: #fff; font-weight: 700; font-size: 0.78rem;
+      vertical-align: -4px; margin: 0 2px;
+    }
+
+    .astuce {
+      background: var(--bg-soft); border-left: 3px solid var(--gold);
+      border-radius: 0 10px 10px 0; padding: 14px 18px; margin: 18px 0 0;
+      color: var(--muted); font-size: 0.93rem; max-width: 70ch;
+    }
+    .astuce strong { color: var(--text); }
+
+    .aide-video { max-width: 560px; margin-top: 22px; }
+
+    .support-block {
+      margin-top: 40px; text-align: center;
+      background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 36px 24px;
+    }
+    .support-block h2 { font-size: 1.3rem; margin-bottom: 8px; }
+    .support-block p { color: var(--muted); margin-bottom: 18px; }
+    .support-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    @media (max-width: 900px) { .sommaire { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 760px) { .shots { grid-template-columns: 1fr; } }
+  </style>
+  
+  
+  
+  
+  <script src="/lang.js" defer=""></script>
+
+  <link rel="alternate" hreflang="fr" href="https://nur-store.com/aide.html">
+  <link rel="alternate" hreflang="en" href="https://nur-store.com/en/aide.html">
+  <link rel="alternate" hreflang="ar" href="https://nur-store.com/ar/aide.html">
+  <link rel="alternate" hreflang="x-default" href="https://nur-store.com/aide.html">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&amp;display=swap">
+</head>
+<body>
+  <header class="site-header">
+    <a href="/ar/" class="brand" aria-label="Nur — الصفحة الرئيسية">
+      <img src="/assets/logo.svg" alt="NUR" class="brand-logo" width="1133" height="944">
+    </a>
+    <nav class="nav">
+      <a href="/ar/">المتجر</a>
+      <a href="decouvrir.html">اكتشف</a>
+      <a href="/#faq">الأسئلة الشائعة</a>
+    </nav>
+    <nav class="lang-switch" data-lang-switch="" aria-label="اللغة"></nav>
+    <a href="/#commander" class="btn btn-primary" style="padding: 10px 20px;">اطلب الآن</a>
+  </header>
+
+  <main class="aide">
+    <div class="aide-head">
+      <h1>المساعدة</h1>
+      <p>إجابات عن الأسئلة المتكررة، بصور ملتقطة من جهاز لوحي حقيقي. العلامات الذهبية تشير إلى مواضع الضغط.</p>
+    </div>
+
+    <nav class="sommaire">
+      <a href="#demarrage">1. التشغيل الأول</a>
+      <a href="#wifi">2. الاتصال بشبكة Wi-Fi</a>
+      <a href="#son">3. ضبط الصوت</a>
+      <a href="#hors-connexion">4. القرآن الكريم دون اتصال</a>
+      <a href="#lecture">5. استئناف القراءة</a>
+      <a href="#apprendre">6. الحفظ عن ظهر قلب</a>
+      <a href="#affichage">7. راحة القراءة</a>
+      <a href="#horaires">8. مواقيت الصلاة</a>
+      <a href="#adhan">9. الأذان</a>
+      <a href="#mise-a-jour">10. التحديث</a>
+      <a href="#reglages">11. الإعدادات الأخرى</a>
+      <a href="#hadiths">12. مكتبة الحديث</a>
+      <a href="#lettres">13. حروف العربية</a>
+      <a href="#taille">14. حجم النص</a>
+    </nav>
+
+    <section class="aide-sec" id="demarrage">
+      <h2>1. التشغيل الأول</h2>
+      <p>عند تشغيل الجهاز للمرة الأولى، يرشدك اللوحي خطوة بخطوة: <strong>اختيار اللغة</strong>، ثم الاتصال، ثم مُرشد NUR لاختيار مدينتك وطريقة الحساب والمؤذن. يعرض الفيديو أدناه المسار كاملًا، من جانب النظام ومن جانب التطبيق.</p>
+      <div class="aide-video">
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/q_kz3mjcRvg" title="NUR — دليل التشغيل الأول والإعدادات" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+        </div>
+      </div>
+      <p class="astuce">اللغة التي تختارها في البداية تُطبَّق على <strong>الجهاز اللوحي بأكمله</strong>. ولدى NUR أيضًا إعداد لغة خاص به، إن أردت أن تختلف لغة التطبيق عن لغة النظام.</p>
+    </section>
+
+    <section class="aide-sec" id="wifi">
+      <h2>2. الاتصال بشبكة Wi-Fi</h2>
+      <p>لا يُضبط Wi-Fi من داخل NUR بل من شريط النظام، وهو <strong>مخفي في أعلى الشاشة</strong>. وهذه هي الحركة التي لا يخمّنها أحد.</p>
+      <ol class="etapes">
+        <li>ضع إصبعك في أعلى الشاشة تمامًا واسحبه نحو الأسفل.</li>
+        <li><strong>اضغط مطوّلًا</strong> على مربّع Wi-Fi لفتح قائمة الشبكات.</li>
+        <li>اختر شبكتك وأدخل كلمة المرور الخاصة بها.</li>
+      </ol>
+      <div class="shots">
+        <figure class="shot">
+          <img src="/assets/aide/barre-haut-geste.webp" alt="سحب أعلى الشاشة نحو الأسفل" loading="lazy">
+          <figcaption>يبدأ السحب من أعلى الشاشة تمامًا، فوق الساعة.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="/assets/aide/wifi-tuile.webp" alt="مربّع Wi-Fi في لوحة النظام" loading="lazy">
+          <figcaption><span class="repere">1</span> مربّع Wi-Fi. عنوانه هو اسم الشبكة — وقد أُخفي هنا.</figcaption>
+        </figure>
+      </div>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="/assets/aide/wifi-liste.webp" alt="قائمة شبكات Wi-Fi المتاحة" loading="lazy">
+          <figcaption><span class="repere">1</span> اضغط على سطر شبكتك. الأسماء مخفية في هذه الصورة.</figcaption>
+        </figure>
+      </div>
+      <p class="astuce"><strong>ضغطة مطوّلة، لا ضغطة قصيرة.</strong> الضغطة القصيرة على المربّع لا تفعل سوى إيقاف Wi-Fi أو إعادة تشغيله؛ أما الضغطة المطوّلة فهي التي تفتح قائمة الشبكات.</p>
+      <p class="astuce">تفصيل قد يُربكك: مربّع Wi-Fi لا يعرض كلمة «Wi-Fi» بل <em>اسم الشبكة</em> التي أنت متصل بها.</p>
+      <p class="astuce"><strong>مشاركة الاتصال من هاتفك</strong> تعمل أيضًا: فعّلها على الهاتف، ثم اخترها هنا كأي شبكة Wi-Fi عادية.</p>
+    </section>
+
+    <section class="aide-sec" id="son">
+      <h2>3. ضبط الصوت</h2>
+      <p>نقطة مهمة: <strong>للأذان ولتلاوات القرآن الكريم مستويا صوت منفصلان</strong>. رفع أحدهما لا يؤثر في الآخر — وهذا هو السبب الأكثر شيوعًا لصوت يبدو ضعيفًا رغم أنك ظننت أنك رفعته.</p>
+      <p>الطريقة الأضمن هي الضبط من داخل NUR. تُفتح الإعدادات على خمسة أقسام على جانب الشاشة؛ ويوجد مستويا الصوت في قسمين منها: <strong>الأذان</strong> للنداء إلى الصلاة، و<strong>القراءة</strong> لتلاوات القرآن الكريم.</p>
+      <div class="shots">
+        <figure class="shot">
+          <img src="/assets/aide/volume-adhan.webp" alt="إعدادات NUR، قسم الأذان: مستوى صوت الأذان" loading="lazy">
+          <figcaption>قسم <strong>الأذان</strong>: <span class="repere">1</span> مستوى صوت النداء إلى الصلاة.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="/assets/aide/volume-recitations.webp" alt="إعدادات NUR، قسم القراءة: مستوى صوت التلاوات" loading="lazy">
+          <figcaption>قسم <strong>القراءة</strong>: <span class="repere">1</span> مستوى صوت تلاوات القرآن الكريم.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="/assets/aide/son-tuile.webp" alt="مربّع الصوت في لوحة النظام" loading="lazy">
+          <figcaption>يمكن ضبط مستوى الصوت العام أيضًا من الشريط العلوي، المربّع <span class="repere">1</span>.</figcaption>
+        </figure>
+      </div>
+      <p class="astuce"><strong>الرقم المعروض يخبرك أين أنت.</strong> «7 / 7» أو «15 / 15» يعني أنك بلغت الحد الأقصى بالفعل: التطبيق لا يخفض شيئًا، وما بعد ذلك هو حدّ مكبّر صوت الجهاز نفسه، فلا جدوى من البحث عن إعداد آخر في مكان آخر.</p>
+    </section>
+
+    <section class="aide-sec" id="hors-connexion">
+      <h2>4. الاستماع إلى القرآن الكريم دون اتصال</h2>
+      <p>تُنزَّل التلاوات تدريجيًا أثناء الاستماع. <strong>كل آية استمعت إليها تبقى على الجهاز</strong> وتعمل بعد ذلك دون اتصال؛ ولا ينقص سوى ما لم تستمع إليه قط.</p>
+      <div class="aide-video"><div class="video-frame" data-video="v5"></div></div>
+      <p>ولاستباق ذلك، أمامك خياران. في القارئ، زر <strong>الخيارات</strong> ينزّل السورة الحالية. وفي <strong>الإعدادات</strong>، زر ينزّل القرآن الكريم كاملًا.</p>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="/assets/aide/telecharger-tout.webp" alt="الإعدادات: تنزيل جميع السور" loading="lazy">
+          <figcaption>ويبيّن الزر بالمناسبة ما هو موجود بالفعل على الجهاز.</figcaption>
+        </figure>
+      </div>
+      <p class="astuce">يتطلب التنزيل الكامل وقتًا واتصال Wi-Fi جيدًا. يمكنك <strong>إيقافه ثم استئنافه</strong>: فهو يستأنف من حيث توقف، ويستمر حتى لو خرجت من التطبيق أو وضعت الجهاز جانبًا.</p>
+    </section>
+
+    <section class="aide-sec" id="lecture">
+      <h2>5. استئناف القراءة</h2>
+      <p>يتذكر NUR تلقائيًا الموضع الذي توقفت عنده. يُسمى هذا الموضع <strong>آخر قراءة</strong> ويُحدَّث في كل مرة تخرج فيها من القارئ — فلا حاجة لأن تضع علامة أو تحدّث شيئًا بنفسك.</p>
+      <ol class="etapes">
+        <li>افتح <strong>قراءة القرآن</strong>.</li>
+        <li>اختر تبويب <strong>العلامات المرجعية</strong>.</li>
+        <li>السطر الأول هو موضعك: اضغط عليه للعودة إليه.</li>
+      </ol>
+      <div class="shots">
+        <figure class="shot">
+          <img src="/assets/aide/marque-pages-onglet.webp" alt="فهرس القرآن الكريم: تبويب العلامات المرجعية" loading="lazy">
+          <figcaption>تبويب العلامات المرجعية، إلى جانب تبويبَي السور والأجزاء.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="/assets/aide/derniere-lecture.webp" alt="سطر «آخر قراءة» في أعلى القائمة" loading="lazy">
+          <figcaption><span class="repere">1</span> «آخر قراءة»: السورة والآية بالضبط حيث توقفت.</figcaption>
+        </figure>
+      </div>
+      <p>أما العلامات التي تضعها بنفسك، بأيقونة 🔖 في القارئ، فتظهر تحته، من الأحدث إلى الأقدم، <strong>كلٌّ منها مع اليوم الذي وضعتها فيه</strong>. الضغط المطوّل على إحداها يتيح حذفها. وإعادة وضع علامة على آية مُعلَّمة من قبل يرفعها إلى رأس القائمة دون تكرارها.</p>
+      <p class="astuce">العلامات الموضوعة قبل التحديث لا تحمل تاريخًا: فلم يكن التاريخ يُسجَّل آنذاك. وتبقى قابلة للاستخدام كما هي.</p>
+      <p>لا حاجة للبحث عن هذا الخيار: <strong>في أول مرة تكون لديك قراءة جارية</strong>، سيسألك NUR مرة واحدة فقط إن كنت تفضّل الاستئناف من حيث توقفت، أم العودة إلى فهرس السور. ويمكنك تغيير ذلك لاحقًا في <strong>الإعدادات</strong>، قسم <strong>القراءة</strong>.</p>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="/assets/aide/reprise-lecture-reglage.webp" alt="الإعداد: فتح القرآن الكريم عند آخر قراءة" loading="lazy">
+          <figcaption>اضغط على الزر للتفعيل أو التعطيل.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="aide-sec" id="apprendre">
+      <h2>6. الحفظ عن ظهر قلب</h2>
+      <p>يتوفر في القارئ <strong>وضع التعلّم</strong> الذي يكرر كل آية تلقائيًا — 2 أو 3 أو 5 مرات — قبل الانتقال إلى التالية، ويترك لك الوقت لترديدها.</p>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="/assets/aide/mode-apprentissage.webp" alt="وضع التعلّم في قارئ القرآن الكريم" loading="lazy">
+          <figcaption><span class="repere">1</span> تفعيل وضع التعلّم — <span class="repere">2</span> اختيار عدد التكرارات.</figcaption>
+        </figure>
+      </div>
+      <div class="aide-video">
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/25f1xUEOpIc" title="NUR — القرآن الكريم ووضع التعلّم" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="aide-sec" id="affichage">
+      <h2>7. راحة القراءة</h2>
+      <p>شاشة الحبر الإلكتروني لا تُضاء بل تُعاد رسمها. وبحسب الطريقة التي تتبعها، يمرّ التمرير للحظة بلون أسود — وهو ما نراه <strong>وميضًا</strong> — أو ينساب دون أن يُظهر شيئًا.</p>
+      <p><strong>جهازك مضبوط على الوضع «السريع».</strong> وهو الوضع الأكثر راحة للقراءة: لا وميض، والنص ينساب دفعة واحدة. ليس عليك فعل شيء — فإن كنت قد ثبّت آخر تحديث، فهو مفعّل بالفعل.</p>
+      <p>للتحقق منه أو تغييره، اسحب <strong>الشريط العلوي</strong> نحو الأسفل:</p>
+      <div class="shots">
+        <figure class="shot">
+          <img src="/assets/aide/refresh-tuile.webp" alt="مربّع Refresh Settings في الشريط العلوي" loading="lazy">
+          <figcaption>المربّع <span class="repere">1</span> يفتح الإعداد. يبقى اسمه بالإنجليزية، «Refresh Settings»: فالجهاز لا يترجمه.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="/assets/aide/refresh-modes.webp" alt="أوضاع تحديث الشاشة الأربعة، والوضع السريع محدَّد" loading="lazy">
+          <figcaption>أربعة أوضاع. <span class="repere">1</span> «السريع» هو الذي نوصي به.</figcaption>
+        </figure>
+      </div>
+      <p>ما يفعله كل واحد من الأربعة:</p>
+      <ul class="aide-liste">
+        <li><strong>الملكي</strong> — الصورة الأكثر وضوحًا، لكن مع وميض عند كل تغيير للصفحة. ممتع للمشاهدة، مُتعب للقراءة الطويلة.</li>
+        <li><strong>الافتراضي</strong> — إعداد الجهاز الأصلي، في منتصف الطريق. وهو الذي كان يسبب الوميض الذي ربما لاحظته.</li>
+        <li><strong>السريع</strong> — وهو الذي نثبّته. لا وميض، مقابل أثر خفيف من النص السابق سرعان ما تنسيه القراءة.</li>
+        <li><strong>السرعة القصوى</strong> — <strong>يُستحسن تجنبه.</strong> تصبح الشاشة أسرع، لكنها تترك <strong>آثارًا متبقية</strong>: تتراكم أشباح الصفحات السابقة حتى تعيق القراءة في النهاية.</li>
+      </ul>
+      <p class="astuce">هذا الإعداد يخص الجهاز لا NUR: فهو يُطبَّق على كل ما يُعرض. وإن غيّرته، يحترم NUR اختيارك ولا يعيده إلى «السريع» عند التشغيل التالي.</p>
+    </section>
+
+    <section class="aide-sec" id="horaires">
+      <h2>8. مواقيت الصلاة</h2>
+      <p>تعتمد المواقيت على أمرين: <strong>مدينتك</strong> و<strong>طريقة الحساب</strong>. تُقترح الطريقة الموصى بها لبلدك في أعلى القائمة — وفي فرنسا، مسجد باريس الكبير. ومنذ الإصدار 0.8، تتبع طرق مسجد باريس والجزائر وتونس والمغرب وتركيا والإمارات وإندونيسيا وماليزيا التقويم الذي تنشره الجهة الرسمية في كل بلد.</p>
+      <div class="aide-video"><div class="video-frame" data-video="v3"></div></div>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="/assets/aide/ville-methode.webp" alt="الإعدادات: المدينة وطريقة الحساب" loading="lazy">
+          <figcaption><span class="repere">1</span> البحث عن مدينتك — <span class="repere">2</span> طريقة الحساب.</figcaption>
+        </figure>
+      </div>
+      <p class="astuce">لا تنسَ الضغط على <strong>حفظ</strong>، في أسفل شاشة الإعدادات، بعد تغيير المدينة.</p>
+    </section>
+
+    <section class="aide-sec" id="adhan">
+      <h2>9. الأذان</h2>
+      <p>تختار المؤذن من بين عدة تلاوات، ويمكنك الاستماع إليه فورًا للتحقق من الإعداد ومستوى الصوت.</p>
+      <div class="aide-video"><div class="video-frame" data-video="v4"></div></div>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="/assets/aide/mouadhin.webp" alt="الإعدادات: اختيار المؤذن وتجربة الأذان" loading="lazy">
+          <figcaption><span class="repere">1</span> اختيار المؤذن — <span class="repere">2</span> الاستماع إليه فورًا.</figcaption>
+        </figure>
+      </div>
+      <p>لكل صلاة على حدة، يمكنك اختيار الأذان الكامل، أو مجرد تنبيه صوتي، أو الصمت: الأيقونات الصغيرة بجانب كل وقت، على الشاشة الرئيسية، تتنقل بين هذه الأوضاع الثلاثة.</p>
+      <p class="astuce">عندما يُرفع الأذان، تظهر شاشة فيها زر <strong>إيقاف الأذان</strong>. ويوفر الإشعار في أعلى الشاشة الزر نفسه.</p>
+    </section>
+
+    <section class="aide-sec" id="mise-a-jour">
+      <h2>10. تحديث الجهاز اللوحي</h2>
+      <p>يتحقق NUR من التحديثات تلقائيًا مرة في اليوم ويقترح عليك تثبيتها. ويمكنك أيضًا التحقق عند الطلب من الإعدادات.</p>
+      <p>تفصّل صفحة <a href="nouveautes.html" style="color: var(--gold); font-weight: 600;">التحديثات</a> ما يأتي به كل إصدار: ميزات جديدة وتحسينات وإصلاحات.</p>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="/assets/aide/mise-a-jour.webp" alt="الإعدادات: التحقق من التحديثات" loading="lazy">
+          <figcaption>يلزم اتصال Wi-Fi للتحقق والتنزيل.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="aide-sec" id="reglages">
+      <h2>11. الإعدادات الأخرى</h2>
+      <p>تُفتح الإعدادات على <strong>خمسة أقسام</strong> مدرجة على جانب الشاشة: الصلاة، الأذان، القراءة، الجهاز، المساعدة والأدوات. يعرض كل قسم إعداده الحالي — مدينتك، المؤذن المختار، اللغة — والمس أحدها لترى تفاصيله في الجانب الآخر. توجد بوصلة القبلة والتحقق من التحديثات وهذه المساعدة في <strong>المساعدة والأدوات</strong>؛ وكل ما يلي موجود في <strong>الجهاز</strong>.</p>
+      <div class="shots">
+        <figure class="shot">
+          <img src="/assets/aide/langue-theme.webp" alt="الإعدادات: اللغة والسمة" loading="lazy">
+          <figcaption><span class="repere">1</span> لغة التطبيق، من بين إحدى عشرة لغة — <span class="repere">2</span> السمة، وتُترك على E-ink.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="/assets/aide/outils-kiosque.webp" alt="الإعدادات: خلفية الشاشة، وتدوير الشاشة، ووضع الكشك" loading="lazy">
+          <figcaption><span class="repere">1</span> خلفية وضع السكون — <span class="repere">2</span> تدوير الشاشة — <span class="repere">3</span> وضع الكشك.</figcaption>
+        </figure>
+      </div>
+      <p class="astuce"><strong>تدوير الشاشة معطَّل في البداية.</strong> فعلى جهاز موضوع على قاعدته، يستهلك نحو اثنتي عشرة ساعة من عمر البطارية مقابل خدمة لا نفع منها. فعّله إن كنت تدير الجهاز للقراءة.</p>
+      <p class="astuce"><strong>وضع الكشك</strong> يجعل NUR الشاشة الرئيسية للجهاز: فزر الرئيسية يعيدك دائمًا إلى مواقيت الصلاة. وهذا هو إعداد المصنع. وتعطيله يعيد شاشة Android الرئيسية المعتادة.</p>
+      <p class="astuce"><strong>الإعدادات المتقدمة</strong>، أسفل طريقة الحساب، تتيح تعديل الزوايا، أو إزاحة وقت صلاة ببضع دقائق، أو اختيار المذهب لصلاة العصر. لا تلمسها إلا إذا كان مسجدك يتبع حسابًا خاصًا.</p>
+    </section>
+
+    <section class="aide-sec" id="hadiths">
+      <h2>12. مكتبة الحديث</h2>
+      <p>زر <strong>المكتبة</strong>، في أسفل الشاشة الرئيسية، يفتح الكتب: رياض الصالحين، والأربعون النووية، وصحيح البخاري، وسنن أبي داود، وسنن ابن ماجه، وسنن النسائي، والأربعون القدسية، وأربعون الدهلوي، وموسوعة HadeethEnc، وحصن المسلم. نحو 28 700 حديث، كلها على الجهاز، دون اتصال.</p>
+      <div class="aide-video"><div class="video-frame" data-video="v6"></div></div>
+      <ol class="etapes">
+        <li>اضغط على كتاب: يظهر فهرسه.</li>
+        <li>اضغط على باب لقراءته. زر <strong>اللغة</strong>، في الأعلى، يتيح العربية أو الفرنسية.</li>
+        <li>زر الرجوع يعيدك إلى الفهرس، ثم إلى قائمة الكتب.</li>
+      </ol>
+      <p class="astuce">الباب الطويل، كأبواب صحيح البخاري، يستغرق بضع ثوانٍ ليظهر: وهذا طبيعي، فالجهاز يجهّزه كاملًا.</p>
+    </section>
+
+    <section class="aide-sec" id="lettres">
+      <h2>13. حروف العربية</h2>
+      <p>زر <strong>حروف العربية</strong>، على الشاشة الرئيسية، يفتح ثماني مراحل، على ترتيب الكُتّاب القرآني: الحرف مفردًا، ثم مشكولًا، ثم المقطع، ثم الكلمة، وصولًا إلى الآيات الأولى. كل بطاقة تُسمع بصوت ناطق أصلي بالعربية، سُجّل خصيصًا لـ NUR.</p>
+      <div class="aide-video"><div class="video-frame" data-video="v1"></div></div>
+      <ol class="etapes">
+        <li>افتح مرحلة، واستمع إلى البطاقة، وردّد، ثم بيّن إن كنت تعرفها.</li>
+        <li>مراجعة اليوم تعيد البطاقات التي تحتاج إلى مراجعة. وننتقل إلى المرحلة التالية عند إتقان السابقة.</li>
+        <li>زر <strong>المخارج</strong> يُظهر، لكل حرف، من أين يخرج الصوت.</li>
+      </ol>
+      <p class="astuce">وسيلة للبدء، قليلًا كل يوم: تألف الحروف وأصواتها. الجهاز لا يسمع نطقك.</p>
+    </section>
+
+    <section class="aide-sec" id="taille">
+      <h2>14. حجم النص</h2>
+      <p>منذ الإصدار 0.8، إعداد واحد يكبّر النص في الجهاز بأكمله: الشاشة الرئيسية، والمواقيت، والقرآن الكريم، والأحاديث، والإعدادات نفسها.</p>
+      <div class="aide-video"><div class="video-frame" data-video="v2"></div></div>
+      <ol class="etapes">
+        <li>افتح <strong>الإعدادات</strong> (رمز الترس في الزاوية العلوية من الشاشة الرئيسية).</li>
+        <li>اختر قسم <strong>الجهاز</strong>، ثم <strong>حجم النص</strong>.</li>
+        <li>اختر <strong>عادي</strong> أو <strong>كبير</strong> أو <strong>كبير جدًا</strong>. تُعاد رسم الشاشة على الفور.</li>
+      </ol>
+      <p class="astuce">في القرآن الكريم والكتب، يضبط الزران <strong>−</strong> و<strong>+</strong> حجم نص القراءة أيضًا، بمعزل عن هذا الإعداد العام.</p>
+    </section>
+
+    <div class="support-block">
+      <h2>لم تجد إجابتك؟</h2>
+      <p>راسلنا، فنحن نرد بسرعة. فيديوهات البدء متاحة أيضًا على صفحة «اكتشف».</p>
+      <div class="support-actions">
+        <a href="decouvrir.html" class="btn btn-ghost">مشاهدة الفيديوهات</a>
+        <a href="mailto:contact@nur-store.com" class="btn btn-primary">راسلنا</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand"><img src="/assets/logo.svg" alt="NUR" class="brand-logo" width="1133" height="944"></div>
+    <p>© 2026 Nur Store. جميع الحقوق محفوظة.</p>
+    <nav class="footer-nav">
+      <a href="/ar/">المتجر</a>
+      <a href="aide.html"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M9.5 9.2a2.6 2.6 0 1 1 3.4 2.5c-.7.3-1 .9-1 1.6v.3"></path><circle cx="11.9" cy="17" r=".9" fill="currentColor" stroke="none"></circle></svg>المساعدة</a>
+      <a href="nouveautes.html">التحديثات</a>
+      <a href="mentions-legales.html">الإشعار القانوني</a>
+      <a href="cgv.html">شروط البيع</a>
+    </nav>
+  </footer>
+  <script src="/videos.js" defer=""></script>
+  <script src="/track.js" defer=""></script>
+
+
+</body></html>

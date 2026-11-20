@@ -5,7 +5,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "typecheck": "tsc -p tsconfig.check.json"
+    "typecheck": "tsc -p tsconfig.check.json",
+    "i18n": "node scripts/i18n.mjs build",
+    "i18n:extract": "node scripts/i18n.mjs extract"
   },
   "dependencies": {
     "@netlify/blobs": "^8.1.0",
@@ -13,6 +15,7 @@
     "stripe": "^17.5.0"
   },
   "devDependencies": {
+    "cheerio": "^1.2.0",
     "typescript": "^5.9.3"
   }
 }

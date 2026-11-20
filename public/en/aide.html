@@ -1,0 +1,400 @@
+<!DOCTYPE html><html lang="en" dir="ltr"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NUR Help — adjusting the sound, Wi-Fi, the Quran offline</title>
+  <meta name="description" content="All the answers you need to use your NUR tablet: connecting to Wi-Fi, adjusting the volume of the adhan and recitations, listening to the Quran offline, resuming your reading, memorising.">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23f4b942'/></svg>">
+  <style>
+    .aide { max-width: var(--max); margin: 0 auto; padding: 48px 24px 80px; }
+    .aide-head { text-align: center; max-width: 660px; margin: 0 auto 40px; }
+    .aide-head h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); margin-bottom: 12px; }
+    .aide-head p { color: var(--muted); }
+
+    .sommaire {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+      margin-bottom: 56px;
+    }
+    .sommaire a {
+      background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+      padding: 14px 16px; text-decoration: none; color: var(--text);
+      font-weight: 600; font-size: 0.95rem; line-height: 1.3;
+    }
+    .sommaire a:hover { border-color: var(--gold); }
+
+    .aide-sec { margin-bottom: 64px; scroll-margin-top: 24px; }
+    .aide-sec > h2 {
+      font-size: 1.45rem; margin-bottom: 10px;
+      padding-bottom: 10px; border-bottom: 1px solid var(--line);
+    }
+    .aide-sec p { color: var(--muted); margin-bottom: 14px; max-width: 70ch; }
+    .aide-sec p strong { color: var(--text); }
+    .aide-liste { color: var(--muted); max-width: 70ch; margin: 0 0 18px; padding-left: 22px; }
+    .aide-liste li { margin-bottom: 9px; line-height: 1.6; }
+    .aide-liste li::marker { color: var(--gold); }
+    .aide-liste strong { color: var(--text); }
+
+    .etapes { counter-reset: etape; list-style: none; margin: 0 0 20px; padding: 0; }
+    .etapes li {
+      counter-increment: etape; position: relative;
+      padding-left: 44px; margin-bottom: 12px; color: var(--muted); max-width: 70ch;
+    }
+    .etapes li::before {
+      content: counter(etape); position: absolute; left: 0; top: -2px;
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--gold); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.9rem;
+    }
+
+    .shots { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-top: 20px; }
+    .shots.une { grid-template-columns: 1fr; max-width: 760px; }
+    figure.shot { margin: 0; }
+    figure.shot img {
+      width: 100%; height: auto; display: block;
+      border: 1px solid var(--line); border-radius: 12px; background: #fff;
+    }
+    figure.shot figcaption {
+      color: var(--muted); font-size: 0.88rem; margin-top: 8px; line-height: 1.45;
+    }
+
+    .repere {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--gold); color: #fff; font-weight: 700; font-size: 0.78rem;
+      vertical-align: -4px; margin: 0 2px;
+    }
+
+    .astuce {
+      background: var(--bg-soft); border-left: 3px solid var(--gold);
+      border-radius: 0 10px 10px 0; padding: 14px 18px; margin: 18px 0 0;
+      color: var(--muted); font-size: 0.93rem; max-width: 70ch;
+    }
+    .astuce strong { color: var(--text); }
+
+    .aide-video { max-width: 560px; margin-top: 22px; }
+
+    .support-block {
+      margin-top: 40px; text-align: center;
+      background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 36px 24px;
+    }
+    .support-block h2 { font-size: 1.3rem; margin-bottom: 8px; }
+    .support-block p { color: var(--muted); margin-bottom: 18px; }
+    .support-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    @media (max-width: 900px) { .sommaire { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 760px) { .shots { grid-template-columns: 1fr; } }
+  </style>
+  
+  
+  
+  
+  <script src="/lang.js" defer=""></script>
+
+  <link rel="alternate" hreflang="fr" href="https://nur-store.com/aide.html">
+  <link rel="alternate" hreflang="en" href="https://nur-store.com/en/aide.html">
+  <link rel="alternate" hreflang="ar" href="https://nur-store.com/ar/aide.html">
+  <link rel="alternate" hreflang="x-default" href="https://nur-store.com/aide.html">
+</head>
+<body>
+  <header class="site-header">
+    <a href="/en/" class="brand" aria-label="Nur — home">
+      <img src="/assets/logo.svg" alt="NUR" class="brand-logo" width="1133" height="944">
+    </a>
+    <nav class="nav">
+      <a href="/en/">Shop</a>
+      <a href="decouvrir.html">Discover</a>
+      <a href="/#faq">FAQ</a>
+    </nav>
+    <nav class="lang-switch" data-lang-switch="" aria-label="Language"></nav>
+    <a href="/#commander" class="btn btn-primary" style="padding: 10px 20px;">Order</a>
+  </header>
+
+  <main class="aide">
+    <div class="aide-head">
+      <h1>Help</h1>
+      <p>Answers to the questions we hear most often, in pictures taken on a real tablet. The gold markers show where to tap.</p>
+    </div>
+
+    <nav class="sommaire">
+      <a href="#demarrage">1. First start</a>
+      <a href="#wifi">2. Connecting to Wi-Fi</a>
+      <a href="#son">3. Adjusting the sound</a>
+      <a href="#hors-connexion">4. The Quran offline</a>
+      <a href="#lecture">5. Resuming your reading</a>
+      <a href="#apprendre">6. Memorising</a>
+      <a href="#affichage">7. Reading comfort</a>
+      <a href="#horaires">8. Prayer times</a>
+      <a href="#adhan">9. The adhan</a>
+      <a href="#mise-a-jour">10. Updating</a>
+      <a href="#reglages">11. Other settings</a>
+      <a href="#hadiths">12. The hadith library</a>
+      <a href="#lettres">13. Arabic letters</a>
+      <a href="#taille">14. Text size</a>
+    </nav>
+
+    <section class="aide-sec" id="demarrage">
+      <h2>1. First start</h2>
+      <p>The very first time you switch it on, the tablet guides you step by step: <strong>choosing the language</strong>, connecting, then the NUR assistant for your city, the calculation method and the muezzin. The video below covers the full journey, on the system side as well as in the app.</p>
+      <div class="aide-video">
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/q_kz3mjcRvg" title="NUR — first start and setup guide" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+        </div>
+      </div>
+      <p class="astuce">The language chosen at the very beginning applies to <strong>the whole tablet</strong>. NUR also has its own language setting, should you want the app to differ from the system.</p>
+    </section>
+
+    <section class="aide-sec" id="wifi">
+      <h2>2. Connecting to Wi-Fi</h2>
+      <p>Wi-Fi is not set up in NUR but in the system bar, which is <strong>hidden at the top of the screen</strong>. It's the gesture nobody guesses.</p>
+      <ol class="etapes">
+        <li>Place your finger at the very top of the screen and swipe down.</li>
+        <li><strong>Press and hold</strong> the Wi-Fi tile to open the list of networks.</li>
+        <li>Choose your network and enter its password.</li>
+      </ol>
+      <div class="shots">
+        <figure class="shot">
+          <img src="/assets/aide/barre-haut-geste.webp" alt="Swiping down from the top of the screen" loading="lazy">
+          <figcaption>The swipe starts from the very top of the screen, above the clock.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="/assets/aide/wifi-tuile.webp" alt="The Wi-Fi tile in the system panel" loading="lazy">
+          <figcaption><span class="repere">1</span> the Wi-Fi tile. Its label is the network name — hidden here.</figcaption>
+        </figure>
+      </div>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="/assets/aide/wifi-liste.webp" alt="List of available Wi-Fi networks" loading="lazy">
+          <figcaption><span class="repere">1</span> tap the line for your network. Names are hidden in this picture.</figcaption>
+        </figure>
+      </div>
+      <p class="astuce"><strong>Long press, not a short tap.</strong> A brief tap on the tile only switches Wi-Fi off or on: it's the long press that opens the list of networks.</p>
+      <p class="astuce">One confusing detail: the Wi-Fi tile doesn't show the word "Wi-Fi" but <em>the name of the network</em> you are connected to.</p>
+      <p class="astuce"><strong>Sharing your phone's connection</strong> works: switch on the hotspot on the phone, then choose it here like an ordinary Wi-Fi network.</p>
+    </section>
+
+    <section class="aide-sec" id="son">
+      <h2>3. Adjusting the sound</h2>
+      <p>One important point: <strong>the adhan and the Quran recitations have two separate volumes</strong>. Turning one up doesn't affect the other — this is the most common reason for sound that seems low when you thought you had turned it up.</p>
+      <p>The safest way is to adjust it from NUR. Settings open on five sections, on the left of the screen; the two volumes live in two of them: <strong>Adhan</strong> for the call to prayer, <strong>Reading</strong> for the Quran recitations.</p>
+      <div class="shots">
+        <figure class="shot">
+          <img src="/assets/aide/volume-adhan.webp" alt="NUR Settings, Adhan section: adhan volume" loading="lazy">
+          <figcaption><strong>Adhan</strong> section: <span class="repere">1</span> the volume of the call to prayer.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="/assets/aide/volume-recitations.webp" alt="NUR Settings, Reading section: recitation volume" loading="lazy">
+          <figcaption><strong>Reading</strong> section: <span class="repere">1</span> the volume of the Quran recitations.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="/assets/aide/son-tuile.webp" alt="The Sound tile in the system panel" loading="lazy">
+          <figcaption>The overall volume can also be adjusted from the top bar, tile <span class="repere">1</span>.</figcaption>
+        </figure>
+      </div>
+      <p class="astuce"><strong>The number shown tells you where you stand.</strong> "7 / 7" or "15 / 15" means you are already at maximum: the app isn't holding anything back, so beyond that it's the tablet's speaker reaching its limit, and there's no point looking for another setting elsewhere.</p>
+    </section>
+
+    <section class="aide-sec" id="hors-connexion">
+      <h2>4. Listening to the Quran offline</h2>
+      <p>Recitations are downloaded as you listen. <strong>Every verse you have already listened to stays on the tablet</strong> and then works offline: only what you have never listened to is missing.</p>
+      <div class="aide-video"><div class="video-frame" data-video="v5"></div></div>
+      <p>To get ahead, you have two options. In the reader, the <strong>Options</strong> button downloads the current surah. And in <strong>Settings</strong>, a button downloads the entire Quran.</p>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="/assets/aide/telecharger-tout.webp" alt="Settings: download all surahs" loading="lazy">
+          <figcaption>The button also shows what is already on the tablet.</figcaption>
+        </figure>
+      </div>
+      <p class="astuce">The full download takes time and a good Wi-Fi connection. You can <strong>pause it and start it again</strong>: it resumes where it left off, and it carries on even if you leave the app or put the tablet down.</p>
+    </section>
+
+    <section class="aide-sec" id="lecture">
+      <h2>5. Resuming your reading</h2>
+      <p>NUR remembers by itself where you stopped. This position is called <strong>Last read</strong> and is updated every time you leave the reader — there is nothing for you to set or update yourself.</p>
+      <ol class="etapes">
+        <li>Open <strong>Read the Quran</strong>.</li>
+        <li>Choose the <strong>Bookmarks</strong> tab.</li>
+        <li>The first line is your position: tap it to go back there.</li>
+      </ol>
+      <div class="shots">
+        <figure class="shot">
+          <img src="/assets/aide/marque-pages-onglet.webp" alt="Quran index: Bookmarks tab" loading="lazy">
+          <figcaption>The Bookmarks tab, to the right of Surahs and Juz.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="/assets/aide/derniere-lecture.webp" alt="Last read line at the top of the list" loading="lazy">
+          <figcaption><span class="repere">1</span> "Last read": the exact surah and verse where you stopped.</figcaption>
+        </figure>
+      </div>
+      <p>The bookmarks you set yourself, with the reader's 🔖 icon, appear below, from newest to oldest, <strong>each with the day you set it</strong>. A long press on one of them lets you delete it. Setting a bookmark again on a verse already marked moves it to the top of the list, without duplicating it.</p>
+      <p class="astuce">Bookmarks set before the update have no date: it wasn't recorded at the time. They remain usable as they are.</p>
+      <p>You don't have to look for this choice: <strong>the first time you have a reading in progress</strong>, NUR will ask you once and for all whether you prefer to resume where you stopped, or go back to the surah index. You can change it later, in <strong>Settings</strong>, <strong>Reading</strong> section.</p>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="/assets/aide/reprise-lecture-reglage.webp" alt="Setting: open the Quran at the last read position" loading="lazy">
+          <figcaption>Tap the button to switch it on or off.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="aide-sec" id="apprendre">
+      <h2>6. Memorising</h2>
+      <p>The reader has a <strong>learning mode</strong> that automatically repeats each verse — 2, 3 or 5 times — before moving on to the next, and gives you time to say it back.</p>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="/assets/aide/mode-apprentissage.webp" alt="Learning mode in the Quran reader" loading="lazy">
+          <figcaption><span class="repere">1</span> switch on learning mode — <span class="repere">2</span> choose the number of repetitions.</figcaption>
+        </figure>
+      </div>
+      <div class="aide-video">
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/25f1xUEOpIc" title="NUR — the Quran and learning mode" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="aide-sec" id="affichage">
+      <h2>7. Reading comfort</h2>
+      <p>An e-ink screen doesn't light up: it redraws itself. Depending on how it goes about it, scrolling briefly passes through black — which we perceive as a <strong>flicker</strong> — or glides without showing anything.</p>
+      <p><strong>Your tablet is set to "fast".</strong> It's the most comfortable mode for reading: no flicker, the text scrolls in one go. There's nothing for you to do — if you have installed the latest update, it's already in place.</p>
+      <p>To check or change it, pull the <strong>top bar</strong> down:</p>
+      <div class="shots">
+        <figure class="shot">
+          <img src="/assets/aide/refresh-tuile.webp" alt="The Refresh Settings tile in the top bar" loading="lazy">
+          <figcaption>Tile <span class="repere">1</span> opens the setting. Its name is always "Refresh Settings": the tablet does not translate it.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="/assets/aide/refresh-modes.webp" alt="The four refresh modes, fast selected" loading="lazy">
+          <figcaption>Four modes. <span class="repere">1</span> "fast" is the one we recommend.</figcaption>
+        </figure>
+      </div>
+      <p>What the four do:</p>
+      <ul class="aide-liste">
+        <li><strong>regal</strong> — the sharpest image, but a flicker at every page change. Pleasant to look at, tiring for long reading.</li>
+        <li><strong>Default</strong> — the tablet's original setting, halfway between. This is what caused the flickering you may have noticed.</li>
+        <li><strong>fast</strong> — the one we install. No flicker, at the cost of a faint trace of the previous text, which you forget as you read.</li>
+        <li><strong>Maximum speed</strong> — <strong>avoid.</strong> The screen goes faster still, but it leaves <strong>ghosting</strong>: the ghosts of previous pages build up and end up getting in the way of reading.</li>
+      </ul>
+      <p class="astuce">This setting belongs to the tablet, not to NUR: it applies to everything on the screen. If you change it, NUR respects your choice and does not put it back to "fast" at the next start.</p>
+    </section>
+
+    <section class="aide-sec" id="horaires">
+      <h2>8. Prayer times</h2>
+      <p>Prayer times depend on two things: <strong>your city</strong> and the <strong>calculation method</strong>. The method recommended for your country is offered at the top of the list — in France, the Paris Mosque. Since version 0.8, the Paris Mosque, Algeria, Tunisia, Morocco, Turkey, Emirates, Indonesia and Malaysia methods follow the calendar published by their authority.</p>
+      <div class="aide-video"><div class="video-frame" data-video="v3"></div></div>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="/assets/aide/ville-methode.webp" alt="Settings: city and calculation method" loading="lazy">
+          <figcaption><span class="repere">1</span> search for your city — <span class="repere">2</span> the calculation method.</figcaption>
+        </figure>
+      </div>
+      <p class="astuce">Don't forget <strong>Save</strong>, at the bottom of the settings screen, after changing city.</p>
+    </section>
+
+    <section class="aide-sec" id="adhan">
+      <h2>9. The adhan</h2>
+      <p>You choose the muezzin from several recitations, and you can listen to it straight away to check the setting and the volume.</p>
+      <div class="aide-video"><div class="video-frame" data-video="v4"></div></div>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="/assets/aide/mouadhin.webp" alt="Settings: choosing the muezzin and testing the adhan" loading="lazy">
+          <figcaption><span class="repere">1</span> choose the muezzin — <span class="repere">2</span> listen to it straight away.</figcaption>
+        </figure>
+      </div>
+      <p>Prayer by prayer, you can choose the full adhan, a simple beep, or silence: the small icons to the right of each time, on the main screen, cycle through these three modes.</p>
+      <p class="astuce">When the adhan sounds, a screen appears with a <strong>Stop the adhan</strong> button. The notification at the top of the screen offers the same button.</p>
+    </section>
+
+    <section class="aide-sec" id="mise-a-jour">
+      <h2>10. Updating the tablet</h2>
+      <p>NUR checks for updates by itself once a day and offers to install them. You can also check on demand from the settings.</p>
+      <p>The <a href="nouveautes.html" style="color: var(--gold); font-weight: 600;">Updates</a> page details what each version brings: new features, improvements and fixes.</p>
+      <div class="shots une">
+        <figure class="shot">
+          <img src="/assets/aide/mise-a-jour.webp" alt="Settings: check for updates" loading="lazy">
+          <figcaption>A Wi-Fi connection is required for checking and downloading.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="aide-sec" id="reglages">
+      <h2>11. Other settings</h2>
+      <p>Settings open on <strong>five sections</strong>, listed on the left of the screen: Prayer, Adhan, Reading, Device, Help &amp; tools. Each shows its current setting — your city, the chosen muezzin, the language — and you tap one to see its details on the right. The Qibla compass, the update check and this help are in <strong>Help &amp; tools</strong>; everything that follows is in <strong>Device</strong>.</p>
+      <div class="shots">
+        <figure class="shot">
+          <img src="/assets/aide/langue-theme.webp" alt="Settings: language and theme" loading="lazy">
+          <figcaption><span class="repere">1</span> the app language, out of eleven — <span class="repere">2</span> the theme, to be left on E-ink.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="/assets/aide/outils-kiosque.webp" alt="Settings: wallpaper, screen rotation and kiosk mode" loading="lazy">
+          <figcaption><span class="repere">1</span> the sleep wallpaper — <span class="repere">2</span> screen rotation — <span class="repere">3</span> kiosk mode.</figcaption>
+        </figure>
+      </div>
+      <p class="astuce"><strong>Screen rotation is off to begin with.</strong> On a tablet sitting in its dock, it costs a dozen hours of battery life for a service that brings nothing. Switch it on if you turn the tablet to read.</p>
+      <p class="astuce"><strong>Kiosk mode</strong> makes NUR the tablet's home screen: the Home button always brings you back to the prayer times. This is the factory setting. Switching it off restores the usual Android home screen.</p>
+      <p class="astuce">The <strong>advanced settings</strong>, below the calculation method, let you adjust the angles, shift a prayer by a few minutes or choose the school for Asr. Only touch them if your mosque follows a particular calculation.</p>
+    </section>
+
+    <section class="aide-sec" id="hadiths">
+      <h2>12. The hadith library</h2>
+      <p>The <strong>Library</strong> button, at the bottom of the home screen, opens the collections: Riyad as-Salihin, Nawawi's 40 hadiths, Sahih al-Bukhari, Sunan Abu Dawud, Sunan Ibn Majah, Sunan an-Nasa'i, the 40 Qudsi hadiths, those of ad-Dahlawi, the HadeethEnc encyclopedia and Hisn al-Muslim. Nearly 28,700 hadiths, all on the tablet, offline.</p>
+      <div class="aide-video"><div class="video-frame" data-video="v6"></div></div>
+      <ol class="etapes">
+        <li>Tap a collection: its table of contents appears.</li>
+        <li>Tap a chapter to read it. The <strong>Language</strong> button, at the top, offers Arabic or French.</li>
+        <li>The Back button returns to the table of contents, then to the list of collections.</li>
+      </ol>
+      <p class="astuce">A long chapter, like those of Sahih al-Bukhari, takes a few seconds to appear: that's normal, the tablet prepares it in full.</p>
+    </section>
+
+    <section class="aide-sec" id="lettres">
+      <h2>13. Arabic letters</h2>
+      <p>The <strong>Arabic letters</strong> button, on the home screen, opens eight steps, in the order of the Quranic school: the letter on its own, then with vowels, then the syllable, then the word, up to the first verses. Each card can be heard in the voice of a native speaker, recorded for NUR.</p>
+      <div class="aide-video"><div class="video-frame" data-video="v1"></div></div>
+      <ol class="etapes">
+        <li>Open a step, listen to the card, repeat, then say whether you know it.</li>
+        <li>The day's review brings back the cards to go over. You move on to the next step once the previous one is mastered.</li>
+        <li>The <strong>Articulation</strong> button shows, for each letter, where the sound comes from.</li>
+      </ol>
+      <p class="astuce">A way to get started, a little each day: you become familiar with the letters and their sounds. The tablet does not hear your pronunciation.</p>
+    </section>
+
+    <section class="aide-sec" id="taille">
+      <h2>14. Text size</h2>
+      <p>Since version 0.8, a single setting enlarges the text across the whole tablet: the home screen, the prayer times, the Quran, the hadiths and the settings themselves.</p>
+      <div class="aide-video"><div class="video-frame" data-video="v2"></div></div>
+      <ol class="etapes">
+        <li>Open <strong>Settings</strong> (the cog wheel at the top right of the home screen).</li>
+        <li>Choose the <strong>Device</strong> panel, then <strong>Text size</strong>.</li>
+        <li>Pick <strong>Normal</strong>, <strong>Large</strong> or <strong>Extra large</strong>. The screen redraws straight away.</li>
+      </ol>
+      <p class="astuce">In the Quran and the books, the <strong>−</strong> and <strong>+</strong> buttons also adjust the reading text size, independently of this general setting.</p>
+    </section>
+
+    <div class="support-block">
+      <h2>Can't find your answer?</h2>
+      <p>Write to us, we reply quickly. The getting-started videos are also available on the Discover page.</p>
+      <div class="support-actions">
+        <a href="decouvrir.html" class="btn btn-ghost">Watch the videos</a>
+        <a href="mailto:contact@nur-store.com" class="btn btn-primary">Write to us</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand"><img src="/assets/logo.svg" alt="NUR" class="brand-logo" width="1133" height="944"></div>
+    <p>© 2026 Nur Store. All rights reserved.</p>
+    <nav class="footer-nav">
+      <a href="/en/">Shop</a>
+      <a href="aide.html"><svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M9.5 9.2a2.6 2.6 0 1 1 3.4 2.5c-.7.3-1 .9-1 1.6v.3"></path><circle cx="11.9" cy="17" r=".9" fill="currentColor" stroke="none"></circle></svg>Help</a>
+      <a href="nouveautes.html">Updates</a>
+      <a href="mentions-legales.html">Legal notice</a>
+      <a href="cgv.html">Terms of sale</a>
+    </nav>
+  </footer>
+  <script src="/videos.js" defer=""></script>
+  <script src="/track.js" defer=""></script>
+
+
+</body></html>

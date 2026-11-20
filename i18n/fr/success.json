@@ -1,0 +1,21 @@
+{
+ "Merci pour votre commande — Nur": "",
+ "Merci pour votre commande !": "",
+ "Votre paiement a bien été reçu et votre commande est enregistrée. Vous allez recevoir un e-mail de confirmation. Nous préparons votre tablette NUR avec soin.": "",
+ "📍 Dernière étape : votre point relais": "",
+ "Vous avez choisi la livraison <strong>Mondial Relay</strong>. Le plus simple : nous expédions au point relais <strong>le plus proche de votre adresse de livraison</strong>, et vous recevez le numéro de suivi dès l'envoi.": "",
+ "🗺️ Choisir mon point relais sur la carte": "",
+ "Votre choix :": "",
+ "Confirmer ce point relais": "",
+ "Ou : expédiez au relais le plus proche de chez moi": "",
+ "Indiquer un relais manuellement": "",
+ "Trouvez votre relais sur <a href=\"https://www.mondialrelay.fr/trouver-le-point-relais-le-plus-proche-de-chez-moi/\" target=\"_blank\" rel=\"noopener\">le site Mondial Relay</a>, puis indiquez-le :": "",
+ "Point relais souhaité (nom + ville, ou n° du relais)": "",
+ "Ex. : Tabac de la Gare, Paris 11e (n° 45210)": "",
+ "✓ C'est noté ! Votre colis sera expédié vers ce point relais et vous recevrez le numéro de suivi.": "",
+ "Retour à la boutique": "",
+ "@script": {
+  "Une erreur est survenue, réessayez ou contactez-nous.": "",
+  "Le point relais le plus proche de l'adresse de livraison": ""
+ }
+}

@@ -1,0 +1,21 @@
+{
+ "Merci pour votre commande — Nur": "شكراً لطلبك — Nur",
+ "Merci pour votre commande !": "شكراً لطلبك!",
+ "Votre paiement a bien été reçu et votre commande est enregistrée. Vous allez recevoir un e-mail de confirmation. Nous préparons votre tablette NUR avec soin.": "تم استلام دفعتك وتسجيل طلبك. ستصلك رسالة تأكيد بالبريد الإلكتروني. نحن نجهّز لوحي NUR الخاص بك بعناية.",
+ "📍 Dernière étape : votre point relais": "📍 الخطوة الأخيرة: نقطة الاستلام",
+ "Vous avez choisi la livraison <strong>Mondial Relay</strong>. Le plus simple : nous expédions au point relais <strong>le plus proche de votre adresse de livraison</strong>, et vous recevez le numéro de suivi dès l'envoi.": "لقد اخترت التوصيل عبر <strong>Mondial Relay</strong>. الأسهل: نشحن إلى نقطة الاستلام <strong>الأقرب إلى عنوان التوصيل الخاص بك</strong>، وتستلم رقم التتبع فور الشحن.",
+ "🗺️ Choisir mon point relais sur la carte": "🗺️ اختيار نقطة الاستلام على الخريطة",
+ "Votre choix :": "اختيارك:",
+ "Confirmer ce point relais": "تأكيد نقطة الاستلام هذه",
+ "Ou : expédiez au relais le plus proche de chez moi": "أو: اشحنوا إلى أقرب نقطة استلام من منزلي",
+ "Indiquer un relais manuellement": "تحديد نقطة استلام يدوياً",
+ "Trouvez votre relais sur <a href=\"https://www.mondialrelay.fr/trouver-le-point-relais-le-plus-proche-de-chez-moi/\" target=\"_blank\" rel=\"noopener\">le site Mondial Relay</a>, puis indiquez-le :": "ابحث عن نقطة الاستلام على <a href=\"https://www.mondialrelay.fr/trouver-le-point-relais-le-plus-proche-de-chez-moi/\" target=\"_blank\" rel=\"noopener\">موقع Mondial Relay</a>، ثم حدّدها هنا:",
+ "Point relais souhaité (nom + ville, ou n° du relais)": "نقطة الاستلام المطلوبة (الاسم + المدينة، أو رقم النقطة)",
+ "Ex. : Tabac de la Gare, Paris 11e (n° 45210)": "مثال: Tabac de la Gare, Paris 11e (رقم 45210)",
+ "✓ C'est noté ! Votre colis sera expédié vers ce point relais et vous recevrez le numéro de suivi.": "✓ تم التسجيل! سيُشحن طردك إلى نقطة الاستلام هذه وستستلم رقم التتبع.",
+ "Retour à la boutique": "العودة إلى المتجر",
+ "@script": {
+  "Une erreur est survenue, réessayez ou contactez-nous.": "حدث خطأ، يُرجى المحاولة مجدداً أو الاتصال بنا.",
+  "Le point relais le plus proche de l'adresse de livraison": "Le point relais le plus proche de l'adresse de livraison"
+ }
+}

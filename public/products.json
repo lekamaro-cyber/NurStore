@@ -5,6 +5,10 @@
       "id": "nur-tablet",
       "name": "Tablette NUR — Coran, prière & hadith",
       "description": "La tablette e-ink dédiée à votre foi : horaires de prière et adhan, le Coran complet avec audio, une bibliothèque de hadith et la Qibla. Sans publicité ni abonnement.",
+      "name_en": "NUR tablet — Quran, prayer & hadith",
+      "description_en": "The e-ink tablet dedicated to your faith: prayer times and adhan, the complete Quran with audio, a hadith library and the Qibla. No ads, no subscription.",
+      "name_ar": "لوحي NUR — القرآن والصلاة والحديث",
+      "description_ar": "الجهاز اللوحي بشاشة الحبر الإلكتروني المخصّص لدينك: مواقيت الصلاة والأذان، القرآن الكريم كاملاً مع الصوت، مكتبة حديث والقبلة. بلا إعلانات ولا اشتراك.",
       "price": 19900,
       "image": "assets/hero.webp"
     },
@@ -12,6 +16,10 @@
       "id": "nur-housse",
       "name": "Housse de protection NUR",
       "description": "Housse origami : protège la tablette et se plie en support pour la poser debout.",
+      "name_en": "NUR protective cover",
+      "description_en": "Origami cover: protects the tablet and folds into a stand to prop it upright.",
+      "name_ar": "غطاء حماية NUR",
+      "description_ar": "غطاء أوريغامي: يحمي اللوحي ويُطوى ليصبح حاملاً يثبّته واقفاً.",
       "price": 1000,
       "image": "assets/housse-1.webp"
     }
