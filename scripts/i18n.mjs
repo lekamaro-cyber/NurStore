@@ -136,6 +136,9 @@ function build() {
           else if (v === "/") el.attribs[a] = `/${lang}/`;
         }
       });
+      // la vidéo d'accueil existe dans la langue de la page (voix Abdel en anglais et en arabe)
+      const VIDEO_ACCUEIL = { en: "a0Woj2DmCaY", ar: "sl03FkZzZYY" };
+      $('iframe[src*="embed/xcfn68nsPyk"]').attr("src", "https://www.youtube.com/embed/" + VIDEO_ACCUEIL[lang]);
       $('link[rel="alternate"]').remove();
       $("head").append("\n  " + liensAlternates(page) + "\n");
       if (lang === "ar") {
