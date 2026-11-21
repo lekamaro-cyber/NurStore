@@ -35,6 +35,10 @@
     #login { max-width: 380px; margin: 80px auto; text-align: center; }
     #login input { width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg-soft); color: var(--text); margin-bottom: 12px; }
     .muted { color: var(--muted); font-size: 0.85rem; }
+    .journal { font-size: 0.82rem; white-space: nowrap; }
+    .journal td:last-child, .journal th:last-child { text-align: left; }
+    .journal .ip { font-family: ui-monospace, Consolas, monospace; }
+    .journal .jour { color: var(--muted); }
   </style>
 </head>
 <body>
@@ -59,10 +63,14 @@
     <table id="timeTable"></table>
     <h2>Pages vues</h2>
     <table id="pagesTable"></table>
+    <h2>Journal des visites</h2>
+    <p class="muted" id="logNote" style="margin-bottom:8px;"></p>
+    <div style="overflow-x:auto;"><table id="logTable" class="journal"></table></div>
     <p class="muted" style="margin-top:24px;">Mesure sans cookies : les robots sont exclus. « Pages vues », pas visiteurs uniques.
     Ce navigateur n'est plus compté dans les stats (ouvrez cette page une fois sur chacun de vos appareils).
-    La provenance est déduite de l'adresse IP par Netlify : seul le pays est conservé, sous forme de compteur.
-    Ni l'adresse IP, ni la ville, ni les coordonnées ne sont enregistrées.</p>
+    La provenance est déduite de l'adresse IP par Netlify. Le journal des visites garde l'heure, l'adresse IP,
+    le pays, la ville, la page, la page d'origine et le navigateur de chaque page vue, 300 lignes par jour au plus,
+    effacées après 60 jours.</p>
     <p style="margin-top:16px;"><button class="btn btn-ghost" id="resetBtn">🗑️ Réinitialiser toutes les stats</button>
     <span class="muted" id="resetMsg"></span></p>
   </main>
@@ -168,6 +176,35 @@
 
       var pEntries = Object.keys(pages).map(function (k) { return [k, pages[k]]; }).sort(function (a, b) { return b[1] - a[1]; });
       rows($("pagesTable"), pEntries, pEntries.length ? pEntries[0][1] : 1);
+      journal(data, days);
+    }
+
+    // Journal : une ligne par page vue, du plus récent au plus ancien, sur les 14 jours.
+    function esc(s) { return String(s || "").replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+    function journal(data, days) {
+      var lignes = [];
+      days.forEach(function (d) {
+        var log = (data[d] || {}).log || [];
+        for (var i = log.length - 1; i >= 0; i--) lignes.push([d, log[i]]);
+      });
+      if (!lignes.length) {
+        $("logNote").textContent = "Aucune ligne pour l'instant : le journal démarre avec la prochaine visite.";
+        $("logTable").innerHTML = "";
+        return;
+      }
+      var ips = {};
+      lignes.forEach(function (l) { ips[l[1].ip] = (ips[l[1].ip] || 0) + 1; });
+      $("logNote").textContent = lignes.length + " pages vues, " + Object.keys(ips).length + " adresses distinctes. "
+        + "Une même adresse qui enchaîne les pages en quelques secondes, ou un navigateur « script », signale un robot.";
+      $("logTable").innerHTML =
+        "<tr><th>Jour</th><th>Heure</th><th>IP</th><th>Pays</th><th>Ville</th><th>Page</th><th>Origine</th><th>Navigateur</th></tr>" +
+        lignes.slice(0, 400).map(function (l) {
+          var e = l[1];
+          return "<tr><td class='jour'>" + l[0].slice(5) + "</td><td>" + esc(e.h) + "</td>"
+            + "<td class='ip'>" + esc(e.ip) + (ips[e.ip] > 1 ? " <span class='muted'>×" + ips[e.ip] + "</span>" : "") + "</td>"
+            + "<td>" + pastille(e.pays || "??") + "</td><td>" + esc(e.ville) + "</td>"
+            + "<td>" + esc(e.page) + "</td><td>" + esc(e.ref || "—") + "</td><td>" + esc(e.nav) + "</td></tr>";
+        }).join("");
     }
 
     $("resetBtn").addEventListener("click", function () {

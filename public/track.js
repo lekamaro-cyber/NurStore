@@ -23,15 +23,15 @@
   // Auto-exclusion du propriétaire : posée automatiquement par stats.html.
   try { if (localStorage.getItem("nur_no_track")) return; } catch (e) {}
 
-  function send(t, n) {
+  function send(t, n, r) {
     try {
-      navigator.sendBeacon("/api/beacon", JSON.stringify({ t: t, n: n }));
+      navigator.sendBeacon("/api/beacon", JSON.stringify(r ? { t: t, n: n, r: r } : { t: t, n: n }));
     } catch (e) { /* silencieux */ }
   }
   window.nurStat = send;
 
   // Page vue
-  send("pv", location.pathname === "/" ? "/" : location.pathname);
+  send("pv", location.pathname === "/" ? "/" : location.pathname, document.referrer || "");
 
   // Sections atteintes (une fois par visite)
   var sections = [

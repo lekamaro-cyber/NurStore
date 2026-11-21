@@ -8,11 +8,30 @@ import type { Config, Context } from "@netlify/functions";
  * s'excluent d'eux-mêmes car ils n'exécutent pas le JavaScript.
  *
  * Provenance : sur les pages vues seulement, on incrémente aussi un compteur
- * par pays, déduit de l'adresse IP par Netlify. On ne retient que le code à
- * deux lettres — jamais l'IP, la ville ni les coordonnées, qui sont pourtant
- * dans `context.geo`. Un compteur « FR: 312 » ne désigne personne, et c'est
- * tout ce qu'il faut pour savoir si la boutique parle au bon public.
+ * par pays, déduit de l'adresse IP par Netlify.
+ *
+ * Journal (depuis le 21/11/2026, demandé par le fondateur après une pointe de
+ * visites inexpliquée) : chaque page vue est aussi consignée en clair dans
+ * `log` — heure de Paris, adresse IP, pays, ville, page, page d'origine et
+ * famille de navigateur — pour distinguer une vraie visite d'un robot ou d'un
+ * scan. Au plus LOG_MAX lignes par jour ; les jours de plus de 60 jours sont
+ * effacés à la lecture des stats (stats-api.mts). Déclaré dans les mentions
+ * légales, section « Données personnelles ».
  */
+const LOG_MAX = 300;
+
+/** « Chrome · Android », « Safari · iPhone »… : assez pour reconnaître un robot, sans garder l'UA entière. */
+function navigateur(ua: string): string {
+  const nav = /Edg\//.test(ua) ? "Edge" : /OPR\//.test(ua) ? "Opera" : /Firefox\//.test(ua) ? "Firefox"
+    : /Chrome\//.test(ua) ? "Chrome" : /Safari\//.test(ua) ? "Safari" : /curl|python|wget|go-http|java/i.test(ua) ? "script" : "autre";
+  const os = /iPhone|iPad/.test(ua) ? "iOS" : /Android/.test(ua) ? "Android" : /Windows/.test(ua) ? "Windows"
+    : /Mac OS/.test(ua) ? "Mac" : /Linux/.test(ua) ? "Linux" : "?";
+  return nav + " · " + os;
+}
+
+function heureParis(d: Date): string {
+  return new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", hour: "2-digit", minute: "2-digit" }).format(d);
+}
 export default async (req: Request, context: Context) => {
   if (req.method !== "POST") return new Response(null, { status: 405 });
   const ua = req.headers.get("user-agent") || "";
@@ -20,7 +39,7 @@ export default async (req: Request, context: Context) => {
     return new Response(null, { status: 204 });
   }
 
-  let body: { t?: string; n?: string };
+  let body: { t?: string; n?: string; r?: string };
   try {
     body = JSON.parse(await req.text());
   } catch {
@@ -44,6 +63,16 @@ export default async (req: Request, context: Context) => {
     if (estPageVue) {
       data.pays = data.pays || {};
       data.pays[pays] = (data.pays[pays] || 0) + 1;
+      data.log = Array.isArray(data.log) ? data.log : [];
+      if (data.log.length < LOG_MAX) {
+        const ip = (context as { ip?: string }).ip || req.headers.get("x-nf-client-connection-ip") || "?";
+        let ref = String(body.r || "").slice(0, 120);
+        try { if (ref) ref = new URL(ref).host + new URL(ref).pathname.replace(/\/$/, ""); } catch { /* on garde tel quel */ }
+        data.log.push({
+          h: heureParis(new Date()), ip, pays, ville: String(context.geo?.city || "").slice(0, 40),
+          page: name, ref, nav: navigateur(ua),
+        });
+      }
     }
     await store.set(key, JSON.stringify(data));
   } catch (err) {

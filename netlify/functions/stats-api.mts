@@ -25,6 +25,14 @@ export default async (req: Request) => {
     }
     return Response.json({ ok: true, deleted });
   }
+  // Le journal des visites contient des adresses IP : on ne garde pas plus de 60 jours.
+  const limite = new Date(Date.now() - 60 * 86400000).toISOString().slice(0, 10);
+  try {
+    const { blobs } = await store.list({ prefix: "day-" });
+    for (const blob of blobs) if (blob.key.slice(4) < limite) await store.delete(blob.key);
+  } catch (err) {
+    console.error("purge stats", err);
+  }
   const out: Record<string, unknown> = {};
   const now = Date.now();
   for (let i = 0; i < days; i++) {
