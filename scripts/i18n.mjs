@@ -23,7 +23,7 @@ const LANGUES = { en: { dir: "ltr", locale: "en" }, ar: { dir: "rtl", locale: "a
 const SITE = "https://nur-store.com";
 const INLINE = new Set(["strong", "b", "em", "i", "a", "span", "small", "br", "code", "sup", "sub", "u", "mark", "abbr", "time"]);
 const ATTRS = ["alt", "title", "placeholder", "aria-label"];
-const RESSOURCES = /^(assets\/|styles\.css|main\.js|track\.js|videos\.js|lang\.js|products\.json)/;
+const RESSOURCES = /^(assets\/|styles\.css|main\.js|boutique\.js|videos\.js|lang\.js|products\.json)/;
 
 const norm = (s) => s.replace(/\s+/g, " ").trim();
 const aDesLettres = (s) => /[A-Za-zÀ-ÿ]/.test(s);

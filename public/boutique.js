@@ -23,10 +23,16 @@
   // Auto-exclusion du propriétaire : posée automatiquement par stats.html.
   try { if (localStorage.getItem("nur_no_track")) return; } catch (e) {}
 
+  // fetch + keepalive plutôt que sendBeacon : certains bloqueurs coupent
+  // sendBeacon en bloc ; keepalive laisse la requête partir même à la fermeture.
   function send(t, n, r) {
+    var corps = JSON.stringify(r ? { t: t, n: n, r: r } : { t: t, n: n });
     try {
-      navigator.sendBeacon("/api/beacon", JSON.stringify(r ? { t: t, n: n, r: r } : { t: t, n: n }));
-    } catch (e) { /* silencieux */ }
+      fetch("/api/visite", { method: "POST", body: corps, keepalive: true, headers: { "Content-Type": "text/plain" } })
+        .catch(function () {});
+    } catch (e) {
+      try { navigator.sendBeacon("/api/visite", corps); } catch (e2) { /* silencieux */ }
+    }
   }
   window.nurStat = send;
 

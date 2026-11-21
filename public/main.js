@@ -326,6 +326,7 @@ async function monterBoutonsPaypal() {
       style: { layout: "vertical", label: "pay", height: 45 },
       createOrder: async () => {
         $("paypalMsg").textContent = "";
+        if (window.nurStat) window.nurStat("ev", "panier:4x");
         const r = await fetch("/api/paypal/create-order", {
           method: "POST",
           headers: { "Content-Type": "application/json" },

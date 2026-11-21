@@ -82,5 +82,7 @@ export default async (req: Request, context: Context) => {
 };
 
 export const config: Config = {
-  path: "/api/beacon",
+  // « beacon » est dans les listes des bloqueurs de pub ; l'ancien chemin reste
+  // servi pour les pages encore en cache chez les visiteurs.
+  path: ["/api/visite", "/api/beacon"],
 };

@@ -10,18 +10,15 @@
     .stats { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
     .stats h1 { font-size: 1.6rem; margin-bottom: 20px; }
     .stats h2 { font-size: 1.1rem; margin: 30px 0 10px; }
-    /* Grille de 6 : les deux premières tuiles occupent 3 colonnes, les trois
-       suivantes 2 — donc 2 en haut, 3 en dessous, sans trou en bout de ligne. */
+    /* Grille de 6 tuiles : trois par rangée. */
     .kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
     .kpi { grid-column: span 2; background: var(--card); border: 1px solid var(--line);
            border-radius: 12px; padding: 12px 14px; }
-    .kpi:nth-child(1), .kpi:nth-child(2) { grid-column: span 3; }
     .kpi b { display: block; font-size: 1.45rem; line-height: 1.2; }
     .kpi span { color: var(--muted); font-size: 0.8rem; }
     @media (max-width: 640px) {
       .kpis { grid-template-columns: repeat(2, 1fr); }
-      .kpi, .kpi:nth-child(1), .kpi:nth-child(2) { grid-column: span 1; }
-      .kpi:last-child { grid-column: span 2; }
+      .kpi { grid-column: span 1; }
     }
     table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
     th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); }
@@ -67,6 +64,7 @@
     <p class="muted" id="logNote" style="margin-bottom:8px;"></p>
     <div style="overflow-x:auto;"><table id="logTable" class="journal"></table></div>
     <p class="muted" style="margin-top:24px;">Mesure sans cookies : les robots sont exclus. « Pages vues », pas visiteurs uniques.
+    Les visiteurs avec bloqueur de publicité restent invisibles du beacon ; seules les commandes payées sont comptées par le serveur, donc exactes.
     Ce navigateur n'est plus compté dans les stats (ouvrez cette page une fois sur chacun de vos appareils).
     La provenance est déduite de l'adresse IP par Netlify. Le journal des visites garde l'heure, l'adresse IP,
     le pays, la ville, la page, la page d'origine et le navigateur de chaque page vue, 300 lignes par jour au plus,
@@ -151,8 +149,9 @@
         "<div class='kpi'><b>" + pv + "</b><span>pages vues (14 j)</span></div>" +
         "<div class='kpi'><b>" + (pvPays ? partFr + " %" : "—") + "</b><span>visites françaises</span></div>" +
         "<div class='kpi'><b>" + (events["panier:ajout"] || 0) + "</b><span>ajouts au panier</span></div>" +
-        "<div class='kpi'><b>" + (events["panier:paiement"] || 0) + "</b><span>clics « payer »</span></div>" +
-        "<div class='kpi'><b>" + (events["vu:achat"] || 0) + "</b><span>ont vu le bloc achat</span></div>";
+        "<div class='kpi'><b>" + ((events["panier:paiement"] || 0) + (events["panier:4x"] || 0)) + "</b><span>clics « payer » (dont " + (events["panier:4x"] || 0) + " en 4×)</span></div>" +
+        "<div class='kpi'><b>" + (events["vu:achat"] || 0) + "</b><span>ont vu le bloc achat</span></div>" +
+        "<div class='kpi'><b>" + (events["commande:payee"] || 0) + "</b><span>commandes payées (dont " + (events["commande:4x"] || 0) + " en 4×), comptées par le serveur</span></div>";
 
       rowsPays($("paysTable"), paysTries, pvPays);
       $("paysNote").textContent = pvPays

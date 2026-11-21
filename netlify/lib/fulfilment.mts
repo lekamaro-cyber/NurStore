@@ -11,6 +11,7 @@
  * normalisée, et appellent `traiterCommande`. Tout ce qui est propre à Stripe
  * ou à PayPal reste dans leur fonction respective.
  */
+import { getStore } from "@netlify/blobs";
 import { STOCK_TOTAL, addSold } from "./stock.mts";
 import { announceOrder, sendcloudConfigured } from "./sendcloud.mts";
 
@@ -117,7 +118,25 @@ async function annoncerSendcloud(c: CommandePayee): Promise<string> {
  * suivantes : une panne Sendcloud ne doit pas priver le marchand de son e-mail
  * de commande, puisque c'est ce qui lui permet de la traiter à la main.
  */
+/**
+ * Compte la commande dans les stats du jour (`commande:payee`, et `commande:4x`
+ * pour PayPal). Le beacon du navigateur est bloqué par les bloqueurs de pub et
+ * ne voit pas le parcours PayPal : seul le serveur sait combien on a vendu.
+ * Les essais (bac à sable) ne sont pas comptés.
+ */
+async function compterCommande(c: CommandePayee): Promise<void> {
+  if (!c.reel) return;
+  const store = getStore("nur-stats");
+  const key = "day-" + new Date().toISOString().slice(0, 10);
+  const data = JSON.parse((await store.get(key)) || "{}");
+  data.events = data.events || {};
+  data.events["commande:payee"] = (data.events["commande:payee"] || 0) + 1;
+  if (c.source === "paypal") data.events["commande:4x"] = (data.events["commande:4x"] || 0) + 1;
+  await store.set(key, JSON.stringify(data));
+}
+
 export async function traiterCommande(c: CommandePayee): Promise<void> {
+  compterCommande(c).catch((err) => console.error("stats commande", err));
   const lignes = c.articles
     .map((a) => `  • ${a.quantite} × ${a.nom} — ${euro(a.totalCents)}`)
     .join("\n");
